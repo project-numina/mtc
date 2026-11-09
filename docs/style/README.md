@@ -1,5 +1,7 @@
 # Pivotal code distribution audit
 
+The [second-pass target dashboard](target-report.md) expands the source census, pins both original and round-two cohorts, and reports the explicit acceptance targets and complete outliers. The historical comparison below retains its original parser for continuity.
+
 The declaration cohort is pinned by fully qualified Lean name at `fb6ec518`, using the then-current survey's module-local, unique terminal-name matches. Current and baseline theorem statistics use only successfully paired declarations; module moves with unchanged public names remain in the cohort. Missing, renamed, private-name changes and newly added or source-unmatched declarations appear in [cohort-unmatched.tsv](cohort-unmatched.tsv); they are not silently counted as improvements. The complete original baseline is [preserved separately](historical-fb6ec518.md).
 
 Proof lines and tactic steps are source-parser heuristics, not elaborated proof size; binder and hypothesis counts come from Lean elaborated types, including section variables. Terminal-name matching is module-local and requires uniqueness. Hypothesis sentinel failures are omitted. Quantiles use linear interpolation. The pinned Mathlib v4.35.0 sample uses SHA-256(module) mod 10 = 0 and is unstratified, not category-theory-specific. Mathlib source and Lean-match counts differ; unmatched source declarations are retained in source metrics only.
@@ -13,10 +15,10 @@ Proof lines and tactic steps are source-parser heuristics, not elaborated proof 
 ## Assessment
 
 For the 690 paired new-layer declarations, source proof-line median/p90 changed 6.0/20.0 → 6.0/19.0; elaborated explicit binders changed 3.0/7.0 → 3.0/6.0. These describe the surviving matched cohort, not the effect of deleted or unpaired declarations.
-There are 10 unmatched baseline declarations and 4 unpaired current source declarations. The file distribution is a snapshot of surviving baseline paths, not a paired declaration metric: 14 baseline project paths are absent and 0 current project paths are unclassified. Names are listed below.
-Cohort changes require source, consumer, instance, attribute and supported-API review; dependency reachability alone is not a deletion criterion. [Cleanup decisions and retained exceptions](cleanup-notes.md) document the review. Matching a distribution is not a completion criterion.
+There are 10 unmatched baseline declarations and 7 unpaired current source declarations. The file distribution is a snapshot of surviving baseline paths, not a paired declaration metric: 14 baseline project paths are absent and 0 current project paths are unclassified. Names are listed below.
+Cohort changes require source, consumer, instance, attribute and supported-API review; dependency reachability alone is not a deletion criterion. [Cleanup decisions and retained exceptions](cleanup-notes.md) document the review. The explicit targets for the second pass and their status are reported in the target dashboard.
 
-Among paired new declarations, 406 occur in the current constant-reference dependency union of the six manuscript targets and 284 do not. This is a review aid, not a safe deletion list.
+Among paired new declarations, 409 occur in the current constant-reference dependency union of the six manuscript targets and 281 do not. This is a review aid, not a safe deletion list.
 
 ## Distributions
 
@@ -24,12 +26,12 @@ Paired baseline rows use the exact same qualified names as their current rows. T
 
 | Metric | Population | n | p25 | Median | p75 | p90 | p99 | Max |
 |---|---|---:|---:|---:|---:|---:|---:|
-| Proof lines | New pivotal modules | 690 | 4.0 | 6.0 | 11.0 | 19.0 | 43.33 | 63 |
+| Proof lines | New pivotal modules | 690 | 4.0 | 6.0 | 11.0 | 19.0 | 43.11 | 63 |
 | Proof lines | Inherited modules | 906 | 2.0 | 3.0 | 9.0 | 12.0 | 26.95 | 48 |
 | Proof lines | Mathlib sample | 18060 | 1.0 | 2.0 | 4.0 | 8.0 | 30.0 | 151 |
 | Proof lines | New pivotal modules (fb6ec518 paired) | 690 | 4.0 | 6.0 | 12.0 | 20.0 | 43.55 | 63 |
 | Proof lines | Inherited modules (fb6ec518 paired) | 906 | 2.0 | 3.0 | 9.0 | 12.0 | 26.95 | 48 |
-| Tactic steps (by proofs) | New pivotal modules | 573 | 3.0 | 5.0 | 9.0 | 15.0 | 34.0 | 55 |
+| Tactic steps (by proofs) | New pivotal modules | 572 | 3.0 | 5.0 | 8.0 | 14.0 | 34.0 | 55 |
 | Tactic steps (by proofs) | Inherited modules | 426 | 2.0 | 3.0 | 8.0 | 11.0 | 22.5 | 30 |
 | Tactic steps (by proofs) | Mathlib sample | 9295 | 1.0 | 2.0 | 5.0 | 9.0 | 29.0 | 110 |
 | Statement characters | New pivotal modules | 690 | 134.0 | 202.5 | 310.0 | 481.0 | 802.77 | 998 |
@@ -67,7 +69,7 @@ Paired baseline rows use the exact same qualified names as their current rows. T
 | Elaborated type nodes | Mathlib sample | 15606 | 58.0 | 96.0 | 175.0 | 292.0 | 677.0 | 2199 |
 | Elaborated type nodes | New pivotal modules (fb6ec518 paired) | 690 | 80.0 | 132.5 | 241.5 | 395.5 | 629.17 | 1037 |
 | Elaborated type nodes | Inherited modules (fb6ec518 paired) | 906 | 83.0 | 138.0 | 215.75 | 315.5 | 623.55 | 974 |
-| File lines | New pivotal modules | 164 | 50.0 | 71.0 | 109.5 | 164.7 | 431.98 | 469 |
+| File lines | New pivotal modules | 164 | 49.75 | 71.0 | 109.5 | 163.4 | 420.14 | 466 |
 | File lines | Inherited modules | 130 | 84.25 | 145.0 | 198.75 | 265.8 | 534.67 | 894 |
 | File lines | Mathlib sample | 859 | 97.5 | 195.0 | 365.5 | 668.8 | 1201.14 | 1503 |
 | File lines | Mathlib all files | 8624 | 92.0 | 182.0 | 356.0 | 631.0 | 1239.54 | 1503 |
@@ -81,12 +83,12 @@ Longest new proofs:
 - `MTC/Center/Normalization/PositiveSubring.lean:18` `pivotalDimension_eq_fp_of_positive_fusionSubring`: 63 lines, 55 estimated tactic steps.
 - `MTC/Center/Normalization/IntegerDimensions.lean:48` `pseudoUnitary_of_integer_dimensions_and_center_fp_orthogonality`: 54 lines, 39 estimated tactic steps.
 - `MTC/Braided/Cabling/PureSumPrefix.lean:98` `coloredPower_succ_prefix_eq`: 51 lines, 50 estimated tactic steps.
-- `MTC/Center/Induction/PivotalSquare.lean:40` `globalDimension_square_of_actual_induction`: 49 lines, 32 estimated tactic steps.
 - `MTC/Braided/Trace/MonodromyReciprocity.lean:40` `norm_inverse_monodromy_trace_eq_of_constituent_phase`: 47 lines, 32 estimated tactic steps.
 - `MTC/Braided/Cabling/ClosureColoredContext.lean:194` `coloredGenerator_zero_flatten_heq`: 46 lines, 24 estimated tactic steps.
 - `MTC/Braided/Trace/ComplexSaturation.lean:22` `actual_mixed_braid_trace_eq_one_of_saturation`: 46 lines, 32 estimated tactic steps.
+- `MTC/Center/Induction/PivotalSquare.lean:40` `globalDimension_square_of_actual_induction`: 44 lines, 27 estimated tactic steps.
 - `MTC/Center/Normalization/PositiveSubring.lean:108` `transparent_norm_saturation_of_adjoint_positivity`: 43 lines, 34 estimated tactic steps.
-- `MTC/Center/Normalization/ScalarFusionCharacter.lean:69` `dimensionRatio_tensor_constituent`: 43 lines, 34 estimated tactic steps.
+- `MTC/Center/Normalization/ScalarFusionCharacter.lean:66` `dimensionRatio_tensor_constituent`: 43 lines, 34 estimated tactic steps.
 - `MTC/Braided/Cabling/PureSumPrefix.lean:167` `coloredPower_positive_mem`: 39 lines, 29 estimated tactic steps.
 - `MTC/Center/Normalization/SymmetricBinomial.lean:131` `canonicalSymmetricPivotal_rising_binomial_isIntegral`: 39 lines, 30 estimated tactic steps.
 - `MTC/Braided/Cabling/ClosureColoredFirst.lean:20` `coloredPower_first_mem`: 38 lines, 31 estimated tactic steps.
@@ -95,9 +97,9 @@ Longest new proofs:
 - `MTC/Braided/Cabling/ClosureFlattenConcat.lean:31` `flattenBlocksRecursive_concat_heq`: 37 lines, 27 estimated tactic steps.
 - `MTC/PropertyF/Pivotal/MonoidalQuantumTrace.lean:55` `monoidalFunctor_leftQuantumTrace`: 34 lines, 24 estimated tactic steps.
 - `MTC/Braided/Cabling/PureSumSigned.lean:22` `coloredPower_negative_eq_inverse`: 33 lines, 25 estimated tactic steps.
-- `MTC/PropertyF/Pivotal/FPObject.lean:33` `existsUnique_fp_column`: 33 lines, 24 estimated tactic steps.
-- `MTC/PropertyF/Pivotal/NondegeneracyHaarSlide.lean:344` `categoricalHaarRestricted_slide`: 32 lines, 22 estimated tactic steps.
+- `MTC/PropertyF/Pivotal/NondegeneracyHaarSlide.lean:309` `categoricalHaarRestricted_slide`: 32 lines, 22 estimated tactic steps.
 - `MTC/Braided/Cabling/ClosureColoredBridge.lean:52` `coloredGenerator_two_flatten_heq`: 31 lines, 14 estimated tactic steps.
+- `MTC/Braided/Cabling/ColorBiproduct.lean:61` `colorProjection_inclusion_total`: 31 lines, 21 estimated tactic steps.
 
 Largest explicit-binder counts among matched new theorems:
 
@@ -107,10 +109,10 @@ Largest explicit-binder counts among matched new theorems:
 - `MTC/Center/Normalization/FusionSubringSupport.lean:48` `fusionSubring_dualLabel_finrank_zero_of_supported`: 9 explicit, 0 implicit, 0 instance binders.
 - `MTC/Center/Normalization/FusionSubringSupport.lean:17` `fusionSubring_forward_finrank_zero`: 9 explicit, 0 implicit, 0 instance binders.
 - `MTC/Center/Normalization/FusionSubringSupport.lean:72` `fusionSubring_forward_finrank_zero_of_supported`: 9 explicit, 0 implicit, 0 instance binders.
-- `MTC/PropertyF/Pivotal/NondegeneracyHaarSlide.lean:344` `categoricalHaarRestricted_slide`: 9 explicit, 0 implicit, 0 instance binders.
-- `MTC/PropertyF/Pivotal/NondegeneracyHaarSlide.lean:448` `doubleBraiding_eq_id_of_restricted_sTest`: 9 explicit, 0 implicit, 0 instance binders.
+- `MTC/PropertyF/Pivotal/NondegeneracyHaarSlide.lean:309` `categoricalHaarRestricted_slide`: 9 explicit, 0 implicit, 0 instance binders.
+- `MTC/PropertyF/Pivotal/NondegeneracyHaarSlide.lean:413` `doubleBraiding_eq_id_of_restricted_sTest`: 9 explicit, 0 implicit, 0 instance binders.
 - `MTC/Braided/Cabling/BlockFinite.lean:50` `finite_subgroup_of_finite_preserved_blocks`: 8 explicit, 2 implicit, 3 instance binders.
-- `MTC/Braided/Cabling/BlockFinite.lean:76` `finite_braidImage_of_finite_pure_block_ranges`: 8 explicit, 2 implicit, 5 instance binders.
+- `MTC/Braided/Cabling/BlockFinite.lean:95` `finite_braidImage_of_finite_pure_block_ranges`: 8 explicit, 2 implicit, 5 instance binders.
 - `MTC/Braided/Cabling/ColorBiproductFinite.lean:22` `finite_pureColor_range_of_cabling`: 8 explicit, 2 implicit, 8 instance binders.
 - `MTC/Braided/Cabling/PureSumCabling.lean:58` `coloredPureWord_cabling_of_letters`: 8 explicit, 1 implicit, 4 instance binders.
 - `MTC/Braided/Cabling/PureSumColored.lean:405` `pureWord_preserves_coloredBlock`: 8 explicit, 1 implicit, 3 instance binders.

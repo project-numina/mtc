@@ -1,0 +1,40 @@
+# Second cleanup target dashboard
+
+This report measures the checked pass based at `3826bb021a6e1ffea30cf9e86fa3bb06eb13967d` against that commit and the original `fb6ec518` snapshot. The full manuscript remains the deliverable; distributions locate review candidates, not proof quality or mathematical optimality. Proof lines and tactic steps are source heuristics, while binder and hypothesis counts are taken from elaborated types. Quantiles use linear interpolation.
+
+| All current new-layer proofs (n = 720) | Target median / p90 | Achieved median / p90 | Status |
+|---|---:|---:|---|
+| Source proof lines | ≤ 3 / ≤ 12 | 6 / 19 | **MISSED** |
+| Explicit binders | ≤ 2 / ≤ 5 | 3 / 6 | **MISSED** |
+| Hypotheses | no worse than 1 / 3 | 1 / 3 | **MET** |
+
+The new layer has 6,196 total proof lines, 594 tactic-style proofs and 4,004 estimated tactic steps, with tactic-step median/p90 5/14. Its explicit/implicit/strict/instance binder totals are 2,515/701/0/1,158; total binder median/p90 is 6/11. These numbers include the three newly introduced shared results. Neither median reduction was achieved; no claim is made that the targets are mathematically impossible.
+
+| Cohort | Paired n | Proof lines before → after | Line median/p90 before → after | Tactic steps before → after (by-proof n) | Explicit median/p90 before → after | Hypotheses median/p90 |
+|---|---:|---:|---:|---:|---:|---:|
+| `fb6ec518`, expanded | 713 | 6,475 → 6,119 | 6/20 → 6/19 | 4,243 → 3,950 (590 → 587) | 3/7 → 3/6 | 1/3 → 1/3 |
+| `3826bb02`, expanded | 717 | 6,299 → 6,172 | 6/19 → 6/19 | 4,083 → 3,990 (592 → 591) | 3/6 → 3/6 | 1/3 → 1/3 |
+
+The original historical method is also retained: 690 surviving pairs went from 6,378 to 6,022 proof lines and 6/20 to 6/19. The expanded original and round-two pins contain 723 and 717 new-layer source proofs respectively. Original comparison has ten deleted construction-stage names and seven current additions; round-two comparison has zero unmatched baseline declarations and three additions. [The unmatched inventory](target-unmatched.tsv) names each declaration. The moved `haarSummand_fusion_expansion` remains paired by its qualified name and appears at its new location in the [complete current inventory](all-new-proofs.tsv), which includes proposition-valued instances and anonymous instances as well as named theorems and lemmas. The three new results are the shared actual-pure-block finiteness criterion, the Hermitian dimension identity, and the pseudo-unitary pivotal-dimension norm identity. No new private proof was extracted. [Both expanded pins](cohort-fb6ec518-expanded.tsv) and [the round-two pin](cohort-3826bb02.tsv) retain source identities, all binder categories and type hashes.
+
+| Area | Round-two → current proofs | Total proof lines | Proof median/p90 | Estimated tactic steps |
+|---|---:|---:|---:|---:|
+| Cabling | 244 → 245 | 2,183 → 2,163 | 5.5/20 → 5/20 | 1,228 → 1,214 |
+| Centre and selected induction | 198 → 200 | 1,702 → 1,672 | 6/18.3 → 6/18 | 1,237 → 1,214 |
+| Pivotal infrastructure | 133 → 133 | 1,292 → 1,252 | 7/21 → 7/20.4 | 857 → 826 |
+| Trace and algebra | 30 → 30 | 321 → 317 | 7.5/16.1 → 7.5/16.1 | 211 → 208 |
+| Other new layer | 112 → 112 | 801 → 792 | 6/13 → 6/13 | 550 → 542 |
+
+The [full outlier inventory](target-outliers.tsv) lists every current proof over 12 lines, every declaration with more than five explicit binders, and every declaration with more than three hypotheses, including exact locations and all binder counts. There are 142 proofs above 12 lines, 110 declarations above five explicit binders, and 49 above three hypotheses; 539 proofs exceed three lines. The longest retained proofs are `pivotalDimension_eq_fp_of_positive_fusionSubring` (63), `pseudoUnitary_of_integer_dimensions_and_center_fp_orthogonality` (54), `coloredPower_succ_prefix_eq` (51), and `norm_inverse_monodromy_trace_eq_of_constituent_phase` (47). They require, respectively, arbitrary fusion-subring positivity, centre orthogonality, dependent strand/index transport, and weighted inverse monodromy trace arguments. Other long cabling proofs transport actual categorical isomorphisms across associators and zero-width or concatenated blocks; Haar slide arguments retain independent support, naturality, and nonvanishing premises. High-arity support and Haar results name independent labels, objects, maps, structures and hypotheses. No blanket binder change was justified by call-site/API review.
+
+The pass reused actual pure-image finite-block criteria, Haar summand expansion, a common Hermitian dimension sum, existing symmetric-category integrality, `Infinite.of_injective`, and standard trace/norm results. Attempts to identify a pure subgroup directly with a subgroup of ambient automorphisms failed because it is a subgroup of the braid image; coercion-heavy transport and multiplicity rewrites did not elaborate; a shared phase helper was discarded as a mere restatement; and the real-weight saturation lemma does not cover arbitrary complex phases and zero weights. These explain retained complexity in the reviewed cases, not a proof that shorter arguments cannot exist. Worker inventories in the run directory detail the wider middle-of-distribution review and outlier-specific reasons.
+
+## Matching and verification
+
+The earlier parser skipped same-line attributed theorems and proposition-valued instances. The expanded census adds these, including three anonymous new-layer proposition instances, and checks module-local names against Lean's environment. All 720 current new-layer source proofs matched uniquely. [Environment-only theorem names](environment-only-theorems.tsv) are retained for inspection: 544 match generated equation, proof, simplifier or recursor naming patterns; pattern classification is a heuristic, not a proof of origin. Ambiguous inherited anonymous instances are kept in the original expanded pin and excluded from paired identity claims. A separate Lean `isProp` scan found 199 proof-valued definitions and opaque declarations; all matched generated auxiliary or constructor/recursor naming patterns, with their exact names in [the inventory](proposition-definitions.tsv). These pattern classifications still require human review and cannot prove origin. The full kernel audit covers all project declarations, including private and generated declarations.
+
+All 717 round-two paired type-expression hashes are unchanged. Two original-cohort monoidal duality hashes differ; their fully printed types were independently compared at the prior integration and matched (see prior run `baseline/types.txt` and `types-current.txt`). Hash equality or a textual comparison is not by itself a semantic proof of equivalence. The current [type-hash comparison](target-type-hash-changes.tsv) lists every difference.
+
+`LEAN_NUM_THREADS=4 scripts/check.sh` passed 13 tests, the full build, and audits of 5,254 integrated / 5,255 total project declarations. `scripts/audit-target.sh` passed; the expanded explicit public-source audit checked 1,672 outputs, all with only `propext`, `Classical.choice`, and `Quot.sound`. The full kernel audit also covers private declarations. The four frozen source hashes match; the manuscript has no changes from `3826bb02`; conjecture files remain absent. The warning comparison against cached original traces reports 197 baseline vs 168 current, zero missing traces and zero new/changed normalized messages; the prior round-two comparison also reported 168. Original traces are cached baseline evidence, not a fresh baseline rebuild.
+
+Reproduce after building with `LEAN_NUM_THREADS=4 PROPERTYF_AUDIT_CORES=0-3 python3 scripts/style/survey.py` followed by `python3 scripts/style/target_dashboard.py`; run `python3 scripts/print_public_axioms.py` after the fresh environment dump. `LEAN_NUM_THREADS=4 python3 scripts/style/survey_proposition_definitions.py` independently scans proof-valued definitions. The [machine-readable dashboard](target-dashboard.json) includes all quantiles and sums. The original sampled Mathlib 2/8 proof-line and 2/4 explicit-binder figures are context, not acceptance conditions.

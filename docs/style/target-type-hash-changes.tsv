@@ -1,0 +1,5 @@
+cohort	qualified_name	before_hash	after_hash	before_file	after_file	_end
+fb6ec518_legacy	MTC.PropertyF.Pivotal.monoidalFunctorDual_coevaluation	3470203695	1636572172	MTC/PropertyF/Pivotal/MonoidalDualComparison.lean	MTC/PropertyF/Pivotal/MonoidalDual.lean	-
+fb6ec518_legacy	MTC.PropertyF.Pivotal.monoidalFunctorDual_evaluation	673401944	3983182546	MTC/PropertyF/Pivotal/MonoidalDualComparison.lean	MTC/PropertyF/Pivotal/MonoidalDual.lean	-
+fb6ec518	MTC.PropertyF.Pivotal.monoidalFunctorDual_coevaluation	3470203695	1636572172	MTC/PropertyF/Pivotal/MonoidalDualComparison.lean	MTC/PropertyF/Pivotal/MonoidalDual.lean	-
+fb6ec518	MTC.PropertyF.Pivotal.monoidalFunctorDual_evaluation	673401944	3983182546	MTC/PropertyF/Pivotal/MonoidalDualComparison.lean	MTC/PropertyF/Pivotal/MonoidalDual.lean	-

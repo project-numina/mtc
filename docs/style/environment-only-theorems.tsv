@@ -1,540 +1,545 @@
-classification	module	name	kind	cone	type_nodes	explicit	implicit	strict	instance	hypotheses	type_hash
-generated-name pattern	MTC.Algebra.ComplexBlockTrace	MTC.Algebra.Blocks.complexMass.eq_1	theorem	1	60	2	0	0	0	0	4031523227
-generated-name pattern	MTC.Algebra.ComplexBlockTrace	MTC.Algebra.Blocks.complexPhaseElement.eq_1	theorem	0	73	3	0	0	0	0	3794229216
-generated-name pattern	MTC.Algebra.ComplexBlockTrace	MTC.Algebra.Blocks.complexTrace.eq_1	theorem	1	63	3	0	0	0	0	2564957698
-generated-name pattern	MTC.Algebra.ComplexBlockTrace	MTC.Algebra.Blocks.weightPhase.eq_1	theorem	0	89	1	0	0	0	0	1838407702
-generated-name pattern	MTC.Algebra.ComplexBlockTrace	_private.MTC.Algebra.ComplexBlockTrace.0.MTC.Algebra.Blocks.complexPhaseElement_unitary._simp_1_1	theorem	1	97	0	2	0	2	0	4287098273
-generated-name pattern	MTC.Algebra.ComplexBlockTrace	_private.MTC.Algebra.ComplexBlockTrace.0.MTC.Algebra.Blocks.complexTrace_phaseElement._simp_1_4	theorem	1	35	3	1	0	1	0	3188916250
-generated-name pattern	MTC.Braided.Cabling.BlockFiniteSum	_private.MTC.Braided.Cabling.BlockFiniteSum.0.MTC.Braided.Cabling.finite_braidImage_biproduct_of_finite_pure_block_ranges._simp_1_1	theorem	1	194	3	2	0	8	2	2565267940
-generated-name pattern	MTC.Braided.Cabling.BlockFiniteSum	_private.MTC.Braided.Cabling.BlockFiniteSum.0.MTC.Braided.Cabling.finite_braidImage_biproduct_of_finite_pure_block_ranges._simp_1_2	theorem	1	194	3	2	0	8	2	2572182240
-generated-name pattern	MTC.Braided.Cabling.BlockFiniteSum	_private.MTC.Braided.Cabling.BlockFiniteSum.0.MTC.Braided.Cabling.objectPropertyF_biproduct_of_finite_colored_groups._simp_1_1	theorem	0	166	3	2	0	8	2	3132280369
-generated-name pattern	MTC.Braided.Cabling.BlockFiniteSum	_private.MTC.Braided.Cabling.BlockFiniteSum.0.MTC.Braided.Cabling.objectPropertyF_biproduct_of_finite_colored_groups._simp_1_2	theorem	0	166	3	2	0	8	2	580316403
-generated-name pattern	MTC.Braided.Cabling.ClosureBlockContext	MTC.Braided.blockGeneratorWord._proof_1	theorem	0	80	3	0	0	0	0	1489263375
-generated-name pattern	MTC.Braided.Cabling.ClosureBlockContext	_private.MTC.Braided.Cabling.ClosureBlockContext.0.MTC.Braided.blockGenerator_index._proof_1_1	theorem	0	129	7	0	0	0	4	1888940479
-generated-name pattern	MTC.Braided.Cabling.ClosureBlockWord	MTC.Braided.blockCrossingIndex._proof_2	theorem	0	76	4	0	0	0	0	3850794382
-generated-name pattern	MTC.Braided.Cabling.ClosureBlockWord	MTC.Braided.blockCrossingIndex.eq_1	theorem	0	89	4	0	0	0	0	1198873602
-generated-name pattern	MTC.Braided.Cabling.ClosureBlockWord	MTC.Braided.blockCrossingWord.eq_1	theorem	0	106	2	0	0	0	0	4103681020
-generated-name pattern	MTC.Braided.Cabling.ClosureBlockWord	_private.MTC.Braided.Cabling.ClosureBlockWord.0.MTC.Braided.blockCrossingIndex._proof_1	theorem	0	80	5	0	0	0	1	3020150868
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.Trace.addRightStrands.eq_1	theorem	0	221	2	1	0	3	0	3429667502
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.Trace.addRightStrands.eq_2	theorem	0	348	3	1	0	3	0	442107832
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.Trace.addRightStrands.eq_def	theorem	0	413	3	1	0	3	0	280500315
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockCross.eq_1	theorem	0	127	3	1	0	3	0	1237482001
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockMerge.eq_1	theorem	0	116	2	1	0	2	0	383629668
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockMerge.eq_2	theorem	0	168	3	1	0	2	0	1593905833
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockMerge.eq_def	theorem	0	225	3	1	0	2	0	1849422150
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockSplit.eq_1	theorem	0	113	2	1	0	2	0	1755818900
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockSplit.eq_2	theorem	0	139	3	1	0	2	0	3106883746
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockSplit.eq_def	theorem	0	197	3	1	0	2	0	3397658687
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	_private.MTC.Braided.Cabling.ClosureCanonicalBlocks.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_1	theorem	0	35	3	0	0	0	0	3111681952
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	_private.MTC.Braided.Cabling.ClosureCanonicalBlocks.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_2	theorem	0	37	4	0	0	0	0	1285544444
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	_private.MTC.Braided.Cabling.ClosureCanonicalBlocks.0.MTC.Braided.sweepBlockSplit.match_1.eq_1	theorem	0	35	3	0	0	0	0	2091676412
-generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	_private.MTC.Braided.Cabling.ClosureCanonicalBlocks.0.MTC.Braided.sweepBlockSplit.match_1.eq_2	theorem	0	37	4	0	0	0	0	3735850067
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerFlatten.eq_1	theorem	0	63	2	1	0	2	0	664553217
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerFlatten.eq_2	theorem	0	146	3	1	0	2	0	388030284
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerFlatten.eq_def	theorem	0	190	3	1	0	2	0	3580675744
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerTensor.eq_1	theorem	0	46	2	1	0	2	0	3172233504
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerTensor.eq_2	theorem	0	91	3	1	0	2	0	2524299594
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerTensor.eq_def	theorem	0	120	3	1	0	2	0	3877100548
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	_private.MTC.Braided.Cabling.ClosureColoredBridge.0.MTC.Braided.heterogeneousPowerTensor.match_1.eq_1	theorem	0	64	4	0	0	0	0	3997443724
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	_private.MTC.Braided.Cabling.ClosureColoredBridge.0.MTC.Braided.heterogeneousPowerTensor.match_1.eq_2	theorem	0	68	5	0	0	0	0	3374910544
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	_private.MTC.Braided.Cabling.ClosureColoredBridge.0.MTC.Braided.joinCross_word_heq._proof_1_1	theorem	1	42	3	0	0	0	1	1418145755
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	_private.MTC.Braided.Cabling.ClosureColoredBridge.0.MTC.Braided.joinCross_word_heq._proof_1_2	theorem	1	42	3	0	0	0	1	1922068194
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	MTC.Braided.leftTripleFlatten.eq_1	theorem	0	98	4	1	0	2	0	2888537974
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	MTC.Braided.rightTripleFlatten.eq_1	theorem	0	97	4	1	0	2	0	1839957262
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	_private.MTC.Braided.Cabling.ClosureColoredContext.0.MTC.Braided.leftTripleCross_word_heq._proof_1_1	theorem	1	40	4	0	0	0	1	2915699466
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	_private.MTC.Braided.Cabling.ClosureColoredContext.0.MTC.Braided.leftTripleCross_word_heq._proof_1_2	theorem	1	40	4	0	0	0	1	2728473974
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	_private.MTC.Braided.Cabling.ClosureColoredContext.0.MTC.Braided.leftTripleCross_word_heq._proof_1_3	theorem	1	42	3	0	0	0	1	1418145755
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	_private.MTC.Braided.Cabling.ClosureColoredContext.0.MTC.Braided.leftTripleCross_word_heq._proof_1_4	theorem	1	42	3	0	0	0	1	23657950
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	_private.MTC.Braided.Cabling.ClosureColoredContext.0.MTC.Braided.leftTripleCross_word_heq._proof_1_5	theorem	1	48	4	0	0	0	1	1657237109
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredCrossing	MTC.Braided.heterogeneousBlockCross_word._proof_2	theorem	1	33	2	0	0	0	0	3501135053
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredCrossing	_private.MTC.Braided.Cabling.ClosureColoredCrossing.0.MTC.Braided.heterogeneousBlockCross_word._proof_1	theorem	1	37	3	0	0	0	1	2528560714
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredFirst	_private.MTC.Braided.Cabling.ClosureColoredFirst.0.MTC.Braided.coloredPower_first_mem._proof_1_2	theorem	1	148	7	0	0	0	2	1038129911
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredFirst	_private.MTC.Braided.Cabling.ClosureColoredFirst.0.MTC.Braided.coloredPower_first_mem._simp_1_1	theorem	1	30	2	0	0	0	0	40805116
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	MTC.Braided.heterogeneousPowerTensor._proof_1	theorem	1	30	1	0	0	0	0	1374387624
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	MTC.Braided.heterogeneousStrandCount.eq_1	theorem	0	20	1	0	0	0	0	3257585355
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	MTC.Braided.heterogeneousStrandCount.eq_2	theorem	0	61	2	0	0	0	0	1329176085
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	MTC.Braided.heterogeneousStrandCount.eq_def	theorem	0	76	2	0	0	0	0	1200891742
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	_private.MTC.Braided.Cabling.ClosureColoredFlatten.0.MTC.Braided.heterogeneousPowerTensor.match_1.eq_1	theorem	0	64	4	0	0	0	0	3997443724
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	_private.MTC.Braided.Cabling.ClosureColoredFlatten.0.MTC.Braided.heterogeneousPowerTensor.match_1.eq_2	theorem	0	68	5	0	0	0	0	3374910544
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerStateFlatten._proof_1	theorem	1	74	3	0	0	0	0	2760086335
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerStateWordIso.eq_1	theorem	0	145	4	1	0	3	0	2738326998
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerStateWordIso.eq_2	theorem	0	204	6	1	0	3	0	3646090625
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerStateWordIso.eq_def	theorem	0	351	5	1	0	3	0	2289148112
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerSwap._proof_1	theorem	1	93	4	0	0	0	0	1366605867
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerWordState.eq_1	theorem	0	47	3	0	0	0	0	3316232877
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerWordState.eq_2	theorem	0	76	5	0	0	0	0	3271683711
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerWordState.eq_def	theorem	0	98	4	0	0	0	0	2195714289
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	_private.MTC.Braided.Cabling.ClosureColoredWords.0.MTC.Braided.coloredPowerWordState.match_1.eq_1	theorem	0	97	6	0	0	0	0	1647521020
-generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	_private.MTC.Braided.Cabling.ClosureColoredWords.0.MTC.Braided.coloredPowerWordState.match_1.eq_2	theorem	0	118	8	0	0	0	0	2585184280
-generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.localBlockFlattenAt._proof_1	theorem	0	54	2	0	0	0	0	1658562719
-generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.localBlockFlattenAt._proof_2	theorem	0	79	3	0	0	0	0	1748657427
-generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.localBlockFlattenAt.eq_1	theorem	0	157	4	1	0	2	0	3874012743
-generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.localBlockWordAt._proof_1	theorem	0	79	3	0	0	0	0	3599908333
-generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.tensorPowerTensorIso.eq_1	theorem	0	93	2	1	0	2	0	3291167785
-generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.tensorPowerTensorIso.eq_2	theorem	0	139	3	1	0	2	0	1551215987
-generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	_private.MTC.Braided.Cabling.ClosureCommonInterface.0.MTC.Braided.tensorPowerTensorIso.match_1.eq_1	theorem	0	42	4	0	0	0	0	1208203547
-generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	_private.MTC.Braided.Cabling.ClosureCommonInterface.0.MTC.Braided.tensorPowerTensorIso.match_1.eq_2	theorem	0	46	5	0	0	0	0	4145643040
-generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.powerAcrossPower.eq_1	theorem	0	95	2	1	0	3	0	1446061644
-generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.powerAcrossPower.eq_2	theorem	0	163	3	1	0	3	0	4233633462
-generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.powerAcrossPower.eq_def	theorem	0	224	3	1	0	3	0	4280825779
-generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.singleAcrossPower.eq_1	theorem	0	92	1	1	0	3	0	2838130351
-generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.singleAcrossPower.eq_2	theorem	0	156	2	1	0	3	0	365103137
-generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.singleAcrossPower.eq_def	theorem	0	216	2	1	0	3	0	3470593559
-generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	_private.MTC.Braided.Cabling.ClosureCrossing.0.MTC.Braided.singleAcrossPower.match_1.eq_1	theorem	0	35	3	0	0	0	0	2100959431
-generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	_private.MTC.Braided.Cabling.ClosureCrossing.0.MTC.Braided.singleAcrossPower.match_1.eq_2	theorem	0	37	4	0	0	0	0	1057828153
-generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	MTC.Braided.firstBlockFlatten._proof_2	theorem	0	33	1	0	0	0	0	798995515
-generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	MTC.Braided.firstBlockFlatten._proof_4	theorem	0	64	2	0	0	0	0	3520352423
-generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	MTC.Braided.firstBlockFlattenIndexed.eq_1	theorem	0	164	3	1	0	2	0	223337368
-generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	MTC.Braided.firstGeneratorImage._proof_1	theorem	0	30	1	0	0	0	0	1374387624
-generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	MTC.Braided.firstGeneratorImage._proof_2	theorem	0	109	2	1	0	3	0	2191239211
-generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	_private.MTC.Braided.Cabling.ClosureFirstBlock.0.MTC.Braided.firstBlockFlatten._proof_1	theorem	0	37	2	0	0	0	1	1679170105
-generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	_private.MTC.Braided.Cabling.ClosureFirstBlock.0.MTC.Braided.firstBlockFlatten._proof_3	theorem	0	85	4	0	0	0	2	1457314851
-generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	_private.MTC.Braided.Cabling.ClosureFirstBlock.0.MTC.Braided.tensor_conj_right._simp_1_1	theorem	0	80	3	5	0	1	0	98966876
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCoherence	MTC.Braided.twoBlockFlatten.eq_1	theorem	0	117	2	1	0	2	0	772275981
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCoherence	_private.MTC.Braided.Cabling.ClosureFlattenCoherence.0.MTC.Braided.twoBlockFlatten_heq_flattenPower._proof_1_1	theorem	0	38	2	0	0	0	1	1060945175
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCoherence	_private.MTC.Braided.Cabling.ClosureFlattenCoherence.0.MTC.Braided.twoBlockFlatten_heq_flattenPower._proof_1_3	theorem	0	38	2	0	0	0	1	4082589682
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCoherence	_private.MTC.Braided.Cabling.ClosureFlattenCoherence.0.MTC.Braided.twoBlockFlatten_heq_flattenPower._proof_1_4	theorem	0	40	2	0	0	0	1	3583370120
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	MTC.Braided.flattenBlocksRecursive.eq_1	theorem	0	56	2	1	0	2	0	3425504405
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	MTC.Braided.flattenBlocksRecursive.eq_2	theorem	0	113	3	1	0	2	0	314917749
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	MTC.Braided.flattenBlocksRecursive.eq_def	theorem	0	143	3	1	0	2	0	664400926
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	MTC.Braided.flattenPower.eq_def	theorem	0	192	3	1	0	2	0	761542351
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	_private.MTC.Braided.Cabling.ClosureFlattenCompare.0.MTC.Braided.blockStrandCount.match_1.eq_1	theorem	0	35	3	0	0	0	0	3445047266
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	_private.MTC.Braided.Cabling.ClosureFlattenCompare.0.MTC.Braided.blockStrandCount.match_1.eq_2	theorem	0	37	4	0	0	0	0	2731069519
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	_private.MTC.Braided.Cabling.ClosureFlattenCompare.0.MTC.Braided.flattenPower.match_1.eq_1	theorem	0	35	3	0	0	0	0	3632700308
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	_private.MTC.Braided.Cabling.ClosureFlattenCompare.0.MTC.Braided.flattenPower.match_1.eq_2	theorem	0	37	4	0	0	0	0	2891374490
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenConcat	_private.MTC.Braided.Cabling.ClosureFlattenConcat.0.MTC.Braided.flattenBlocksRecursive_concat_heq._simp_1_3	theorem	0	80	3	5	0	1	0	98966876
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenConcat	_private.MTC.Braided.Cabling.ClosureFlattenConcat.0.MTC.Braided.flattenBlocksRecursive_concat_heq._simp_1_4	theorem	0	93	3	4	0	2	0	391109155
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.firstBlockFlattenIndexed_heq._proof_1_1	theorem	0	47	2	0	0	0	1	3820515293
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.firstBlockFlattenIndexed_heq._proof_1_2	theorem	0	47	2	0	0	0	1	2734092444
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlattenAt_heq._proof_1_1	theorem	0	71	4	0	0	0	2	4265600933
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlatten_heq._proof_1_1	theorem	0	31	2	0	0	0	1	2195981451
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlatten_heq._proof_1_2	theorem	0	55	3	0	0	0	1	1557613572
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlatten_heq._proof_1_3	theorem	0	43	3	0	0	0	1	1931195002
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlatten_heq._proof_1_4	theorem	0	63	4	0	0	0	1	2548886324
-generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlatten_heq._proof_1_5	theorem	0	37	2	0	0	0	1	1898889013
-generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourBlockFlatten.eq_1	theorem	0	99	1	1	0	2	0	2971251279
-generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourBlockImage._proof_1	theorem	0	167	1	1	0	3	0	2836807372
-generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourBlockImage._proof_2	theorem	0	30	0	0	0	0	0	3031492042
-generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourCrossing0.eq_1	theorem	0	106	1	1	0	3	0	3529631486
-generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourCrossing1.eq_1	theorem	0	114	1	1	0	3	0	1531744623
-generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourCrossing2.eq_1	theorem	0	78	1	1	0	3	0	2653708806
-generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourPowerIso.eq_1	theorem	0	87	1	1	0	2	0	3938422555
-generated-name pattern	MTC.Braided.Cabling.ClosureImage	MTC.Braided.braidImageEmbeddingOfGenerators._proof_1	theorem	0	221	6	1	0	3	1	3130896733
-generated-name pattern	MTC.Braided.Cabling.ClosureImage	MTC.Braided.braidImageEmbeddingOfGenerators._proof_2	theorem	0	69	2	1	0	2	0	1504477806
-generated-name pattern	MTC.Braided.Cabling.ClosureImage	MTC.Braided.braidImageEmbeddingOfGenerators._proof_3	theorem	0	304	7	1	0	3	1	2518186970
-generated-name pattern	MTC.Braided.Cabling.ClosureInsertion	MTC.Braided.insertLeftWord.eq_1	theorem	0	69	1	0	0	0	0	1384496620
-generated-name pattern	MTC.Braided.Cabling.ClosureInsertion	MTC.Braided.insertRightWord.eq_1	theorem	0	69	1	0	0	0	0	2250856659
-generated-name pattern	MTC.Braided.Cabling.ClosureInsertionCompare	MTC.Braided.insertLeftPowerIso_eq_join._proof_2	theorem	1	33	2	0	0	0	0	1251763258
-generated-name pattern	MTC.Braided.Cabling.ClosureInsertionCompare	MTC.Braided.insertRightPowerIso_eq_join._proof_2	theorem	1	33	2	0	0	0	0	2048720249
-generated-name pattern	MTC.Braided.Cabling.ClosureInsertionCompare	_private.MTC.Braided.Cabling.ClosureInsertionCompare.0.MTC.Braided.insertLeftPowerIso_eq_join._proof_1	theorem	1	36	3	0	0	0	1	4008382697
-generated-name pattern	MTC.Braided.Cabling.ClosureInsertionCompare	_private.MTC.Braided.Cabling.ClosureInsertionCompare.0.MTC.Braided.insertRightPowerIso_eq_join._proof_1	theorem	1	36	3	0	0	0	1	1587054618
-generated-name pattern	MTC.Braided.Cabling.ClosureInsertionCompare	_private.MTC.Braided.Cabling.ClosureInsertionCompare.0.MTC.Braided.sweepBlockMerge_heq_join._proof_1_1	theorem	1	42	3	0	0	0	1	1418145755
-generated-name pattern	MTC.Braided.Cabling.ClosureIsoWord	MTC.Braided.tensorPowerMapIso._proof_1	theorem	0	85	2	3	0	2	0	3504704137
-generated-name pattern	MTC.Braided.Cabling.ClosureIsoWord	MTC.Braided.tensorPowerMapIso._proof_2	theorem	0	85	2	3	0	2	0	1095447297
-generated-name pattern	MTC.Braided.Cabling.ClosureIsoWord	_private.MTC.Braided.Cabling.ClosureIsoWord.0.MTC.Braided.tensorPowerMapIso_conj_generator._simp_1_1	theorem	0	80	3	5	0	1	0	98966876
-generated-name pattern	MTC.Braided.Cabling.ClosureIsoWord	_private.MTC.Braided.Cabling.ClosureIsoWord.0.MTC.Braided.tensorPowerMapIso_conj_generator._simp_1_2	theorem	0	94	3	4	0	2	0	1817218155
-generated-name pattern	MTC.Braided.Cabling.ClosureJoinCompare	MTC.Braided.tensorPowerTensorIso.eq_def	theorem	1	215	3	1	0	2	0	2183382265
-generated-name pattern	MTC.Braided.Cabling.ClosureJoinCompare	_private.MTC.Braided.Cabling.ClosureJoinCompare.0.MTC.Braided.tensorPowerTensorIso.match_1.eq_1	theorem	0	42	4	0	0	0	0	1208203547
-generated-name pattern	MTC.Braided.Cabling.ClosureJoinCompare	_private.MTC.Braided.Cabling.ClosureJoinCompare.0.MTC.Braided.tensorPowerTensorIso.match_1.eq_2	theorem	0	46	5	0	0	0	0	4145643040
-generated-name pattern	MTC.Braided.Cabling.ClosureLeftInsertion	MTC.Braided.Trace.addLeftStrands.eq_1	theorem	0	221	2	1	0	3	0	2373205088
-generated-name pattern	MTC.Braided.Cabling.ClosureLeftInsertion	MTC.Braided.Trace.addLeftStrands.eq_2	theorem	0	348	3	1	0	3	0	402551585
-generated-name pattern	MTC.Braided.Cabling.ClosureLeftInsertion	MTC.Braided.Trace.addLeftStrands.eq_def	theorem	0	413	3	1	0	3	0	1127170502
-generated-name pattern	MTC.Braided.Cabling.ClosureLeftInsertion	_private.MTC.Braided.Cabling.ClosureLeftInsertion.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_1	theorem	0	35	3	0	0	0	0	3111681952
-generated-name pattern	MTC.Braided.Cabling.ClosureLeftInsertion	_private.MTC.Braided.Cabling.ClosureLeftInsertion.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_2	theorem	0	37	4	0	0	0	0	1285544444
-generated-name pattern	MTC.Braided.Cabling.ClosureLocalFlatten	MTC.Braided.firstGeneratorImage.eq_1	theorem	0	141	2	1	0	3	0	492423622
-generated-name pattern	MTC.Braided.Cabling.ClosureLocalFlatten	MTC.Braided.localBlockFlatten.eq_1	theorem	0	174	4	1	0	2	0	3409301905
-generated-name pattern	MTC.Braided.Cabling.ClosureLocalFlatten	MTC.Braided.shiftedFirstIndex._proof_2	theorem	0	31	2	0	0	0	0	2372870091
-generated-name pattern	MTC.Braided.Cabling.ClosureLocalFlatten	_private.MTC.Braided.Cabling.ClosureLocalFlatten.0.MTC.Braided.shiftedFirstIndex._proof_1	theorem	0	35	3	0	0	0	1	4031568869
-generated-name pattern	MTC.Braided.Cabling.ClosureMergeCommon	MTC.Braided.powerIndexIso._proof_1	theorem	1	36	2	3	0	2	1	1836633714
-generated-name pattern	MTC.Braided.Cabling.ClosureMergeCommon	MTC.Braided.powerIndexIso.congr_simp	theorem	0	49	2	3	0	2	1	1453765895
-generated-name pattern	MTC.Braided.Cabling.ClosureMergeCommon	MTC.Braided.powerIndexIso.eq_1	theorem	0	63	2	3	0	2	1	1097920921
-generated-name pattern	MTC.Braided.Cabling.ClosureMergeCommon	MTC.Braided.sweepBlockMerge_succ_left._proof_2	theorem	1	40	2	0	0	0	0	836999013
-generated-name pattern	MTC.Braided.Cabling.ClosureMergeCommon	_private.MTC.Braided.Cabling.ClosureMergeCommon.0.MTC.Braided.sweepBlockMerge_succ_left._proof_1	theorem	1	44	3	0	0	0	1	2268330371
-generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularCross._proof_2	theorem	0	33	2	0	0	0	0	3501135053
-generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularCross._proof_3	theorem	0	54	3	1	0	2	0	1056593119
-generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularCrossingIndex._proof_2	theorem	0	60	4	0	0	0	0	2285939505
-generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularCrossingIndex.eq_1	theorem	0	73	4	0	0	0	0	2359618019
-generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularSplit._proof_1	theorem	0	42	3	0	0	0	1	2154390868
-generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularSplit._proof_2	theorem	0	38	2	0	0	0	0	886112722
-generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularSplit._proof_3	theorem	0	72	4	1	0	2	1	2768311693
-generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularWord.eq_1	theorem	0	85	2	0	0	0	0	2089267257
-generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	_private.MTC.Braided.Cabling.ClosureRectangular.0.MTC.Braided.rectangularCross._proof_1	theorem	0	37	3	0	0	0	1	2528560714
-generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	_private.MTC.Braided.Cabling.ClosureRectangular.0.MTC.Braided.rectangularCrossingIndex._proof_1	theorem	0	64	5	0	0	0	1	139440298
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.blockStrandCount.eq_1	theorem	0	17	1	0	0	0	0	1420445039
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.blockStrandCount.eq_2	theorem	0	18	2	0	0	0	0	2386572776
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.blockStrandCount.eq_def	theorem	0	34	2	0	0	0	0	350811707
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.joinPowerIso.eq_1	theorem	0	66	2	1	0	2	0	3537856718
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.joinPowerIso.eq_2	theorem	1	121	3	1	0	2	0	3650690261
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.joinPowerIso.eq_def	theorem	0	162	3	1	0	2	0	1925780099
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.joinPowerNormalized._proof_2	theorem	1	39	2	0	0	0	0	2085830182
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.joinPowerNormalized.eq_1	theorem	0	110	3	1	0	2	0	1129722447
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.strandSum.eq_1	theorem	0	17	1	0	0	0	0	1387441707
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.strandSum.eq_2	theorem	0	34	2	0	0	0	0	2829588649
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.strandSum.eq_def	theorem	0	41	2	0	0	0	0	3964605626
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.blockStrandCount.match_1.eq_1	theorem	0	35	3	0	0	0	0	3445047266
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.blockStrandCount.match_1.eq_2	theorem	0	37	4	0	0	0	0	2731069519
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.blockStrandCount_eq_mul._proof_1_6	theorem	0	37	3	0	0	0	1	1084594613
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.joinPowerNormalized._proof_1	theorem	1	42	3	0	0	0	1	1922068194
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.strandSum.match_1.eq_1	theorem	0	42	4	0	0	0	0	1983017672
-generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.strandSum.match_1.eq_2	theorem	0	46	5	0	0	0	0	2168427722
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockFlattenCommon._proof_2	theorem	0	39	2	0	0	0	0	3611720621
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockFlattenCommon._proof_5	theorem	0	72	3	0	0	0	0	1805628520
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockFlattenCommon.eq_1	theorem	0	160	4	1	0	2	0	1266084109
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockPosition._proof_2	theorem	0	31	2	0	0	0	0	3525598029
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockWord._proof_1	theorem	0	68	3	0	0	0	0	1912174742
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockWord._proof_2	theorem	0	72	3	0	0	0	0	3445983933
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockFlattenCommon._proof_1	theorem	0	43	3	0	0	0	1	153226831
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockFlattenCommon._proof_3	theorem	0	57	5	0	0	0	2	741421610
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockFlattenCommon._proof_4	theorem	0	99	5	0	0	0	2	1948130104
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockFlattenCommon_word._proof_1_2	theorem	0	35	3	0	0	0	1	3846901526
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockFlattenCommon_word._proof_1_3	theorem	0	36	4	0	0	0	1	3242670723
-generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockPosition._proof_1	theorem	0	35	3	0	0	0	1	4011055464
-generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	MTC.Braided.sweepBlockMerge_eq_split._proof_2	theorem	1	33	2	0	0	0	0	3501135053
-generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	MTC.Braided.sweepBlockMerge_zero_eq_split._proof_2	theorem	1	35	1	0	0	0	0	2461240889
-generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	_private.MTC.Braided.Cabling.ClosureSplitMerge.0.MTC.Braided.sweepBlockMerge_eq_split._proof_1	theorem	1	37	3	0	0	0	1	2528560714
-generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	_private.MTC.Braided.Cabling.ClosureSplitMerge.0.MTC.Braided.sweepBlockMerge_eq_split._simp_1_3	theorem	1	80	3	5	0	1	0	98966876
-generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	_private.MTC.Braided.Cabling.ClosureSplitMerge.0.MTC.Braided.sweepBlockMerge_zero_eq_split._proof_1	theorem	1	39	2	0	0	0	1	4240831665
-generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	_private.MTC.Braided.Cabling.ClosureSplitMerge.0.MTC.Braided.sweepBlockMerge_zero_eq_split._simp_1_3	theorem	1	80	3	5	0	1	0	98966876
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.Trace.appendIso.eq_1	theorem	0	99	1	1	0	2	0	2068864285
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.Trace.appendIso.eq_2	theorem	0	121	2	1	0	2	0	639316708
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.Trace.appendIso.eq_def	theorem	0	181	2	1	0	2	0	2513973897
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.addLeftStrand.eq_1	theorem	0	293	2	1	0	3	0	578156109
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.lastCross._proof_1	theorem	1	30	0	0	0	0	0	3031492042
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.lastCross.eq_1	theorem	0	87	1	1	0	3	0	2460976655
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.lastCross.eq_2	theorem	0	153	2	1	0	3	0	1000697080
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.lastCross.eq_def	theorem	0	198	2	1	0	3	0	4059827625
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.leftSweep.eq_1	theorem	0	114	2	1	0	3	0	3503675675
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.sweepFirst.eq_1	theorem	0	104	2	1	0	3	0	3264705343
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.sweepFirstWord._proof_1	theorem	1	32	1	0	0	0	0	1362279371
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.sweepFirstWord.eq_1	theorem	0	44	0	0	0	0	0	3151212895
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.sweepFirstWord.eq_2	theorem	0	113	1	0	0	0	0	1464025981
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.sweepFirstWord.eq_def	theorem	0	133	1	0	0	0	0	3057477668
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	_private.MTC.Braided.Cabling.ClosureSweep.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_1	theorem	0	35	3	0	0	0	0	3111681952
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	_private.MTC.Braided.Cabling.ClosureSweep.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_2	theorem	0	37	4	0	0	0	0	1285544444
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	_private.MTC.Braided.Cabling.ClosureSweep.0.MTC.Braided.lastCross.match_1.eq_1	theorem	0	35	3	0	0	0	0	3711422928
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	_private.MTC.Braided.Cabling.ClosureSweep.0.MTC.Braided.lastCross.match_1.eq_2	theorem	0	37	4	0	0	0	0	3765565106
-generated-name pattern	MTC.Braided.Cabling.ClosureSweep	_private.MTC.Braided.Cabling.ClosureSweep.0.MTC.Braided.sweepFirst_succ._simp_1_1	theorem	0	50	0	1	0	0	0	3827116405
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage._proof_1	theorem	1	69	2	1	0	2	0	1504477806
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage._proof_2	theorem	1	79	3	1	0	2	0	1449781070
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage._proof_3	theorem	1	73	3	1	0	2	0	1767630504
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage._proof_4	theorem	1	79	3	1	0	2	0	3129412261
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage.eq_1	theorem	0	120	2	1	0	3	0	1910864740
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage.eq_2	theorem	0	476	3	1	0	3	0	2057438035
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage.eq_def	theorem	0	496	3	1	0	3	0	1680798469
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepWord.eq_1	theorem	0	32	1	0	0	0	0	3914570795
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepWord.eq_2	theorem	0	156	2	0	0	0	0	2935877386
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepWord.eq_def	theorem	0	167	2	0	0	0	0	2563239780
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.twoRowWord.eq_1	theorem	0	100	1	0	0	0	0	1963029627
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	_private.MTC.Braided.Cabling.ClosureTwoRow.0.MTC.Braided.blockSweepWord.match_1.eq_1	theorem	0	35	3	0	0	0	0	3244882672
-generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	_private.MTC.Braided.Cabling.ClosureTwoRow.0.MTC.Braided.blockSweepWord.match_1.eq_2	theorem	0	37	4	0	0	0	0	3212094503
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorInclusion._proof_1	theorem	1	40	1	2	0	4	1	1753128387
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorInclusion._proof_2	theorem	1	30	1	0	0	0	0	1374387624
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorInclusion.eq_1	theorem	0	122	2	2	0	5	1	1440301726
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorInclusion.eq_2	theorem	1	206	3	2	0	5	1	244352784
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorInclusion.eq_def	theorem	0	271	3	2	0	5	1	1337883508
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorProjection.eq_1	theorem	0	133	2	2	0	5	1	3773986720
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorProjection.eq_2	theorem	1	206	3	2	0	5	1	3591108469
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorProjection.eq_def	theorem	0	285	3	2	0	5	1	3578713779
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredBiproductIso._proof_1	theorem	0	200	2	2	0	8	2	2711669430
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredBiproductIso._proof_2	theorem	0	200	2	2	0	8	2	747081175
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredBiproductIso._proof_3	theorem	0	63	2	2	0	5	1	549898272
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredBiproductIso.eq_1	theorem	0	253	2	2	0	8	2	3633093185
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredConstantIso.eq_1	theorem	0	56	1	1	0	2	0	74578794
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredConstantIso.eq_2	theorem	1	108	2	1	0	2	0	3872099434
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredConstantIso.eq_def	theorem	0	140	2	1	0	2	0	1492373814
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.braidWordAction_intertwines_colorProjection._simp_1_1	theorem	0	80	3	5	0	1	0	98966876
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.colorInclusion.match_1.eq_1	theorem	0	69	4	1	0	0	0	3343940623
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.colorInclusion.match_1.eq_2	theorem	0	73	5	1	0	0	0	2438484627
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.colorProjection_inclusion_total._simp_1_9	theorem	1	130	3	6	0	4	1	619927506
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.coloredBlockProjection_inclusion_total._simp_1_1	theorem	0	166	3	2	0	8	2	580316403
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.coloredBlockProjection_inclusion_total._simp_1_2	theorem	0	166	3	2	0	8	2	3132280369
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.coloredConstantIso.match_1.eq_1	theorem	0	35	3	0	0	0	0	2090350611
-generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.coloredConstantIso.match_1.eq_2	theorem	0	37	4	0	0	0	0	3708359296
-generated-name pattern	MTC.Braided.Cabling.ColorBiproductConstant	_private.MTC.Braided.Cabling.ColorBiproductConstant.0.MTC.Braided.Cabling.finite_pureColor_range_of_equal_colors._simp_1_1	theorem	0	166	3	2	0	8	2	3132280369
-generated-name pattern	MTC.Braided.Cabling.ColorBiproductConstant	_private.MTC.Braided.Cabling.ColorBiproductConstant.0.MTC.Braided.Cabling.finite_pureColor_range_of_equal_colors._simp_1_2	theorem	0	166	3	2	0	8	2	580316403
-generated-name pattern	MTC.Braided.Cabling.ColorBiproductFinite	_private.MTC.Braided.Cabling.ColorBiproductFinite.0.MTC.Braided.Cabling.finite_pureColor_range_of_cabling._simp_1_1	theorem	1	166	3	2	0	8	2	3132280369
-generated-name pattern	MTC.Braided.Cabling.ColorBiproductFinite	_private.MTC.Braided.Cabling.ColorBiproductFinite.0.MTC.Braided.Cabling.finite_pureColor_range_of_cabling._simp_1_2	theorem	1	166	3	2	0	8	2	580316403
-generated-name pattern	MTC.Braided.Cabling.ColorBiproductPositive	MTC.Braided.Cabling.positiveWidthFlatten._proof_1	theorem	1	98	4	1	0	2	1	3828912853
-generated-name pattern	MTC.Braided.Cabling.ColorBiproductPositive	_private.MTC.Braided.Cabling.ColorBiproductPositive.0.MTC.Braided.Cabling.two_le_sum_positive_widths._proof_1_1	theorem	1	71	4	0	0	0	2	1831652962
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredBlockInclusion.eq_1	theorem	0	95	4	1	0	2	0	3574870286
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredBlockProjection.eq_1	theorem	0	95	4	1	0	2	0	1762552957
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredGenerator._proof_1	theorem	0	32	1	0	0	0	0	1362279371
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredGenerator._proof_2	theorem	1	36	1	0	0	0	0	865514280
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredPureWordHom._proof_1	theorem	1	152	4	1	0	2	1	2383719503
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredPureWordHom.congr_simp	theorem	0	253	6	1	0	3	2	2601907950
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredPureWordHom.eq_1	theorem	0	220	4	1	0	3	1	1358243677
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredSwap._proof_1	theorem	0	30	0	0	0	0	0	80995303
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredSwap._proof_2	theorem	1	36	1	0	0	0	0	898558639
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredSwap.eq_1	theorem	0	76	1	0	0	0	0	2645110376
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredSwap.eq_2	theorem	0	151	2	0	0	0	0	867797528
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredSwap.eq_def	theorem	0	197	2	0	0	0	0	2220211300
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensor._proof_1	theorem	1	30	1	0	0	0	0	1374387624
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensor.eq_1	theorem	0	43	1	1	0	2	0	4170946482
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensor.eq_2	theorem	0	82	2	1	0	2	0	2387072409
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensor.eq_def	theorem	0	112	2	1	0	2	0	3708456446
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensorMap.eq_1	theorem	0	69	3	1	0	2	0	1908710435
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensorMap.eq_2	theorem	1	133	4	1	0	2	0	584445863
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensorMap.eq_def	theorem	0	207	4	1	0	2	0	1231231552
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordIso.eq_1	theorem	0	99	2	1	0	3	0	3688976680
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordIso.eq_2	theorem	0	152	4	1	0	3	0	1297597889
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordIso.eq_def	theorem	0	219	3	1	0	3	0	149344351
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordSwap.eq_1	theorem	0	49	1	0	0	0	0	1748171428
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordSwap.eq_2	theorem	0	79	3	0	0	0	0	527996090
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordSwap.eq_def	theorem	0	94	2	0	0	0	0	1610594420
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.braidWordAction.eq_1	theorem	0	268	2	1	0	3	0	2956631870
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredSwap.match_3.eq_1	theorem	0	65	4	0	0	0	0	2437738337
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredSwap.match_3.eq_2	theorem	0	69	5	0	0	0	0	2206973968
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredTensor.match_1.eq_1	theorem	0	69	4	1	0	0	0	3430841022
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredTensor.match_1.eq_2	theorem	0	73	5	1	0	0	0	3478553031
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredTensorMap.match_1.eq_1	theorem	0	141	6	1	0	1	0	589393661
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredTensorMap.match_1.eq_2	theorem	0	153	7	1	0	1	0	1521491868
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredWordIso.match_1.eq_1	theorem	0	107	5	1	0	0	0	597195957
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredWordIso.match_1.eq_2	theorem	0	129	7	1	0	0	0	4118424530
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredWordSwap.match_1.eq_1	theorem	0	80	4	0	0	0	0	4048600561
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredWordSwap.match_1.eq_2	theorem	0	97	6	0	0	0	0	3438993098
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.colored_first_inverse_map._simp_1_1	theorem	1	80	3	5	0	1	0	98966876
-generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.colored_first_map._simp_1_1	theorem	1	80	3	5	0	1	0	98966876
-generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGenerator.eq_1	theorem	0	169	2	1	0	3	0	1078646978
-generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGenerator.eq_2	theorem	0	312	3	1	0	3	0	3396718632
-generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGenerator.eq_def	theorem	0	438	3	1	0	3	0	1144136880
-generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGeneratorInverse.eq_1	theorem	0	172	2	1	0	3	0	2213513765
-generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGeneratorInverse.eq_2	theorem	0	315	3	1	0	3	0	3897764215
-generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGeneratorInverse.eq_def	theorem	0	444	3	1	0	3	0	1893252226
-generated-name pattern	MTC.Braided.Cabling.PureSumInverse	_private.MTC.Braided.Cabling.PureSumInverse.0.MTC.Braided.Cabling.coloredGenerator.match_1.eq_1	theorem	0	96	5	1	0	0	0	4167795610
-generated-name pattern	MTC.Braided.Cabling.PureSumInverse	_private.MTC.Braided.Cabling.PureSumInverse.0.MTC.Braided.Cabling.coloredGenerator.match_1.eq_2	theorem	0	101	6	1	0	0	0	1790574507
-generated-name pattern	MTC.Braided.Cabling.PureSumPositiveState	MTC.Braided.Cabling.positiveWidthFlatten.eq_1	theorem	0	178	5	1	0	2	1	2084480945
-generated-name pattern	MTC.Braided.Cabling.PureSumPositiveState	MTC.Braided.coloredPowerStateFlatten.eq_1	theorem	0	179	4	1	0	4	0	1521783025
-generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	MTC.Braided.Cabling.braidImage_prefix_mem._proof_2	theorem	1	33	2	0	0	0	0	1251763258
-generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	MTC.Braided.Cabling.coloredPower_succ_prefix_eq._proof_2	theorem	1	61	3	0	0	0	0	413663290
-generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.braidImage_prefix_mem._proof_1	theorem	1	36	3	0	0	0	1	4008382697
-generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredFlatten_head_heq._simp_1_1	theorem	1	60	3	1	0	4	0	2743950676
-generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_positive_mem._proof_1_1	theorem	1	219	5	0	0	0	2	2119174982
-generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_positive_mem._proof_1_2	theorem	1	220	6	0	0	0	3	3453893883
-generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_succ_prefix_eq._proof_1	theorem	1	64	4	0	0	0	1	363575126
-generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_succ_prefix_eq._proof_1_1	theorem	1	106	5	0	0	0	1	1506719740
-generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_succ_prefix_eq._proof_1_2	theorem	1	101	5	0	0	0	1	3583802511
-generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_succ_prefix_eq._proof_1_3	theorem	1	73	5	0	0	0	1	3052268657
-generated-name pattern	MTC.Braided.Cabling.PureSumPreservation	_private.MTC.Braided.Cabling.PureSumPreservation.0.MTC.Braided.Cabling.finite_pureBlock_range_of_colored_trivial._simp_1_1	theorem	0	33	0	3	0	0	0	2525783790
-generated-name pattern	MTC.Braided.Cabling.PureSumSigned	MTC.Braided.Cabling.coloredLetter.eq_1	theorem	0	120	4	1	0	3	0	2134256989
-generated-name pattern	MTC.Braided.Cabling.PureSumSigned	MTC.Braided.coloredPowerSwap.eq_1	theorem	0	110	4	0	0	0	0	3245648243
-generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392
-generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777
-generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871
-generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916
-generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633
-generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028
-generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133
-generated-name pattern	MTC.Braided.Trace.InverseMonodromy	MTC.Braided.Trace.inverseSelfMonodromy.eq_1	theorem	0	73	1	1	0	3	0	1106521634
-generated-name pattern	MTC.Braided.Trace.MonodromyReciprocity	_private.MTC.Braided.Trace.MonodromyReciprocity.0.MTC.Braided.Trace.norm_inverse_monodromy_trace_eq_of_constituent_phase._simp_1_1	theorem	1	91	2	3	0	4	1	1115627069
-generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	MTC.Center.Braid.pivotalRegularVector.eq_1	theorem	0	118	4	0	0	0	0	1377291348
-generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotalRegularVector_fourier_support._simp_1_3	theorem	1	40	0	3	0	0	0	3135544924
-generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotalRegularVector_fourier_support._simp_1_4	theorem	1	20	0	2	0	0	0	563549242
-generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotalRegularVector_fourier_support._simp_1_5	theorem	1	17	0	2	0	0	0	1877817566
-generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotalRegularVector_ne_zero_iff._simp_1_2	theorem	1	52	3	0	0	0	0	1604327423
-generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotal_fourier_eq_zero_of_fusion_eigenvector._simp_1_1	theorem	1	72	3	2	0	1	0	1762064320
-generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotal_sFourier_inversion._simp_1_1	theorem	1	35	3	1	0	1	0	3188916250
-generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotal_sFourier_inversion._simp_1_2	theorem	1	64	3	2	0	1	0	4027845409
-generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotal_sFourier_inversion._simp_1_3	theorem	1	32	1	1	0	1	0	3818362915
-generated-name pattern	MTC.Center.Induction.PivotalSquare	_private.MTC.Center.Induction.PivotalSquare.0.MTC.Center.Induction.globalDimension_square_of_actual_induction._simp_1_1	theorem	1	64	3	2	0	1	0	765139717
-generated-name pattern	MTC.Center.Normalization.ActualDoubleCentralizer	MTC.Modular.sCentralizes.eq_1	theorem	0	68	4	0	0	0	0	2146881592
-generated-name pattern	MTC.Center.Normalization.AdjointDegrees	MTC.Center.Normalization.neutralDegreeLabels.eq_1	theorem	0	115	1	0	0	0	0	2208820858
-generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionClassCommMonoid._proof_1	theorem	1	121	3	1	0	1	2	2395048410
-generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionClassCommMonoid._proof_2	theorem	1	138	4	1	0	1	2	605897073
-generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionClassCommMonoid._proof_3	theorem	1	82	3	1	0	1	2	1775652064
-generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionClassMul._proof_1	theorem	1	96	4	5	0	1	4	2157199292
-generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionClassUnit._proof_1	theorem	1	67	3	1	0	1	2	3129004822
-generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionDegreeLift.congr_simp	theorem	0	275	6	1	0	1	3	536334941
-generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionDegreeToFusionClass._proof_1	theorem	1	134	2	1	0	1	2	3881127874
-generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionDegreeToFusionClass._proof_2	theorem	1	166	6	1	0	1	3	1461503873
-generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionDegreeToFusionClass.eq_1	theorem	0	240	2	1	0	1	2	2194668754
-generated-name pattern	MTC.Center.Normalization.AdjointRelation	MTC.Center.Normalization.fusionSubringSetoid._proof_1	theorem	1	24	2	1	0	0	1	3399013484
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	MTC.Center.Normalization.pairedBinomial.eq_1	theorem	0	92	2	0	0	0	0	4135384414
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_2	theorem	0	49	0	1	0	3	1	3288593392
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_3	theorem	0	49	0	1	0	3	1	4033513777
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_4	theorem	0	49	0	1	0	3	1	1623334871
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_5	theorem	0	70	2	3	0	3	3	1092673916
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_6	theorem	0	94	2	2	0	2	2	2195956633
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_7	theorem	0	81	2	2	0	1	1	1459115028
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_8	theorem	0	77	1	1	0	2	1	3730275133
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_2	theorem	0	49	0	1	0	3	1	3288593392
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_3	theorem	0	49	0	1	0	3	1	4033513777
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_4	theorem	0	49	0	1	0	3	1	1623334871
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_5	theorem	0	70	2	3	0	3	3	1092673916
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_6	theorem	0	94	2	2	0	2	2	2195956633
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_7	theorem	0	81	2	2	0	1	1	1459115028
-generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_8	theorem	0	77	1	1	0	2	1	3730275133
-generated-name pattern	MTC.Center.Normalization.BinomialArithmetic	MTC.Center.Normalization.pairedBinomialField.eq_1	theorem	0	165	2	1	0	1	0	991851
-generated-name pattern	MTC.Center.Normalization.GradingTwist	MTC.Center.Normalization.characterScalar._proof_1	theorem	1	24	0	1	0	0	0	552868248
-generated-name pattern	MTC.Center.Normalization.GradingTwist	MTC.Center.Normalization.characterScalar.eq_1	theorem	0	152	2	1	0	0	0	1504941153
-generated-name pattern	MTC.Center.Normalization.IntegerDimensions	_private.MTC.Center.Normalization.IntegerDimensions.0.MTC.Center.Normalization.pseudoUnitary_of_integer_dimensions_and_center_fp_orthogonality._simp_1_1	theorem	0	69	0	2	0	3	1	859695200
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.bundledMuger._proof_1	theorem	0	43	1	0	0	0	0	1170204734
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.bundledMuger._proof_2	theorem	0	64	1	0	0	0	0	219140307
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_abelian._proof_1	theorem	0	24	1	0	0	0	0	2367655630
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_abelian._proof_2	theorem	0	24	1	0	0	0	0	700309152
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_rightRigid._proof_1	theorem	0	199	2	0	0	0	0	749612816
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_rightRigid._proof_2	theorem	0	199	2	0	0	0	0	2215895004
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_rightRigid._proof_3	theorem	0	47	2	0	0	0	0	1140344836
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_symmetric._proof_1	theorem	0	101	3	0	0	0	0	3159502823
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPieces.eq_1	theorem	0	70	3	0	0	0	0	122220813
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_1	theorem	0	40	2	0	0	0	0	2763299680
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_2	theorem	0	53	2	0	0	0	0	102259518
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_3	theorem	0	64	2	0	0	0	0	3986603873
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_4	theorem	0	47	1	0	0	0	0	4245720043
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_5	theorem	0	64	2	0	0	0	0	4278113267
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_6	theorem	0	50	2	0	0	0	0	2452567246
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_7	theorem	0	27	1	0	0	0	0	3811071442
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_8	theorem	0	27	1	0	0	0	0	824046535
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPivotal._proof_1	theorem	0	167	3	2	0	0	0	2339140974
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPivotal._proof_2	theorem	0	178	4	0	0	0	0	3407668603
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPivotal._proof_3	theorem	0	126	2	0	0	0	0	657816838
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerSimple._proof_1	theorem	0	52	2	0	0	0	0	3166841236
-generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerSimple.eq_1	theorem	0	62	2	0	0	0	0	1216784549
-generated-name pattern	MTC.Center.Normalization.MugerFPIntegral	_private.MTC.Center.Normalization.MugerFPIntegral.0.MTC.Center.Normalization.symmetric_fpSimple_positive_integer_of_pseudoUnitary._simp_1_1	theorem	0	69	0	2	0	3	1	859695200
-generated-name pattern	MTC.Center.Normalization.MugerLabels	MTC.Center.Normalization.mugerLabels.eq_1	theorem	0	47	1	0	0	0	0	200152753
-generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.pivotalNaturalIso._proof_1	theorem	1	128	2	3	0	0	0	1059933358
-generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.pivotalNaturalIso.eq_1	theorem	0	79	1	1	0	0	0	2886195024
-generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarPivotalTwist._proof_1	theorem	1	166	4	3	0	0	1	1205640419
-generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarPivotalTwist._proof_2	theorem	1	143	5	1	0	0	2	2784019137
-generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarPivotalTwist._proof_3	theorem	1	246	6	1	0	0	2	195548754
-generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarPivotalTwist._proof_4	theorem	1	149	4	1	0	0	2	2119711718
-generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarPivotalTwist.eq_1	theorem	0	193	5	1	0	0	3	1997185666
-generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarTwistedNaturalIso.congr_simp	theorem	0	157	7	1	0	0	3	665725883
-generated-name pattern	MTC.Center.Normalization.PositiveSubring	_private.MTC.Center.Normalization.PositiveSubring.0.MTC.Center.Normalization.transparent_norm_saturation_of_adjoint_positivity._simp_1_1	theorem	1	46	0	4	0	1	0	1253103447
-generated-name pattern	MTC.Center.Normalization.PositiveSubring	_private.MTC.Center.Normalization.PositiveSubring.0.MTC.Center.Normalization.transparent_norm_saturation_of_adjoint_positivity._simp_1_2	theorem	1	32	1	1	0	1	0	3818362915
-generated-name pattern	MTC.Center.Normalization.ProductCategory	MTC.Center.Normalization.bundledProductCategory._proof_1	theorem	0	40	1	0	0	0	0	4108580882
-generated-name pattern	MTC.Center.Normalization.ProductCategory	MTC.Center.Normalization.bundledProductCategory._proof_2	theorem	0	65	1	0	0	0	0	2350326453
-generated-name pattern	MTC.Center.Normalization.ProductCategoryPivotal	MTC.Center.Normalization.productCategoryOfPivotal._proof_1	theorem	0	40	1	0	0	0	0	4108580882
-generated-name pattern	MTC.Center.Normalization.ProductCategoryPivotal	MTC.Center.Normalization.productCategoryOfPivotal._proof_2	theorem	0	65	1	0	0	0	0	105065088
-generated-name pattern	MTC.Center.Normalization.ProductGenerator	MTC.Center.Normalization.productGenerator._proof_1	theorem	0	40	1	0	0	0	0	4108580882
-generated-name pattern	MTC.Center.Normalization.ProductGenerator	MTC.Center.Normalization.productGenerator._proof_2	theorem	0	65	1	0	0	0	0	2890099914
-generated-name pattern	MTC.Center.Normalization.ProductGenerator	MTC.Center.Normalization.productGenerator._proof_3	theorem	0	186	1	0	0	2	1	2609512837
-generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	MTC.Center.Normalization.dimensionRatio.eq_1	theorem	1	64	2	1	0	0	0	2906078412
-generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	MTC.Center.Normalization.dimensionRatioUnit._proof_1	theorem	1	92	2	1	0	0	0	323494281
-generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	MTC.Center.Normalization.dimensionRatioUnit.eq_1	theorem	0	68	2	1	0	0	0	2469899030
-generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392
-generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777
-generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871
-generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916
-generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633
-generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028
-generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133
-generated-name pattern	MTC.Center.Normalization.SubringCharacter	MTC.Center.Normalization.subringCharacterOfScalars._proof_1	theorem	1	171	3	2	0	0	2	3769975422
-generated-name pattern	MTC.Center.Normalization.SubringCharacter	MTC.Center.Normalization.subringCharacterOfScalars._proof_2	theorem	1	248	6	2	0	0	2	68186959
-generated-name pattern	MTC.Center.Normalization.SubringCharacter	MTC.Center.Normalization.subringCharacterOfScalars._proof_3	theorem	1	57	1	2	0	0	1	4218432663
-generated-name pattern	MTC.Center.Normalization.SubringCharacter	MTC.Center.Normalization.subringCharacterOfScalars.congr_simp	theorem	0	397	6	2	0	0	4	3647907840
-generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegree.eq_1	theorem	0	91	2	2	0	0	1	2157394450
-generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeLift._proof_1	theorem	1	340	4	3	0	1	3	1081240133
-generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeLift.eq_1	theorem	0	389	4	3	0	1	3	2152037815
-generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeRelations.congr_simp	theorem	0	91	4	2	0	0	2	677380032
-generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeToAmbient._proof_1	theorem	1	229	1	2	0	0	1	4167995119
-generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeToAmbient._proof_2	theorem	1	24	0	1	0	0	0	552868248
-generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeToAmbient._proof_3	theorem	1	57	1	2	0	0	1	4218432663
-generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeToAmbient.eq_1	theorem	0	269	1	2	0	0	1	2940921746
-generated-name pattern	MTC.Center.Normalization.SymmetricBinomial	MTC.Center.Normalization.canonicalSymmetricPivotal.congr_simp	theorem	0	81	1	1	0	4	1	2428677110
-generated-name pattern	MTC.Center.Normalization.SymmetricBinomial	MTC.Center.Normalization.unsignedTraceSum.eq_1	theorem	0	59	1	2	0	1	0	502448734
-generated-name pattern	MTC.Center.Normalization.SymmetricBinomial	_private.MTC.Center.Normalization.SymmetricBinomial.0.MTC.Center.Normalization.canonicalSymmetricPivotal_falling_binomial_isIntegral._simp_1_1	theorem	0	102	2	0	0	0	0	390084000
-generated-name pattern	MTC.Center.Normalization.SymmetricBinomial	_private.MTC.Center.Normalization.SymmetricBinomial.0.MTC.Center.Normalization.canonicalSymmetricPivotal_rising_binomial_isIntegral._simp_1_1	theorem	0	102	2	0	0	0	0	390084000
-generated-name pattern	MTC.Center.Normalization.SymmetricBinomial	_private.MTC.Center.Normalization.SymmetricBinomial.0.MTC.Center.Normalization.unsignedTraceSum_succ._simp_1_2	theorem	0	64	3	2	0	1	0	765139717
-generated-name pattern	MTC.Center.Normalization.SymmetricPivotal	MTC.Center.Normalization.canonicalSymmetricPivotal._proof_1	theorem	0	170	3	1	0	4	1	3406407140
-generated-name pattern	MTC.Center.Normalization.SymmetricPivotal	MTC.Center.Normalization.canonicalSymmetricPivotal._proof_2	theorem	0	120	1	3	0	4	0	719639539
-generated-name pattern	MTC.Center.Normalization.SymmetricPivotal	MTC.Center.Normalization.canonicalSymmetricPivotal.eq_1	theorem	0	136	1	1	0	4	1	2500795520
-generated-name pattern	MTC.Center.Normalization.UniversalGrading	MTC.Center.Normalization.fusionDegree.eq_1	theorem	0	41	2	0	0	0	0	1853078578
-generated-name pattern	MTC.Center.Normalization.UniversalGrading	MTC.Center.Normalization.fusionDegreeLift._proof_1	theorem	1	227	4	1	0	1	2	549293469
-generated-name pattern	MTC.Center.Normalization.UniversalGrading	MTC.Center.Normalization.fusionDegreeLift._proof_2	theorem	1	24	1	0	0	0	0	552868248
-generated-name pattern	MTC.Center.Normalization.UniversalGrading	MTC.Center.Normalization.fusionDegreeLift.eq_1	theorem	0	268	4	1	0	1	2	3958620090
-generated-name pattern	MTC.PropertyF.Pivotal.AdjointObjects	MTC.PropertyF.Pivotal.AdjointGenerated.brecOn	theorem	0	38	2	3	0	0	2	2988573112
-generated-name pattern	MTC.PropertyF.Pivotal.AdjointObjects	MTC.PropertyF.Pivotal.adjointGeneratedLabels.eq_1	theorem	0	36	1	0	0	0	0	3758385910
-generated-name pattern	MTC.PropertyF.Pivotal.AdjointObjectsSupport	MTC.PropertyF.Pivotal.leftDualIsoOfIso._proof_1	theorem	0	99	2	2	0	0	0	4198053919
-generated-name pattern	MTC.PropertyF.Pivotal.AdjointObjectsSupport	MTC.PropertyF.Pivotal.leftDualIsoOfIso._proof_2	theorem	0	99	2	2	0	0	0	3355917791
-generated-name pattern	MTC.PropertyF.Pivotal.FPObject	MTC.PropertyF.Pivotal.fpFusionCharacter._proof_1	theorem	1	37	1	0	0	0	0	434827943
-generated-name pattern	MTC.PropertyF.Pivotal.FPObject	MTC.PropertyF.Pivotal.fpFusionCharacter._proof_2	theorem	1	101	3	0	0	0	0	1064587999
-generated-name pattern	MTC.PropertyF.Pivotal.Galois	MTC.PropertyF.Pivotal.scalarTwistGaloisConjugate._proof_1	theorem	1	246	4	2	0	0	0	1227823952
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.bundledGenerated._proof_1	theorem	1	48	2	0	0	0	0	535539072
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.bundledGenerated._proof_2	theorem	1	70	2	0	0	0	0	3719966894
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedCategory_abelian._proof_1	theorem	1	28	2	0	0	0	0	592010597
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedCategory_abelian._proof_2	theorem	1	28	2	0	0	0	0	2358382462
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedCategory_rightRigid._proof_1	theorem	1	207	3	0	0	0	0	3462769416
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedCategory_rightRigid._proof_2	theorem	1	207	3	0	0	0	0	3501832965
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedCategory_rightRigid._proof_3	theorem	1	53	3	0	0	0	0	441818099
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedLabels.eq_1	theorem	0	52	2	0	0	0	0	699053413
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedObject._proof_1	theorem	1	21	2	0	0	0	0	387729479
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPieces.eq_1	theorem	0	80	4	0	0	0	0	769946573
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_1	theorem	1	45	3	0	0	0	0	3120752328
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_2	theorem	1	59	3	0	0	0	0	2769493088
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_3	theorem	1	70	3	0	0	0	0	1915925332
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_4	theorem	1	51	2	0	0	0	0	3795722731
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_5	theorem	1	71	3	0	0	0	0	2145475142
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_6	theorem	1	57	3	0	0	0	0	1906906456
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_7	theorem	1	31	2	0	0	0	0	573519898
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_8	theorem	1	31	2	0	0	0	0	3312492036
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedSimple._proof_1	theorem	1	58	3	0	0	0	0	2101256430
-generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedSimple.eq_1	theorem	0	71	3	0	0	0	0	4092369619
-generated-name pattern	MTC.PropertyF.Pivotal.InfiniteImages	MTC.Braided.ObjectPropertyF.eq_1	theorem	0	106	1	1	0	3	0	454984124
-generated-name pattern	MTC.PropertyF.Pivotal.InfiniteImages	_private.MTC.PropertyF.Pivotal.InfiniteImages.0.MTC.PropertyF.Pivotal.eventually_infinite_braidImages_of_not_objectPropertyF._simp_1_2	theorem	1	20	0	2	0	0	0	563549242
-generated-name pattern	MTC.PropertyF.Pivotal.MonoidalDual	MTC.PropertyF.Pivotal.exactPairingOfMonoidalFunctor._proof_1	theorem	1	286	3	2	0	6	0	810064490
-generated-name pattern	MTC.PropertyF.Pivotal.MonoidalDual	MTC.PropertyF.Pivotal.exactPairingOfMonoidalFunctor._proof_2	theorem	1	286	3	2	0	6	0	3136954342
-generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	MTC.PropertyF.Pivotal.transformedDoubleDual.eq_1	theorem	1	178	2	3	0	7	0	2116444265
-generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	MTC.PropertyF.Pivotal.transformedDualIso.eq_1	theorem	0	164	2	2	0	7	0	157446924
-generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	_private.MTC.PropertyF.Pivotal.MonoidalQuantumTrace.0.MTC.PropertyF.Pivotal.monoidalFunctor_leftQuantumTrace._simp_1_3	theorem	1	93	3	4	0	2	0	391109155
-generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	_private.MTC.PropertyF.Pivotal.MonoidalQuantumTrace.0.MTC.PropertyF.Pivotal.monoidalFunctor_leftQuantumTrace._simp_1_4	theorem	1	122	4	5	0	2	0	1613753305
-generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	_private.MTC.PropertyF.Pivotal.MonoidalQuantumTrace.0.MTC.PropertyF.Pivotal.monoidalFunctor_leftQuantumTrace._simp_1_5	theorem	1	113	0	6	0	5	0	3030107409
-generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	_private.MTC.PropertyF.Pivotal.MonoidalQuantumTrace.0.MTC.PropertyF.Pivotal.monoidalFunctor_rightQuantumTrace._simp_1_3	theorem	1	126	4	5	0	2	0	2542281496
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_det_ne_zero_of_unit_character_unique._simp_1_1	theorem	1	72	3	2	0	1	0	1762064320
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_8	theorem	1	64	3	2	0	1	0	765139717
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_unit_character_orthogonal._simp_1_1	theorem	1	55	3	1	0	1	0	4171977914
-generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_unit_character_orthogonal._simp_1_2	theorem	1	72	3	2	0	1	0	1762064320
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	MTC.PropertyF.Pivotal.monodromyHaar.eq_1	theorem	0	214	4	0	0	0	0	372264535
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	MTC.PropertyF.Pivotal.monodromyHaarVacuum.eq_1	theorem	0	164	3	0	0	0	0	3302528150
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	MTC.PropertyF.Pivotal.pivotalTraceDualProjection.eq_1	theorem	1	193	5	0	0	0	0	2062831100
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	_private.MTC.PropertyF.Pivotal.NondegeneracyHaar.0.MTC.PropertyF.Pivotal.leftTrace_eq_rightTrace_dual._simp_1_1	theorem	1	122	4	5	0	2	0	1613753305
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	_private.MTC.PropertyF.Pivotal.NondegeneracyHaar.0.MTC.PropertyF.Pivotal.monodromyHaarVacuum_of_sTest._simp_1_2	theorem	0	140	0	6	0	3	0	1975001710
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	_private.MTC.PropertyF.Pivotal.NondegeneracyHaar.0.MTC.PropertyF.Pivotal.monodromyHaar_summand_factor._simp_1_1	theorem	1	80	3	5	0	1	0	98966876
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarMate	MTC.PropertyF.Pivotal.haarInclusionMate._proof_1	theorem	1	24	0	0	0	0	0	1194443179
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarMate	MTC.PropertyF.Pivotal.haarInclusionMate._proof_2	theorem	1	24	0	0	0	0	0	3129590095
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarMate	MTC.PropertyF.Pivotal.haarInclusionMate._proof_3	theorem	1	18	0	0	0	0	0	3881998583
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.categoricalHaarRestricted.eq_1	theorem	0	261	6	0	0	0	0	2085483196
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarDualLabelBasis.eq_1	theorem	0	160	3	0	0	0	0	1631118530
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarDualLabelProjection.eq_1	theorem	0	137	4	0	0	0	0	4161586081
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBilinear._proof_1	theorem	1	105	3	0	0	0	0	4026743524
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBilinear._proof_2	theorem	1	286	10	0	0	0	0	3894074474
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBilinear._proof_3	theorem	1	331	10	0	0	0	0	332751907
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBilinear._proof_4	theorem	1	429	9	0	0	0	0	3180139068
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBilinear._proof_5	theorem	1	512	9	0	0	0	0	282335416
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBlock.eq_1	theorem	0	426	9	0	0	0	0	467707167
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedCore.eq_1	theorem	0	370	7	0	0	0	0	496935525
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedCoreLinear._proof_2	theorem	1	233	8	0	0	0	0	3448016001
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedCoreLinear._proof_3	theorem	1	281	8	0	0	0	0	3454009326
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.restrictedGlobalDimension.eq_1	theorem	0	98	3	0	0	0	0	508301006
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haarDualLabelProjection_dual._simp_1_3	theorem	1	80	3	5	0	1	0	98966876
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haarRotatedBlock_dualLabel_contraction._simp_1_1	theorem	1	459	4	0	0	0	0	220370910
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haarRotatedBlock_dualLabel_sum._simp_1_1	theorem	0	96	3	4	0	4	1	3153793544
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haarRotatedBlock_dualLabel_sum_restricted._simp_1_1	theorem	1	96	3	4	0	4	1	3153793544
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSnake	MTC.Fusion.tensorRightHomLinearEquiv.congr_simp	theorem	0	165	4	2	0	8	2	1702633504
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSnake	MTC.PropertyF.Pivotal.haarInclusionMate.eq_1	theorem	0	248	4	0	0	0	0	2211935978
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSnake	MTC.PropertyF.Pivotal.haarMatedInclusionBasis.eq_1	theorem	1	182	5	1	0	0	0	3699724631
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSnake	MTC.PropertyF.Pivotal.haarProjectionMate.eq_1	theorem	0	263	5	0	0	0	0	1888062499
-generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSnake	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSnake.0.MTC.PropertyF.Pivotal.haar_right_trace_boxed._simp_1_1	theorem	1	122	4	5	0	2	0	1613753305
-generated-name pattern	MTC.PropertyF.Pivotal.PositivePowers	_private.MTC.PropertyF.Pivotal.PositivePowers.0.MTC.PropertyF.Pivotal.powerSum_retract_positive_of_nonzero._proof_1_1	theorem	1	44	5	0	0	0	1	652680415
-generated-name pattern	MTC.PropertyF.Pivotal.PositivePowers	_private.MTC.PropertyF.Pivotal.PositivePowers.0.MTC.PropertyF.Pivotal.unit_retract_positive_power_of_nonzero._simp_1_1	theorem	1	56	1	1	0	2	0	600376345
-generated-name pattern	MTC.PropertyF.Pivotal.SOrthogonality	_private.MTC.PropertyF.Pivotal.SOrthogonality.0.MTC.PropertyF.Pivotal.categoricalS_columns_orthogonal._simp_1_1	theorem	1	72	3	2	0	1	0	1762064320
-generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalFourthComparison.eq_1	theorem	0	98	3	0	0	0	0	1400857380
-generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalFourthScalar._proof_1	theorem	1	21	1	0	0	0	0	187650759
-generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalFourthScalar._proof_2	theorem	1	61	2	0	0	0	0	386270682
-generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalFourthScalar.congr_simp	theorem	0	123	7	0	0	1	3	3240926297
-generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalFourthScalar.eq_1	theorem	0	155	3	0	0	1	1	147793585
-generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalSquare.eq_1	theorem	0	97	3	0	0	0	0	183227207
-generated-name pattern	MTC.PropertyF.Pivotal.SlopeTrace	MTC.PropertyF.Pivotal.braidedLoop.eq_1	theorem	0	122	1	1	0	4	0	1832015055
+classification	module	name	kind	cone	type_nodes	explicit	implicit	strict	instance	hypotheses	type_hash	_end
+generated-name pattern	MTC.Algebra.ComplexBlockTrace	MTC.Algebra.Blocks.complexMass.eq_1	theorem	1	60	2	0	0	0	0	4031523227	-
+generated-name pattern	MTC.Algebra.ComplexBlockTrace	MTC.Algebra.Blocks.complexPhaseElement.eq_1	theorem	0	73	3	0	0	0	0	3794229216	-
+generated-name pattern	MTC.Algebra.ComplexBlockTrace	MTC.Algebra.Blocks.complexTrace.eq_1	theorem	1	63	3	0	0	0	0	2564957698	-
+generated-name pattern	MTC.Algebra.ComplexBlockTrace	MTC.Algebra.Blocks.weightPhase.eq_1	theorem	0	89	1	0	0	0	0	1838407702	-
+generated-name pattern	MTC.Algebra.ComplexBlockTrace	_private.MTC.Algebra.ComplexBlockTrace.0.MTC.Algebra.Blocks.complexPhaseElement_unitary._simp_1_1	theorem	1	97	0	2	0	2	0	4287098273	-
+generated-name pattern	MTC.Algebra.ComplexBlockTrace	_private.MTC.Algebra.ComplexBlockTrace.0.MTC.Algebra.Blocks.complexTrace_phaseElement._simp_1_4	theorem	1	35	3	1	0	1	0	3188916250	-
+generated-name pattern	MTC.Braided.Cabling.BlockFiniteSum	_private.MTC.Braided.Cabling.BlockFiniteSum.0.MTC.Braided.Cabling.finite_braidImage_biproduct_of_finite_pure_block_ranges._simp_1_1	theorem	1	194	3	2	0	8	2	2565267940	-
+generated-name pattern	MTC.Braided.Cabling.BlockFiniteSum	_private.MTC.Braided.Cabling.BlockFiniteSum.0.MTC.Braided.Cabling.finite_braidImage_biproduct_of_finite_pure_block_ranges._simp_1_2	theorem	1	194	3	2	0	8	2	2572182240	-
+generated-name pattern	MTC.Braided.Cabling.BlockFiniteSum	_private.MTC.Braided.Cabling.BlockFiniteSum.0.MTC.Braided.Cabling.objectPropertyF_biproduct_of_finite_colored_groups._simp_1_1	theorem	0	166	3	2	0	8	2	3132280369	-
+generated-name pattern	MTC.Braided.Cabling.BlockFiniteSum	_private.MTC.Braided.Cabling.BlockFiniteSum.0.MTC.Braided.Cabling.objectPropertyF_biproduct_of_finite_colored_groups._simp_1_2	theorem	0	166	3	2	0	8	2	580316403	-
+generated-name pattern	MTC.Braided.Cabling.ClosureBlockContext	MTC.Braided.blockGeneratorWord._proof_1	theorem	0	80	3	0	0	0	0	1489263375	-
+generated-name pattern	MTC.Braided.Cabling.ClosureBlockContext	_private.MTC.Braided.Cabling.ClosureBlockContext.0.MTC.Braided.blockGenerator_index._proof_1_1	theorem	0	129	7	0	0	0	4	1888940479	-
+generated-name pattern	MTC.Braided.Cabling.ClosureBlockWord	MTC.Braided.blockCrossingIndex._proof_2	theorem	0	76	4	0	0	0	0	3850794382	-
+generated-name pattern	MTC.Braided.Cabling.ClosureBlockWord	MTC.Braided.blockCrossingIndex.eq_1	theorem	0	89	4	0	0	0	0	1198873602	-
+generated-name pattern	MTC.Braided.Cabling.ClosureBlockWord	MTC.Braided.blockCrossingWord.eq_1	theorem	0	106	2	0	0	0	0	4103681020	-
+generated-name pattern	MTC.Braided.Cabling.ClosureBlockWord	_private.MTC.Braided.Cabling.ClosureBlockWord.0.MTC.Braided.blockCrossingIndex._proof_1	theorem	0	80	5	0	0	0	1	3020150868	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.Trace.addRightStrands.eq_1	theorem	0	221	2	1	0	3	0	3429667502	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.Trace.addRightStrands.eq_2	theorem	0	348	3	1	0	3	0	442107832	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.Trace.addRightStrands.eq_def	theorem	0	413	3	1	0	3	0	280500315	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockCross.eq_1	theorem	0	127	3	1	0	3	0	1237482001	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockMerge.eq_1	theorem	0	116	2	1	0	2	0	383629668	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockMerge.eq_2	theorem	0	168	3	1	0	2	0	1593905833	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockMerge.eq_def	theorem	0	225	3	1	0	2	0	1849422150	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockSplit.eq_1	theorem	0	113	2	1	0	2	0	1755818900	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockSplit.eq_2	theorem	0	139	3	1	0	2	0	3106883746	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	MTC.Braided.sweepBlockSplit.eq_def	theorem	0	197	3	1	0	2	0	3397658687	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	_private.MTC.Braided.Cabling.ClosureCanonicalBlocks.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_1	theorem	0	35	3	0	0	0	0	3111681952	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	_private.MTC.Braided.Cabling.ClosureCanonicalBlocks.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_2	theorem	0	37	4	0	0	0	0	1285544444	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	_private.MTC.Braided.Cabling.ClosureCanonicalBlocks.0.MTC.Braided.sweepBlockSplit.match_1.eq_1	theorem	0	35	3	0	0	0	0	2091676412	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCanonicalBlocks	_private.MTC.Braided.Cabling.ClosureCanonicalBlocks.0.MTC.Braided.sweepBlockSplit.match_1.eq_2	theorem	0	37	4	0	0	0	0	3735850067	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerFlatten.eq_1	theorem	0	63	2	1	0	2	0	664553217	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerFlatten.eq_2	theorem	0	146	3	1	0	2	0	388030284	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerFlatten.eq_def	theorem	0	190	3	1	0	2	0	3580675744	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerTensor.eq_1	theorem	0	46	2	1	0	2	0	3172233504	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerTensor.eq_2	theorem	0	91	3	1	0	2	0	2524299594	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	MTC.Braided.heterogeneousPowerTensor.eq_def	theorem	0	120	3	1	0	2	0	3877100548	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	_private.MTC.Braided.Cabling.ClosureColoredBridge.0.MTC.Braided.heterogeneousPowerTensor.match_1.eq_1	theorem	0	64	4	0	0	0	0	3997443724	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	_private.MTC.Braided.Cabling.ClosureColoredBridge.0.MTC.Braided.heterogeneousPowerTensor.match_1.eq_2	theorem	0	68	5	0	0	0	0	3374910544	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	_private.MTC.Braided.Cabling.ClosureColoredBridge.0.MTC.Braided.joinCross_word_heq._proof_1_1	theorem	1	42	3	0	0	0	1	1418145755	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredBridge	_private.MTC.Braided.Cabling.ClosureColoredBridge.0.MTC.Braided.joinCross_word_heq._proof_1_2	theorem	1	42	3	0	0	0	1	1922068194	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	MTC.Braided.leftTripleFlatten.eq_1	theorem	0	98	4	1	0	2	0	2888537974	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	MTC.Braided.rightTripleFlatten.eq_1	theorem	0	97	4	1	0	2	0	1839957262	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	_private.MTC.Braided.Cabling.ClosureColoredContext.0.MTC.Braided.leftTripleCross_word_heq._proof_1_1	theorem	1	40	4	0	0	0	1	2915699466	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	_private.MTC.Braided.Cabling.ClosureColoredContext.0.MTC.Braided.leftTripleCross_word_heq._proof_1_2	theorem	1	40	4	0	0	0	1	2728473974	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	_private.MTC.Braided.Cabling.ClosureColoredContext.0.MTC.Braided.leftTripleCross_word_heq._proof_1_3	theorem	1	42	3	0	0	0	1	1418145755	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	_private.MTC.Braided.Cabling.ClosureColoredContext.0.MTC.Braided.leftTripleCross_word_heq._proof_1_4	theorem	1	42	3	0	0	0	1	23657950	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredContext	_private.MTC.Braided.Cabling.ClosureColoredContext.0.MTC.Braided.leftTripleCross_word_heq._proof_1_5	theorem	1	48	4	0	0	0	1	1657237109	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredCrossing	MTC.Braided.heterogeneousBlockCross_word._proof_2	theorem	1	33	2	0	0	0	0	3501135053	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredCrossing	_private.MTC.Braided.Cabling.ClosureColoredCrossing.0.MTC.Braided.heterogeneousBlockCross_word._proof_1	theorem	1	37	3	0	0	0	1	2528560714	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredFirst	_private.MTC.Braided.Cabling.ClosureColoredFirst.0.MTC.Braided.coloredPower_first_mem._proof_1_2	theorem	1	148	7	0	0	0	2	1038129911	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredFirst	_private.MTC.Braided.Cabling.ClosureColoredFirst.0.MTC.Braided.coloredPower_first_mem._simp_1_1	theorem	1	30	2	0	0	0	0	40805116	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	MTC.Braided.heterogeneousPowerTensor._proof_1	theorem	1	30	1	0	0	0	0	1374387624	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	MTC.Braided.heterogeneousStrandCount.eq_1	theorem	0	20	1	0	0	0	0	3257585355	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	MTC.Braided.heterogeneousStrandCount.eq_2	theorem	0	61	2	0	0	0	0	1329176085	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	MTC.Braided.heterogeneousStrandCount.eq_def	theorem	0	76	2	0	0	0	0	1200891742	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	_private.MTC.Braided.Cabling.ClosureColoredFlatten.0.MTC.Braided.heterogeneousPowerTensor.match_1.eq_1	theorem	0	64	4	0	0	0	0	3997443724	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredFlatten	_private.MTC.Braided.Cabling.ClosureColoredFlatten.0.MTC.Braided.heterogeneousPowerTensor.match_1.eq_2	theorem	0	68	5	0	0	0	0	3374910544	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerStateFlatten._proof_1	theorem	1	74	3	0	0	0	0	2760086335	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerStateWordIso.eq_1	theorem	0	145	4	1	0	3	0	2738326998	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerStateWordIso.eq_2	theorem	0	204	6	1	0	3	0	3646090625	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerStateWordIso.eq_def	theorem	0	351	5	1	0	3	0	2289148112	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerSwap._proof_1	theorem	1	93	4	0	0	0	0	1366605867	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerWordState.eq_1	theorem	0	47	3	0	0	0	0	3316232877	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerWordState.eq_2	theorem	0	76	5	0	0	0	0	3271683711	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	MTC.Braided.coloredPowerWordState.eq_def	theorem	0	98	4	0	0	0	0	2195714289	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	_private.MTC.Braided.Cabling.ClosureColoredWords.0.MTC.Braided.coloredPowerWordState.match_1.eq_1	theorem	0	97	6	0	0	0	0	1647521020	-
+generated-name pattern	MTC.Braided.Cabling.ClosureColoredWords	_private.MTC.Braided.Cabling.ClosureColoredWords.0.MTC.Braided.coloredPowerWordState.match_1.eq_2	theorem	0	118	8	0	0	0	0	2585184280	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.localBlockFlattenAt._proof_1	theorem	0	54	2	0	0	0	0	1658562719	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.localBlockFlattenAt._proof_2	theorem	0	79	3	0	0	0	0	1748657427	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.localBlockFlattenAt.eq_1	theorem	0	157	4	1	0	2	0	3874012743	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.localBlockWordAt._proof_1	theorem	0	79	3	0	0	0	0	3599908333	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.tensorPowerTensorIso.eq_1	theorem	0	93	2	1	0	2	0	3291167785	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	MTC.Braided.tensorPowerTensorIso.eq_2	theorem	0	139	3	1	0	2	0	1551215987	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	_private.MTC.Braided.Cabling.ClosureCommonInterface.0.MTC.Braided.tensorPowerTensorIso.match_1.eq_1	theorem	0	42	4	0	0	0	0	1208203547	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCommonInterface	_private.MTC.Braided.Cabling.ClosureCommonInterface.0.MTC.Braided.tensorPowerTensorIso.match_1.eq_2	theorem	0	46	5	0	0	0	0	4145643040	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.powerAcrossPower.eq_1	theorem	0	95	2	1	0	3	0	1446061644	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.powerAcrossPower.eq_2	theorem	0	163	3	1	0	3	0	4233633462	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.powerAcrossPower.eq_def	theorem	0	224	3	1	0	3	0	4280825779	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.singleAcrossPower.eq_1	theorem	0	92	1	1	0	3	0	2838130351	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.singleAcrossPower.eq_2	theorem	0	156	2	1	0	3	0	365103137	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	MTC.Braided.singleAcrossPower.eq_def	theorem	0	216	2	1	0	3	0	3470593559	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	_private.MTC.Braided.Cabling.ClosureCrossing.0.MTC.Braided.singleAcrossPower.match_1.eq_1	theorem	0	35	3	0	0	0	0	2100959431	-
+generated-name pattern	MTC.Braided.Cabling.ClosureCrossing	_private.MTC.Braided.Cabling.ClosureCrossing.0.MTC.Braided.singleAcrossPower.match_1.eq_2	theorem	0	37	4	0	0	0	0	1057828153	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	MTC.Braided.firstBlockFlatten._proof_2	theorem	0	33	1	0	0	0	0	798995515	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	MTC.Braided.firstBlockFlatten._proof_4	theorem	0	64	2	0	0	0	0	3520352423	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	MTC.Braided.firstBlockFlattenIndexed.eq_1	theorem	0	164	3	1	0	2	0	223337368	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	MTC.Braided.firstGeneratorImage._proof_1	theorem	0	30	1	0	0	0	0	1374387624	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	MTC.Braided.firstGeneratorImage._proof_2	theorem	0	109	2	1	0	3	0	2191239211	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	_private.MTC.Braided.Cabling.ClosureFirstBlock.0.MTC.Braided.firstBlockFlatten._proof_1	theorem	0	37	2	0	0	0	1	1679170105	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	_private.MTC.Braided.Cabling.ClosureFirstBlock.0.MTC.Braided.firstBlockFlatten._proof_3	theorem	0	85	4	0	0	0	2	1457314851	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFirstBlock	_private.MTC.Braided.Cabling.ClosureFirstBlock.0.MTC.Braided.tensor_conj_right._simp_1_1	theorem	0	80	3	5	0	1	0	98966876	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlatten	MTC.Braided.flattenPositiveBraidPower._proof_1	theorem	0	55	2	0	0	0	0	3061612726	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlatten	MTC.Braided.flattenPositiveBraidPower._proof_2	theorem	0	103	4	1	0	2	1	3351834313	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlatten	MTC.Braided.flattenPower._proof_1	theorem	0	64	2	1	0	2	0	3586514261	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlatten	MTC.Braided.flattenPower._proof_2	theorem	0	85	3	1	0	2	0	1178481311	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCoherence	MTC.Braided.twoBlockFlatten.eq_1	theorem	0	117	2	1	0	2	0	772275981	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCoherence	_private.MTC.Braided.Cabling.ClosureFlattenCoherence.0.MTC.Braided.twoBlockFlatten_heq_flattenPower._proof_1_1	theorem	0	38	2	0	0	0	1	1060945175	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCoherence	_private.MTC.Braided.Cabling.ClosureFlattenCoherence.0.MTC.Braided.twoBlockFlatten_heq_flattenPower._proof_1_3	theorem	0	38	2	0	0	0	1	4082589682	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCoherence	_private.MTC.Braided.Cabling.ClosureFlattenCoherence.0.MTC.Braided.twoBlockFlatten_heq_flattenPower._proof_1_4	theorem	0	40	2	0	0	0	1	3583370120	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	MTC.Braided.flattenBlocksRecursive.eq_1	theorem	0	56	2	1	0	2	0	3425504405	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	MTC.Braided.flattenBlocksRecursive.eq_2	theorem	0	113	3	1	0	2	0	314917749	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	MTC.Braided.flattenBlocksRecursive.eq_def	theorem	0	143	3	1	0	2	0	664400926	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	MTC.Braided.flattenPower.eq_def	theorem	0	192	3	1	0	2	0	761542351	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	_private.MTC.Braided.Cabling.ClosureFlattenCompare.0.MTC.Braided.blockStrandCount.match_1.eq_1	theorem	0	35	3	0	0	0	0	3445047266	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	_private.MTC.Braided.Cabling.ClosureFlattenCompare.0.MTC.Braided.blockStrandCount.match_1.eq_2	theorem	0	37	4	0	0	0	0	2731069519	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	_private.MTC.Braided.Cabling.ClosureFlattenCompare.0.MTC.Braided.flattenPower.match_1.eq_1	theorem	0	35	3	0	0	0	0	3632700308	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenCompare	_private.MTC.Braided.Cabling.ClosureFlattenCompare.0.MTC.Braided.flattenPower.match_1.eq_2	theorem	0	37	4	0	0	0	0	2891374490	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenConcat	_private.MTC.Braided.Cabling.ClosureFlattenConcat.0.MTC.Braided.flattenBlocksRecursive_concat_heq._simp_1_3	theorem	0	80	3	5	0	1	0	98966876	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenConcat	_private.MTC.Braided.Cabling.ClosureFlattenConcat.0.MTC.Braided.flattenBlocksRecursive_concat_heq._simp_1_4	theorem	0	93	3	4	0	2	0	391109155	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.firstBlockFlattenIndexed_heq._proof_1_1	theorem	0	47	2	0	0	0	1	3820515293	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.firstBlockFlattenIndexed_heq._proof_1_2	theorem	0	47	2	0	0	0	1	2734092444	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlattenAt_heq._proof_1_1	theorem	0	71	4	0	0	0	2	4265600933	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlatten_heq._proof_1_1	theorem	0	31	2	0	0	0	1	2195981451	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlatten_heq._proof_1_2	theorem	0	55	3	0	0	0	1	1557613572	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlatten_heq._proof_1_3	theorem	0	43	3	0	0	0	1	1931195002	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlatten_heq._proof_1_4	theorem	0	63	4	0	0	0	1	2548886324	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFlattenLocalCompare	_private.MTC.Braided.Cabling.ClosureFlattenLocalCompare.0.MTC.Braided.localBlockFlatten_heq._proof_1_5	theorem	0	37	2	0	0	0	1	1898889013	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourBlockFlatten.eq_1	theorem	0	99	1	1	0	2	0	2971251279	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourBlockImage._proof_1	theorem	0	167	1	1	0	3	0	2836807372	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourBlockImage._proof_2	theorem	0	30	0	0	0	0	0	3031492042	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourCrossing0.eq_1	theorem	0	106	1	1	0	3	0	3529631486	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourCrossing1.eq_1	theorem	0	114	1	1	0	3	0	1531744623	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourCrossing2.eq_1	theorem	0	78	1	1	0	3	0	2653708806	-
+generated-name pattern	MTC.Braided.Cabling.ClosureFour	MTC.Braided.fourPowerIso.eq_1	theorem	0	87	1	1	0	2	0	3938422555	-
+generated-name pattern	MTC.Braided.Cabling.ClosureImage	MTC.Braided.braidImageEmbeddingOfGenerators._proof_1	theorem	0	221	6	1	0	3	1	3130896733	-
+generated-name pattern	MTC.Braided.Cabling.ClosureImage	MTC.Braided.braidImageEmbeddingOfGenerators._proof_2	theorem	0	69	2	1	0	2	0	1504477806	-
+generated-name pattern	MTC.Braided.Cabling.ClosureImage	MTC.Braided.braidImageEmbeddingOfGenerators._proof_3	theorem	0	304	7	1	0	3	1	2518186970	-
+generated-name pattern	MTC.Braided.Cabling.ClosureInsertion	MTC.Braided.insertLeftWord.eq_1	theorem	0	69	1	0	0	0	0	1384496620	-
+generated-name pattern	MTC.Braided.Cabling.ClosureInsertion	MTC.Braided.insertRightWord.eq_1	theorem	0	69	1	0	0	0	0	2250856659	-
+generated-name pattern	MTC.Braided.Cabling.ClosureInsertionCompare	MTC.Braided.insertLeftPowerIso_eq_join._proof_2	theorem	1	33	2	0	0	0	0	1251763258	-
+generated-name pattern	MTC.Braided.Cabling.ClosureInsertionCompare	MTC.Braided.insertRightPowerIso_eq_join._proof_2	theorem	1	33	2	0	0	0	0	2048720249	-
+generated-name pattern	MTC.Braided.Cabling.ClosureInsertionCompare	_private.MTC.Braided.Cabling.ClosureInsertionCompare.0.MTC.Braided.insertLeftPowerIso_eq_join._proof_1	theorem	1	36	3	0	0	0	1	4008382697	-
+generated-name pattern	MTC.Braided.Cabling.ClosureInsertionCompare	_private.MTC.Braided.Cabling.ClosureInsertionCompare.0.MTC.Braided.insertRightPowerIso_eq_join._proof_1	theorem	1	36	3	0	0	0	1	1587054618	-
+generated-name pattern	MTC.Braided.Cabling.ClosureInsertionCompare	_private.MTC.Braided.Cabling.ClosureInsertionCompare.0.MTC.Braided.sweepBlockMerge_heq_join._proof_1_1	theorem	1	42	3	0	0	0	1	1418145755	-
+generated-name pattern	MTC.Braided.Cabling.ClosureIsoWord	MTC.Braided.tensorPowerMapIso._proof_1	theorem	0	85	2	3	0	2	0	3504704137	-
+generated-name pattern	MTC.Braided.Cabling.ClosureIsoWord	MTC.Braided.tensorPowerMapIso._proof_2	theorem	0	85	2	3	0	2	0	1095447297	-
+generated-name pattern	MTC.Braided.Cabling.ClosureIsoWord	_private.MTC.Braided.Cabling.ClosureIsoWord.0.MTC.Braided.tensorPowerMapIso_conj_generator._simp_1_1	theorem	0	80	3	5	0	1	0	98966876	-
+generated-name pattern	MTC.Braided.Cabling.ClosureIsoWord	_private.MTC.Braided.Cabling.ClosureIsoWord.0.MTC.Braided.tensorPowerMapIso_conj_generator._simp_1_2	theorem	0	94	3	4	0	2	0	1817218155	-
+generated-name pattern	MTC.Braided.Cabling.ClosureJoinCompare	MTC.Braided.tensorPowerTensorIso.eq_def	theorem	1	215	3	1	0	2	0	2183382265	-
+generated-name pattern	MTC.Braided.Cabling.ClosureJoinCompare	_private.MTC.Braided.Cabling.ClosureJoinCompare.0.MTC.Braided.tensorPowerTensorIso.match_1.eq_1	theorem	0	42	4	0	0	0	0	1208203547	-
+generated-name pattern	MTC.Braided.Cabling.ClosureJoinCompare	_private.MTC.Braided.Cabling.ClosureJoinCompare.0.MTC.Braided.tensorPowerTensorIso.match_1.eq_2	theorem	0	46	5	0	0	0	0	4145643040	-
+generated-name pattern	MTC.Braided.Cabling.ClosureLeftInsertion	MTC.Braided.Trace.addLeftStrands.eq_1	theorem	0	221	2	1	0	3	0	2373205088	-
+generated-name pattern	MTC.Braided.Cabling.ClosureLeftInsertion	MTC.Braided.Trace.addLeftStrands.eq_2	theorem	0	348	3	1	0	3	0	402551585	-
+generated-name pattern	MTC.Braided.Cabling.ClosureLeftInsertion	MTC.Braided.Trace.addLeftStrands.eq_def	theorem	0	413	3	1	0	3	0	1127170502	-
+generated-name pattern	MTC.Braided.Cabling.ClosureLeftInsertion	_private.MTC.Braided.Cabling.ClosureLeftInsertion.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_1	theorem	0	35	3	0	0	0	0	3111681952	-
+generated-name pattern	MTC.Braided.Cabling.ClosureLeftInsertion	_private.MTC.Braided.Cabling.ClosureLeftInsertion.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_2	theorem	0	37	4	0	0	0	0	1285544444	-
+generated-name pattern	MTC.Braided.Cabling.ClosureLocalFlatten	MTC.Braided.firstGeneratorImage.eq_1	theorem	0	141	2	1	0	3	0	492423622	-
+generated-name pattern	MTC.Braided.Cabling.ClosureLocalFlatten	MTC.Braided.localBlockFlatten.eq_1	theorem	0	174	4	1	0	2	0	3409301905	-
+generated-name pattern	MTC.Braided.Cabling.ClosureLocalFlatten	MTC.Braided.shiftedFirstIndex._proof_2	theorem	0	31	2	0	0	0	0	2372870091	-
+generated-name pattern	MTC.Braided.Cabling.ClosureLocalFlatten	_private.MTC.Braided.Cabling.ClosureLocalFlatten.0.MTC.Braided.shiftedFirstIndex._proof_1	theorem	0	35	3	0	0	0	1	4031568869	-
+generated-name pattern	MTC.Braided.Cabling.ClosureMergeCommon	MTC.Braided.powerIndexIso._proof_1	theorem	1	36	2	3	0	2	1	1836633714	-
+generated-name pattern	MTC.Braided.Cabling.ClosureMergeCommon	MTC.Braided.powerIndexIso.congr_simp	theorem	0	49	2	3	0	2	1	1453765895	-
+generated-name pattern	MTC.Braided.Cabling.ClosureMergeCommon	MTC.Braided.powerIndexIso.eq_1	theorem	0	63	2	3	0	2	1	1097920921	-
+generated-name pattern	MTC.Braided.Cabling.ClosureMergeCommon	MTC.Braided.sweepBlockMerge_succ_left._proof_2	theorem	1	40	2	0	0	0	0	836999013	-
+generated-name pattern	MTC.Braided.Cabling.ClosureMergeCommon	_private.MTC.Braided.Cabling.ClosureMergeCommon.0.MTC.Braided.sweepBlockMerge_succ_left._proof_1	theorem	1	44	3	0	0	0	1	2268330371	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularCross._proof_2	theorem	0	33	2	0	0	0	0	3501135053	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularCross._proof_3	theorem	0	54	3	1	0	2	0	1056593119	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularCrossingIndex._proof_2	theorem	0	60	4	0	0	0	0	2285939505	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularCrossingIndex.eq_1	theorem	0	73	4	0	0	0	0	2359618019	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularSplit._proof_1	theorem	0	42	3	0	0	0	1	2154390868	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularSplit._proof_2	theorem	0	38	2	0	0	0	0	886112722	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularSplit._proof_3	theorem	0	72	4	1	0	2	1	2768311693	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	MTC.Braided.rectangularWord.eq_1	theorem	0	85	2	0	0	0	0	2089267257	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	_private.MTC.Braided.Cabling.ClosureRectangular.0.MTC.Braided.rectangularCross._proof_1	theorem	0	37	3	0	0	0	1	2528560714	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRectangular	_private.MTC.Braided.Cabling.ClosureRectangular.0.MTC.Braided.rectangularCrossingIndex._proof_1	theorem	0	64	5	0	0	0	1	139440298	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.blockStrandCount.eq_1	theorem	0	17	1	0	0	0	0	1420445039	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.blockStrandCount.eq_2	theorem	0	18	2	0	0	0	0	2386572776	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.blockStrandCount.eq_def	theorem	0	34	2	0	0	0	0	350811707	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.joinPowerIso.eq_1	theorem	0	66	2	1	0	2	0	3537856718	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.joinPowerIso.eq_2	theorem	1	121	3	1	0	2	0	3650690261	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.joinPowerIso.eq_def	theorem	0	162	3	1	0	2	0	1925780099	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.joinPowerNormalized._proof_2	theorem	1	39	2	0	0	0	0	2085830182	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.joinPowerNormalized.eq_1	theorem	0	110	3	1	0	2	0	1129722447	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.strandSum.eq_1	theorem	0	17	1	0	0	0	0	1387441707	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.strandSum.eq_2	theorem	0	34	2	0	0	0	0	2829588649	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	MTC.Braided.strandSum.eq_def	theorem	0	41	2	0	0	0	0	3964605626	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.blockStrandCount.match_1.eq_1	theorem	0	35	3	0	0	0	0	3445047266	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.blockStrandCount.match_1.eq_2	theorem	0	37	4	0	0	0	0	2731069519	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.blockStrandCount_eq_mul._proof_1_6	theorem	0	37	3	0	0	0	1	1084594613	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.joinPowerNormalized._proof_1	theorem	1	42	3	0	0	0	1	1922068194	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.strandSum.match_1.eq_1	theorem	0	42	4	0	0	0	0	1983017672	-
+generated-name pattern	MTC.Braided.Cabling.ClosureRecursiveFlatten	_private.MTC.Braided.Cabling.ClosureRecursiveFlatten.0.MTC.Braided.strandSum.match_1.eq_2	theorem	0	46	5	0	0	0	0	2168427722	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockFlattenCommon._proof_2	theorem	0	39	2	0	0	0	0	3611720621	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockFlattenCommon._proof_5	theorem	0	72	3	0	0	0	0	1805628520	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockFlattenCommon.eq_1	theorem	0	160	4	1	0	2	0	1266084109	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockPosition._proof_2	theorem	0	31	2	0	0	0	0	3525598029	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockWord._proof_1	theorem	0	68	3	0	0	0	0	1912174742	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	MTC.Braided.localBlockWord._proof_2	theorem	0	72	3	0	0	0	0	3445983933	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockFlattenCommon._proof_1	theorem	0	43	3	0	0	0	1	153226831	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockFlattenCommon._proof_3	theorem	0	57	5	0	0	0	2	741421610	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockFlattenCommon._proof_4	theorem	0	99	5	0	0	0	2	1948130104	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockFlattenCommon_word._proof_1_2	theorem	0	35	3	0	0	0	1	3846901526	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockFlattenCommon_word._proof_1_3	theorem	0	36	4	0	0	0	1	3242670723	-
+generated-name pattern	MTC.Braided.Cabling.ClosureReindex	_private.MTC.Braided.Cabling.ClosureReindex.0.MTC.Braided.localBlockPosition._proof_1	theorem	0	35	3	0	0	0	1	4011055464	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	MTC.Braided.sweepBlockMerge_eq_split._proof_2	theorem	1	33	2	0	0	0	0	3501135053	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	MTC.Braided.sweepBlockMerge_zero_eq_split._proof_2	theorem	1	35	1	0	0	0	0	2461240889	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	_private.MTC.Braided.Cabling.ClosureSplitMerge.0.MTC.Braided.sweepBlockMerge_eq_split._proof_1	theorem	1	37	3	0	0	0	1	2528560714	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	_private.MTC.Braided.Cabling.ClosureSplitMerge.0.MTC.Braided.sweepBlockMerge_eq_split._simp_1_3	theorem	1	80	3	5	0	1	0	98966876	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	_private.MTC.Braided.Cabling.ClosureSplitMerge.0.MTC.Braided.sweepBlockMerge_zero_eq_split._proof_1	theorem	1	39	2	0	0	0	1	4240831665	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSplitMerge	_private.MTC.Braided.Cabling.ClosureSplitMerge.0.MTC.Braided.sweepBlockMerge_zero_eq_split._simp_1_3	theorem	1	80	3	5	0	1	0	98966876	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.Trace.appendIso.eq_1	theorem	0	99	1	1	0	2	0	2068864285	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.Trace.appendIso.eq_2	theorem	0	121	2	1	0	2	0	639316708	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.Trace.appendIso.eq_def	theorem	0	181	2	1	0	2	0	2513973897	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.addLeftStrand.eq_1	theorem	0	293	2	1	0	3	0	578156109	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.lastCross._proof_1	theorem	1	30	0	0	0	0	0	3031492042	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.lastCross.eq_1	theorem	0	87	1	1	0	3	0	2460976655	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.lastCross.eq_2	theorem	0	153	2	1	0	3	0	1000697080	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.lastCross.eq_def	theorem	0	198	2	1	0	3	0	4059827625	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.leftSweep.eq_1	theorem	0	114	2	1	0	3	0	3503675675	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.sweepFirst.eq_1	theorem	0	104	2	1	0	3	0	3264705343	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.sweepFirstWord._proof_1	theorem	1	32	1	0	0	0	0	1362279371	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.sweepFirstWord.eq_1	theorem	0	44	0	0	0	0	0	3151212895	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.sweepFirstWord.eq_2	theorem	0	113	1	0	0	0	0	1464025981	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	MTC.Braided.sweepFirstWord.eq_def	theorem	0	133	1	0	0	0	0	3057477668	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	_private.MTC.Braided.Cabling.ClosureSweep.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_1	theorem	0	35	3	0	0	0	0	3111681952	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	_private.MTC.Braided.Cabling.ClosureSweep.0.MTC.Braided.Trace.addLeftStrands.match_1.eq_2	theorem	0	37	4	0	0	0	0	1285544444	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	_private.MTC.Braided.Cabling.ClosureSweep.0.MTC.Braided.lastCross.match_1.eq_1	theorem	0	35	3	0	0	0	0	3711422928	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	_private.MTC.Braided.Cabling.ClosureSweep.0.MTC.Braided.lastCross.match_1.eq_2	theorem	0	37	4	0	0	0	0	3765565106	-
+generated-name pattern	MTC.Braided.Cabling.ClosureSweep	_private.MTC.Braided.Cabling.ClosureSweep.0.MTC.Braided.sweepFirst_succ._simp_1_1	theorem	0	50	0	1	0	0	0	3827116405	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage._proof_1	theorem	1	69	2	1	0	2	0	1504477806	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage._proof_2	theorem	1	79	3	1	0	2	0	1449781070	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage._proof_3	theorem	1	73	3	1	0	2	0	1767630504	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage._proof_4	theorem	1	79	3	1	0	2	0	3129412261	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage.eq_1	theorem	0	120	2	1	0	3	0	1910864740	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage.eq_2	theorem	0	476	3	1	0	3	0	2057438035	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepImage.eq_def	theorem	0	496	3	1	0	3	0	1680798469	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepWord.eq_1	theorem	0	32	1	0	0	0	0	3914570795	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepWord.eq_2	theorem	0	156	2	0	0	0	0	2935877386	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.blockSweepWord.eq_def	theorem	0	167	2	0	0	0	0	2563239780	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	MTC.Braided.twoRowWord.eq_1	theorem	0	100	1	0	0	0	0	1963029627	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	_private.MTC.Braided.Cabling.ClosureTwoRow.0.MTC.Braided.blockSweepWord.match_1.eq_1	theorem	0	35	3	0	0	0	0	3244882672	-
+generated-name pattern	MTC.Braided.Cabling.ClosureTwoRow	_private.MTC.Braided.Cabling.ClosureTwoRow.0.MTC.Braided.blockSweepWord.match_1.eq_2	theorem	0	37	4	0	0	0	0	3212094503	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorInclusion._proof_1	theorem	1	40	1	2	0	4	1	1753128387	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorInclusion._proof_2	theorem	1	30	1	0	0	0	0	1374387624	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorInclusion.eq_1	theorem	0	122	2	2	0	5	1	1440301726	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorInclusion.eq_2	theorem	1	206	3	2	0	5	1	244352784	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorInclusion.eq_def	theorem	0	271	3	2	0	5	1	1337883508	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorProjection.eq_1	theorem	0	133	2	2	0	5	1	3773986720	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorProjection.eq_2	theorem	1	206	3	2	0	5	1	3591108469	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.colorProjection.eq_def	theorem	0	285	3	2	0	5	1	3578713779	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredBiproductIso._proof_1	theorem	0	200	2	2	0	8	2	2711669430	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredBiproductIso._proof_2	theorem	0	200	2	2	0	8	2	747081175	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredBiproductIso._proof_3	theorem	0	63	2	2	0	5	1	549898272	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredBiproductIso.eq_1	theorem	0	253	2	2	0	8	2	3633093185	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredConstantIso.eq_1	theorem	0	56	1	1	0	2	0	74578794	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredConstantIso.eq_2	theorem	1	108	2	1	0	2	0	3872099434	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	MTC.Braided.Cabling.coloredConstantIso.eq_def	theorem	0	140	2	1	0	2	0	1492373814	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.braidWordAction_intertwines_colorProjection._simp_1_1	theorem	0	80	3	5	0	1	0	98966876	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.colorInclusion.match_1.eq_1	theorem	0	69	4	1	0	0	0	3343940623	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.colorInclusion.match_1.eq_2	theorem	0	73	5	1	0	0	0	2438484627	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.colorProjection_inclusion_total._simp_1_9	theorem	1	130	3	6	0	4	1	619927506	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.coloredBlockProjection_inclusion_total._simp_1_1	theorem	0	166	3	2	0	8	2	580316403	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.coloredBlockProjection_inclusion_total._simp_1_2	theorem	0	166	3	2	0	8	2	3132280369	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.coloredConstantIso.match_1.eq_1	theorem	0	35	3	0	0	0	0	2090350611	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproduct	_private.MTC.Braided.Cabling.ColorBiproduct.0.MTC.Braided.Cabling.coloredConstantIso.match_1.eq_2	theorem	0	37	4	0	0	0	0	3708359296	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproductConstant	_private.MTC.Braided.Cabling.ColorBiproductConstant.0.MTC.Braided.Cabling.finite_pureColor_range_of_equal_colors._simp_1_1	theorem	0	166	3	2	0	8	2	3132280369	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproductConstant	_private.MTC.Braided.Cabling.ColorBiproductConstant.0.MTC.Braided.Cabling.finite_pureColor_range_of_equal_colors._simp_1_2	theorem	0	166	3	2	0	8	2	580316403	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproductFinite	_private.MTC.Braided.Cabling.ColorBiproductFinite.0.MTC.Braided.Cabling.finite_pureColor_range_of_cabling._simp_1_1	theorem	1	166	3	2	0	8	2	3132280369	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproductFinite	_private.MTC.Braided.Cabling.ColorBiproductFinite.0.MTC.Braided.Cabling.finite_pureColor_range_of_cabling._simp_1_2	theorem	1	166	3	2	0	8	2	580316403	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproductPositive	MTC.Braided.Cabling.positiveWidthFlatten._proof_1	theorem	1	98	4	1	0	2	1	3828912853	-
+generated-name pattern	MTC.Braided.Cabling.ColorBiproductPositive	_private.MTC.Braided.Cabling.ColorBiproductPositive.0.MTC.Braided.Cabling.two_le_sum_positive_widths._proof_1_1	theorem	1	71	4	0	0	0	2	1831652962	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredBlockInclusion.eq_1	theorem	0	95	4	1	0	2	0	3574870286	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredBlockProjection.eq_1	theorem	0	95	4	1	0	2	0	1762552957	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredGenerator._proof_1	theorem	0	32	1	0	0	0	0	1362279371	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredGenerator._proof_2	theorem	1	36	1	0	0	0	0	865514280	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredPureWordHom._proof_1	theorem	1	152	4	1	0	2	1	2383719503	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredPureWordHom.congr_simp	theorem	0	253	6	1	0	3	2	2601907950	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredPureWordHom.eq_1	theorem	0	220	4	1	0	3	1	1358243677	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredSwap._proof_1	theorem	0	30	0	0	0	0	0	80995303	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredSwap._proof_2	theorem	1	36	1	0	0	0	0	898558639	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredSwap.eq_1	theorem	0	76	1	0	0	0	0	2645110376	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredSwap.eq_2	theorem	0	151	2	0	0	0	0	867797528	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredSwap.eq_def	theorem	0	197	2	0	0	0	0	2220211300	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensor._proof_1	theorem	1	30	1	0	0	0	0	1374387624	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensor.eq_1	theorem	0	43	1	1	0	2	0	4170946482	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensor.eq_2	theorem	0	82	2	1	0	2	0	2387072409	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensor.eq_def	theorem	0	112	2	1	0	2	0	3708456446	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensorMap.eq_1	theorem	0	69	3	1	0	2	0	1908710435	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensorMap.eq_2	theorem	1	133	4	1	0	2	0	584445863	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredTensorMap.eq_def	theorem	0	207	4	1	0	2	0	1231231552	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordIso.eq_1	theorem	0	99	2	1	0	3	0	3688976680	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordIso.eq_2	theorem	0	152	4	1	0	3	0	1297597889	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordIso.eq_def	theorem	0	219	3	1	0	3	0	149344351	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordSwap.eq_1	theorem	0	49	1	0	0	0	0	1748171428	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordSwap.eq_2	theorem	0	79	3	0	0	0	0	527996090	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.Cabling.coloredWordSwap.eq_def	theorem	0	94	2	0	0	0	0	1610594420	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	MTC.Braided.braidWordAction.eq_1	theorem	0	268	2	1	0	3	0	2956631870	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredSwap.match_3.eq_1	theorem	0	65	4	0	0	0	0	2437738337	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredSwap.match_3.eq_2	theorem	0	69	5	0	0	0	0	2206973968	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredTensor.match_1.eq_1	theorem	0	69	4	1	0	0	0	3430841022	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredTensor.match_1.eq_2	theorem	0	73	5	1	0	0	0	3478553031	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredTensorMap.match_1.eq_1	theorem	0	141	6	1	0	1	0	589393661	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredTensorMap.match_1.eq_2	theorem	0	153	7	1	0	1	0	1521491868	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredWordIso.match_1.eq_1	theorem	0	107	5	1	0	0	0	597195957	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredWordIso.match_1.eq_2	theorem	0	129	7	1	0	0	0	4118424530	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredWordSwap.match_1.eq_1	theorem	0	80	4	0	0	0	0	4048600561	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.coloredWordSwap.match_1.eq_2	theorem	0	97	6	0	0	0	0	3438993098	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.colored_first_inverse_map._simp_1_1	theorem	1	80	3	5	0	1	0	98966876	-
+generated-name pattern	MTC.Braided.Cabling.PureSumColored	_private.MTC.Braided.Cabling.PureSumColored.0.MTC.Braided.Cabling.colored_first_map._simp_1_1	theorem	1	80	3	5	0	1	0	98966876	-
+generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGenerator.eq_1	theorem	0	169	2	1	0	3	0	1078646978	-
+generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGenerator.eq_2	theorem	0	312	3	1	0	3	0	3396718632	-
+generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGenerator.eq_def	theorem	0	438	3	1	0	3	0	1144136880	-
+generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGeneratorInverse.eq_1	theorem	0	172	2	1	0	3	0	2213513765	-
+generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGeneratorInverse.eq_2	theorem	0	315	3	1	0	3	0	3897764215	-
+generated-name pattern	MTC.Braided.Cabling.PureSumInverse	MTC.Braided.Cabling.coloredGeneratorInverse.eq_def	theorem	0	444	3	1	0	3	0	1893252226	-
+generated-name pattern	MTC.Braided.Cabling.PureSumInverse	_private.MTC.Braided.Cabling.PureSumInverse.0.MTC.Braided.Cabling.coloredGenerator.match_1.eq_1	theorem	0	96	5	1	0	0	0	4167795610	-
+generated-name pattern	MTC.Braided.Cabling.PureSumInverse	_private.MTC.Braided.Cabling.PureSumInverse.0.MTC.Braided.Cabling.coloredGenerator.match_1.eq_2	theorem	0	101	6	1	0	0	0	1790574507	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPositiveState	MTC.Braided.Cabling.positiveWidthFlatten.eq_1	theorem	0	178	5	1	0	2	1	2084480945	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPositiveState	MTC.Braided.coloredPowerStateFlatten.eq_1	theorem	0	179	4	1	0	4	0	1521783025	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	MTC.Braided.Cabling.braidImage_prefix_mem._proof_2	theorem	1	33	2	0	0	0	0	1251763258	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	MTC.Braided.Cabling.coloredPower_succ_prefix_eq._proof_2	theorem	1	61	3	0	0	0	0	413663290	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.braidImage_prefix_mem._proof_1	theorem	1	36	3	0	0	0	1	4008382697	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredFlatten_head_heq._simp_1_1	theorem	1	60	3	1	0	4	0	2743950676	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_positive_mem._proof_1_1	theorem	1	219	5	0	0	0	2	2119174982	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_positive_mem._proof_1_2	theorem	1	220	6	0	0	0	3	3453893883	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_succ_prefix_eq._proof_1	theorem	1	64	4	0	0	0	1	363575126	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_succ_prefix_eq._proof_1_1	theorem	1	106	5	0	0	0	1	1506719740	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_succ_prefix_eq._proof_1_2	theorem	1	101	5	0	0	0	1	3583802511	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPrefix	_private.MTC.Braided.Cabling.PureSumPrefix.0.MTC.Braided.Cabling.coloredPower_succ_prefix_eq._proof_1_3	theorem	1	73	5	0	0	0	1	3052268657	-
+generated-name pattern	MTC.Braided.Cabling.PureSumPreservation	_private.MTC.Braided.Cabling.PureSumPreservation.0.MTC.Braided.Cabling.finite_pureBlock_range_of_colored_trivial._simp_1_1	theorem	0	33	0	3	0	0	0	2525783790	-
+generated-name pattern	MTC.Braided.Cabling.PureSumSigned	MTC.Braided.Cabling.coloredLetter.eq_1	theorem	0	120	4	1	0	3	0	2134256989	-
+generated-name pattern	MTC.Braided.Cabling.PureSumSigned	MTC.Braided.coloredPowerSwap.eq_1	theorem	0	110	4	0	0	0	0	3245648243	-
+generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392	-
+generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777	-
+generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871	-
+generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916	-
+generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633	-
+generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028	-
+generated-name pattern	MTC.Braided.Trace.ComplexSaturation	_private.MTC.Braided.Trace.ComplexSaturation.0.MTC.Braided.Trace.actual_mixed_braid_trace_of_maximal_monodromy._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133	-
+generated-name pattern	MTC.Braided.Trace.InverseMonodromy	MTC.Braided.Trace.inverseSelfMonodromy.eq_1	theorem	0	73	1	1	0	3	0	1106521634	-
+generated-name pattern	MTC.Braided.Trace.MonodromyReciprocity	_private.MTC.Braided.Trace.MonodromyReciprocity.0.MTC.Braided.Trace.norm_inverse_monodromy_trace_eq_of_constituent_phase._simp_1_1	theorem	1	91	2	3	0	4	1	1115627069	-
+generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	MTC.Center.Braid.pivotalRegularVector.eq_1	theorem	0	118	4	0	0	0	0	1377291348	-
+generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotalRegularVector_fourier_support._simp_1_3	theorem	1	40	0	3	0	0	0	3135544924	-
+generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotalRegularVector_fourier_support._simp_1_4	theorem	1	20	0	2	0	0	0	563549242	-
+generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotalRegularVector_fourier_support._simp_1_5	theorem	1	17	0	2	0	0	0	1877817566	-
+generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotalRegularVector_ne_zero_iff._simp_1_2	theorem	1	52	3	0	0	0	0	1604327423	-
+generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotal_fourier_eq_zero_of_fusion_eigenvector._simp_1_1	theorem	1	72	3	2	0	1	0	1762064320	-
+generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotal_sFourier_inversion._simp_1_1	theorem	1	35	3	1	0	1	0	3188916250	-
+generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotal_sFourier_inversion._simp_1_2	theorem	1	64	3	2	0	1	0	4027845409	-
+generated-name pattern	MTC.Center.Braid.PivotalRegularSupport	_private.MTC.Center.Braid.PivotalRegularSupport.0.MTC.Center.Braid.pivotal_sFourier_inversion._simp_1_3	theorem	1	32	1	1	0	1	0	3818362915	-
+generated-name pattern	MTC.Center.Induction.PivotalSquare	_private.MTC.Center.Induction.PivotalSquare.0.MTC.Center.Induction.globalDimension_square_of_actual_induction._simp_1_1	theorem	1	64	3	2	0	1	0	765139717	-
+generated-name pattern	MTC.Center.Normalization.ActualDoubleCentralizer	MTC.Modular.sCentralizes.eq_1	theorem	0	68	4	0	0	0	0	2146881592	-
+generated-name pattern	MTC.Center.Normalization.AdjointDegrees	MTC.Center.Normalization.neutralDegreeLabels.eq_1	theorem	0	115	1	0	0	0	0	2208820858	-
+generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionClassCommMonoid._proof_1	theorem	1	121	3	1	0	1	2	2395048410	-
+generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionClassCommMonoid._proof_2	theorem	1	138	4	1	0	1	2	605897073	-
+generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionClassCommMonoid._proof_3	theorem	1	82	3	1	0	1	2	1775652064	-
+generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionClassMul._proof_1	theorem	1	96	4	5	0	1	4	2157199292	-
+generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionClassUnit._proof_1	theorem	1	67	3	1	0	1	2	3129004822	-
+generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionDegreeLift.congr_simp	theorem	0	275	6	1	0	1	3	536334941	-
+generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionDegreeToFusionClass._proof_1	theorem	1	134	2	1	0	1	2	3881127874	-
+generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionDegreeToFusionClass._proof_2	theorem	1	166	6	1	0	1	3	1461503873	-
+generated-name pattern	MTC.Center.Normalization.AdjointQuotient	MTC.Center.Normalization.fusionDegreeToFusionClass.eq_1	theorem	0	240	2	1	0	1	2	2194668754	-
+generated-name pattern	MTC.Center.Normalization.AdjointRelation	MTC.Center.Normalization.fusionSubringSetoid._proof_1	theorem	1	24	2	1	0	0	1	3399013484	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	MTC.Center.Normalization.pairedBinomial.eq_1	theorem	0	92	2	0	0	0	0	4135384414	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_2	theorem	0	49	0	1	0	3	1	3288593392	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_3	theorem	0	49	0	1	0	3	1	4033513777	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_4	theorem	0	49	0	1	0	3	1	1623334871	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_5	theorem	0	70	2	3	0	3	3	1092673916	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_6	theorem	0	94	2	2	0	2	2	2195956633	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_7	theorem	0	81	2	2	0	1	1	1459115028	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_euler._simp_1_8	theorem	0	77	1	1	0	2	1	3730275133	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_2	theorem	0	49	0	1	0	3	1	3288593392	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_3	theorem	0	49	0	1	0	3	1	4033513777	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_4	theorem	0	49	0	1	0	3	1	1623334871	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_5	theorem	0	70	2	3	0	3	3	1092673916	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_6	theorem	0	94	2	2	0	2	2	2195956633	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_7	theorem	0	81	2	2	0	1	1	1459115028	-
+generated-name pattern	MTC.Center.Normalization.BinomialAnalytic	_private.MTC.Center.Normalization.BinomialAnalytic.0.MTC.Center.Normalization.pairedBinomial_succ._simp_1_8	theorem	0	77	1	1	0	2	1	3730275133	-
+generated-name pattern	MTC.Center.Normalization.BinomialArithmetic	MTC.Center.Normalization.pairedBinomialField.eq_1	theorem	0	165	2	1	0	1	0	991851	-
+generated-name pattern	MTC.Center.Normalization.GradingTwist	MTC.Center.Normalization.characterScalar._proof_1	theorem	1	24	0	1	0	0	0	552868248	-
+generated-name pattern	MTC.Center.Normalization.GradingTwist	MTC.Center.Normalization.characterScalar.eq_1	theorem	0	152	2	1	0	0	0	1504941153	-
+generated-name pattern	MTC.Center.Normalization.IntegerDimensions	_private.MTC.Center.Normalization.IntegerDimensions.0.MTC.Center.Normalization.pseudoUnitary_of_integer_dimensions_and_center_fp_orthogonality._simp_1_1	theorem	0	69	0	2	0	3	1	859695200	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.bundledMuger._proof_1	theorem	0	43	1	0	0	0	0	1170204734	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.bundledMuger._proof_2	theorem	0	64	1	0	0	0	0	219140307	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_abelian._proof_1	theorem	0	24	1	0	0	0	0	2367655630	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_abelian._proof_2	theorem	0	24	1	0	0	0	0	700309152	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_rightRigid._proof_1	theorem	0	199	2	0	0	0	0	749612816	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_rightRigid._proof_2	theorem	0	199	2	0	0	0	0	2215895004	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_rightRigid._proof_3	theorem	0	47	2	0	0	0	0	1140344836	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerCategory_symmetric._proof_1	theorem	0	101	3	0	0	0	0	3159502823	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPieces.eq_1	theorem	0	70	3	0	0	0	0	122220813	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_1	theorem	0	40	2	0	0	0	0	2763299680	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_2	theorem	0	53	2	0	0	0	0	102259518	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_3	theorem	0	64	2	0	0	0	0	3986603873	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_4	theorem	0	47	1	0	0	0	0	4245720043	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_5	theorem	0	64	2	0	0	0	0	4278113267	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_6	theorem	0	50	2	0	0	0	0	2452567246	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_7	theorem	0	27	1	0	0	0	0	3811071442	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPiecesDecomposition._proof_8	theorem	0	27	1	0	0	0	0	824046535	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPivotal._proof_1	theorem	0	167	3	2	0	0	0	2339140974	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPivotal._proof_2	theorem	0	178	4	0	0	0	0	3407668603	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerPivotal._proof_3	theorem	0	126	2	0	0	0	0	657816838	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerSimple._proof_1	theorem	0	52	2	0	0	0	0	3166841236	-
+generated-name pattern	MTC.Center.Normalization.MugerCategory	MTC.Center.Normalization.mugerSimple.eq_1	theorem	0	62	2	0	0	0	0	1216784549	-
+generated-name pattern	MTC.Center.Normalization.MugerFPIntegral	_private.MTC.Center.Normalization.MugerFPIntegral.0.MTC.Center.Normalization.symmetric_fpSimple_positive_integer_of_pseudoUnitary._simp_1_1	theorem	0	69	0	2	0	3	1	859695200	-
+generated-name pattern	MTC.Center.Normalization.MugerLabels	MTC.Center.Normalization.mugerLabels.eq_1	theorem	0	47	1	0	0	0	0	200152753	-
+generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.pivotalNaturalIso._proof_1	theorem	1	128	2	3	0	0	0	1059933358	-
+generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.pivotalNaturalIso.eq_1	theorem	0	79	1	1	0	0	0	2886195024	-
+generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarPivotalTwist._proof_1	theorem	1	166	4	3	0	0	1	1205640419	-
+generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarPivotalTwist._proof_2	theorem	1	143	5	1	0	0	2	2784019137	-
+generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarPivotalTwist._proof_3	theorem	1	246	6	1	0	0	2	195548754	-
+generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarPivotalTwist._proof_4	theorem	1	149	4	1	0	0	2	2119711718	-
+generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarPivotalTwist.eq_1	theorem	0	193	5	1	0	0	3	1997185666	-
+generated-name pattern	MTC.Center.Normalization.PivotalTwist	MTC.Center.Normalization.scalarTwistedNaturalIso.congr_simp	theorem	0	157	7	1	0	0	3	665725883	-
+generated-name pattern	MTC.Center.Normalization.PositiveSubring	_private.MTC.Center.Normalization.PositiveSubring.0.MTC.Center.Normalization.transparent_norm_saturation_of_adjoint_positivity._simp_1_1	theorem	1	46	0	4	0	1	0	1253103447	-
+generated-name pattern	MTC.Center.Normalization.PositiveSubring	_private.MTC.Center.Normalization.PositiveSubring.0.MTC.Center.Normalization.transparent_norm_saturation_of_adjoint_positivity._simp_1_2	theorem	1	32	1	1	0	1	0	3818362915	-
+generated-name pattern	MTC.Center.Normalization.ProductCategory	MTC.Center.Normalization.bundledProductCategory._proof_1	theorem	0	40	1	0	0	0	0	4108580882	-
+generated-name pattern	MTC.Center.Normalization.ProductCategory	MTC.Center.Normalization.bundledProductCategory._proof_2	theorem	0	65	1	0	0	0	0	2350326453	-
+generated-name pattern	MTC.Center.Normalization.ProductCategoryPivotal	MTC.Center.Normalization.productCategoryOfPivotal._proof_1	theorem	0	40	1	0	0	0	0	4108580882	-
+generated-name pattern	MTC.Center.Normalization.ProductCategoryPivotal	MTC.Center.Normalization.productCategoryOfPivotal._proof_2	theorem	0	65	1	0	0	0	0	105065088	-
+generated-name pattern	MTC.Center.Normalization.ProductGenerator	MTC.Center.Normalization.productGenerator._proof_1	theorem	0	40	1	0	0	0	0	4108580882	-
+generated-name pattern	MTC.Center.Normalization.ProductGenerator	MTC.Center.Normalization.productGenerator._proof_2	theorem	0	65	1	0	0	0	0	2890099914	-
+generated-name pattern	MTC.Center.Normalization.ProductGenerator	MTC.Center.Normalization.productGenerator._proof_3	theorem	0	186	1	0	0	2	1	2609512837	-
+generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	MTC.Center.Normalization.dimensionRatio.eq_1	theorem	1	64	2	1	0	0	0	2906078412	-
+generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	MTC.Center.Normalization.dimensionRatioUnit._proof_1	theorem	1	92	2	1	0	0	0	323494281	-
+generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	MTC.Center.Normalization.dimensionRatioUnit.eq_1	theorem	0	68	2	1	0	0	0	2469899030	-
+generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392	-
+generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777	-
+generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871	-
+generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916	-
+generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633	-
+generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028	-
+generated-name pattern	MTC.Center.Normalization.ScalarFusionCharacter	_private.MTC.Center.Normalization.ScalarFusionCharacter.0.MTC.Center.Normalization.dimensionRatio_tensor_constituent._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133	-
+generated-name pattern	MTC.Center.Normalization.SubringCharacter	MTC.Center.Normalization.subringCharacterOfScalars._proof_1	theorem	1	171	3	2	0	0	2	3769975422	-
+generated-name pattern	MTC.Center.Normalization.SubringCharacter	MTC.Center.Normalization.subringCharacterOfScalars._proof_2	theorem	1	248	6	2	0	0	2	68186959	-
+generated-name pattern	MTC.Center.Normalization.SubringCharacter	MTC.Center.Normalization.subringCharacterOfScalars._proof_3	theorem	1	57	1	2	0	0	1	4218432663	-
+generated-name pattern	MTC.Center.Normalization.SubringCharacter	MTC.Center.Normalization.subringCharacterOfScalars.congr_simp	theorem	0	397	6	2	0	0	4	3647907840	-
+generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegree.eq_1	theorem	0	91	2	2	0	0	1	2157394450	-
+generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeLift._proof_1	theorem	1	340	4	3	0	1	3	1081240133	-
+generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeLift.eq_1	theorem	0	389	4	3	0	1	3	2152037815	-
+generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeRelations.congr_simp	theorem	0	91	4	2	0	0	2	677380032	-
+generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeToAmbient._proof_1	theorem	1	229	1	2	0	0	1	4167995119	-
+generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeToAmbient._proof_2	theorem	1	24	0	1	0	0	0	552868248	-
+generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeToAmbient._proof_3	theorem	1	57	1	2	0	0	1	4218432663	-
+generated-name pattern	MTC.Center.Normalization.SubringGrading	MTC.Center.Normalization.subringDegreeToAmbient.eq_1	theorem	0	269	1	2	0	0	1	2940921746	-
+generated-name pattern	MTC.Center.Normalization.SymmetricBinomial	MTC.Center.Normalization.canonicalSymmetricPivotal.congr_simp	theorem	0	81	1	1	0	4	1	2428677110	-
+generated-name pattern	MTC.Center.Normalization.SymmetricBinomial	MTC.Center.Normalization.unsignedTraceSum.eq_1	theorem	0	59	1	2	0	1	0	502448734	-
+generated-name pattern	MTC.Center.Normalization.SymmetricBinomial	_private.MTC.Center.Normalization.SymmetricBinomial.0.MTC.Center.Normalization.canonicalSymmetricPivotal_falling_binomial_isIntegral._simp_1_1	theorem	0	102	2	0	0	0	0	390084000	-
+generated-name pattern	MTC.Center.Normalization.SymmetricBinomial	_private.MTC.Center.Normalization.SymmetricBinomial.0.MTC.Center.Normalization.canonicalSymmetricPivotal_rising_binomial_isIntegral._simp_1_1	theorem	0	102	2	0	0	0	0	390084000	-
+generated-name pattern	MTC.Center.Normalization.SymmetricBinomial	_private.MTC.Center.Normalization.SymmetricBinomial.0.MTC.Center.Normalization.unsignedTraceSum_succ._simp_1_2	theorem	0	64	3	2	0	1	0	765139717	-
+generated-name pattern	MTC.Center.Normalization.SymmetricPivotal	MTC.Center.Normalization.canonicalSymmetricPivotal._proof_1	theorem	0	170	3	1	0	4	1	3406407140	-
+generated-name pattern	MTC.Center.Normalization.SymmetricPivotal	MTC.Center.Normalization.canonicalSymmetricPivotal._proof_2	theorem	0	120	1	3	0	4	0	719639539	-
+generated-name pattern	MTC.Center.Normalization.SymmetricPivotal	MTC.Center.Normalization.canonicalSymmetricPivotal.eq_1	theorem	0	136	1	1	0	4	1	2500795520	-
+generated-name pattern	MTC.Center.Normalization.UniversalGrading	MTC.Center.Normalization.fusionDegree.eq_1	theorem	0	41	2	0	0	0	0	1853078578	-
+generated-name pattern	MTC.Center.Normalization.UniversalGrading	MTC.Center.Normalization.fusionDegreeLift._proof_1	theorem	1	227	4	1	0	1	2	549293469	-
+generated-name pattern	MTC.Center.Normalization.UniversalGrading	MTC.Center.Normalization.fusionDegreeLift._proof_2	theorem	1	24	1	0	0	0	0	552868248	-
+generated-name pattern	MTC.Center.Normalization.UniversalGrading	MTC.Center.Normalization.fusionDegreeLift.eq_1	theorem	0	268	4	1	0	1	2	3958620090	-
+generated-name pattern	MTC.PropertyF.Pivotal.AdjointObjects	MTC.PropertyF.Pivotal.AdjointGenerated.brecOn	theorem	0	38	2	3	0	0	2	2988573112	-
+generated-name pattern	MTC.PropertyF.Pivotal.AdjointObjects	MTC.PropertyF.Pivotal.adjointGeneratedLabels.eq_1	theorem	0	36	1	0	0	0	0	3758385910	-
+generated-name pattern	MTC.PropertyF.Pivotal.AdjointObjectsSupport	MTC.PropertyF.Pivotal.leftDualIsoOfIso._proof_1	theorem	0	99	2	2	0	0	0	4198053919	-
+generated-name pattern	MTC.PropertyF.Pivotal.AdjointObjectsSupport	MTC.PropertyF.Pivotal.leftDualIsoOfIso._proof_2	theorem	0	99	2	2	0	0	0	3355917791	-
+generated-name pattern	MTC.PropertyF.Pivotal.FPObject	MTC.PropertyF.Pivotal.fpFusionCharacter._proof_1	theorem	1	37	1	0	0	0	0	434827943	-
+generated-name pattern	MTC.PropertyF.Pivotal.FPObject	MTC.PropertyF.Pivotal.fpFusionCharacter._proof_2	theorem	1	101	3	0	0	0	0	1064587999	-
+generated-name pattern	MTC.PropertyF.Pivotal.Galois	MTC.PropertyF.Pivotal.scalarTwistGaloisConjugate._proof_1	theorem	1	246	4	2	0	0	0	1227823952	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.bundledGenerated._proof_1	theorem	1	48	2	0	0	0	0	535539072	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.bundledGenerated._proof_2	theorem	1	70	2	0	0	0	0	3719966894	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedCategory_abelian._proof_1	theorem	1	28	2	0	0	0	0	592010597	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedCategory_abelian._proof_2	theorem	1	28	2	0	0	0	0	2358382462	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedCategory_rightRigid._proof_1	theorem	1	207	3	0	0	0	0	3462769416	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedCategory_rightRigid._proof_2	theorem	1	207	3	0	0	0	0	3501832965	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedCategory_rightRigid._proof_3	theorem	1	53	3	0	0	0	0	441818099	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedLabels.eq_1	theorem	0	52	2	0	0	0	0	699053413	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedObject._proof_1	theorem	1	21	2	0	0	0	0	387729479	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPieces.eq_1	theorem	0	80	4	0	0	0	0	769946573	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_1	theorem	1	45	3	0	0	0	0	3120752328	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_2	theorem	1	59	3	0	0	0	0	2769493088	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_3	theorem	1	70	3	0	0	0	0	1915925332	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_4	theorem	1	51	2	0	0	0	0	3795722731	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_5	theorem	1	71	3	0	0	0	0	2145475142	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_6	theorem	1	57	3	0	0	0	0	1906906456	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_7	theorem	1	31	2	0	0	0	0	573519898	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedPiecesDecomposition._proof_8	theorem	1	31	2	0	0	0	0	3312492036	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedSimple._proof_1	theorem	1	58	3	0	0	0	0	2101256430	-
+generated-name pattern	MTC.PropertyF.Pivotal.GeneratedCategory	MTC.PropertyF.Pivotal.generatedSimple.eq_1	theorem	0	71	3	0	0	0	0	4092369619	-
+generated-name pattern	MTC.PropertyF.Pivotal.InfiniteImages	MTC.Braided.ObjectPropertyF.eq_1	theorem	0	106	1	1	0	3	0	454984124	-
+generated-name pattern	MTC.PropertyF.Pivotal.InfiniteImages	_private.MTC.PropertyF.Pivotal.InfiniteImages.0.MTC.PropertyF.Pivotal.eventually_infinite_braidImages_of_not_objectPropertyF._simp_1_2	theorem	1	20	0	2	0	0	0	563549242	-
+generated-name pattern	MTC.PropertyF.Pivotal.MonoidalDual	MTC.PropertyF.Pivotal.exactPairingOfMonoidalFunctor._proof_1	theorem	1	286	3	2	0	6	0	810064490	-
+generated-name pattern	MTC.PropertyF.Pivotal.MonoidalDual	MTC.PropertyF.Pivotal.exactPairingOfMonoidalFunctor._proof_2	theorem	1	286	3	2	0	6	0	3136954342	-
+generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	MTC.PropertyF.Pivotal.transformedDoubleDual.eq_1	theorem	1	178	2	3	0	7	0	2116444265	-
+generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	MTC.PropertyF.Pivotal.transformedDualIso.eq_1	theorem	0	164	2	2	0	7	0	157446924	-
+generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	_private.MTC.PropertyF.Pivotal.MonoidalQuantumTrace.0.MTC.PropertyF.Pivotal.monoidalFunctor_leftQuantumTrace._simp_1_3	theorem	1	93	3	4	0	2	0	391109155	-
+generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	_private.MTC.PropertyF.Pivotal.MonoidalQuantumTrace.0.MTC.PropertyF.Pivotal.monoidalFunctor_leftQuantumTrace._simp_1_4	theorem	1	122	4	5	0	2	0	1613753305	-
+generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	_private.MTC.PropertyF.Pivotal.MonoidalQuantumTrace.0.MTC.PropertyF.Pivotal.monoidalFunctor_leftQuantumTrace._simp_1_5	theorem	1	113	0	6	0	5	0	3030107409	-
+generated-name pattern	MTC.PropertyF.Pivotal.MonoidalQuantumTrace	_private.MTC.PropertyF.Pivotal.MonoidalQuantumTrace.0.MTC.PropertyF.Pivotal.monoidalFunctor_rightQuantumTrace._simp_1_3	theorem	1	126	4	5	0	2	0	2542281496	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_det_ne_zero_of_unit_character_unique._simp_1_1	theorem	1	72	3	2	0	1	0	1762064320	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_gram_of_unit_character_unique._simp_1_8	theorem	1	64	3	2	0	1	0	765139717	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_unit_character_orthogonal._simp_1_1	theorem	1	55	3	1	0	1	0	4171977914	-
+generated-name pattern	MTC.PropertyF.Pivotal.Nondegeneracy	_private.MTC.PropertyF.Pivotal.Nondegeneracy.0.MTC.PropertyF.Pivotal.categoricalS_unit_character_orthogonal._simp_1_2	theorem	1	72	3	2	0	1	0	1762064320	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	MTC.PropertyF.Pivotal.monodromyHaar.eq_1	theorem	0	214	4	0	0	0	0	372264535	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	MTC.PropertyF.Pivotal.monodromyHaarVacuum.eq_1	theorem	0	164	3	0	0	0	0	3302528150	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	MTC.PropertyF.Pivotal.pivotalTraceDualProjection.eq_1	theorem	1	193	5	0	0	0	0	2062831100	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	_private.MTC.PropertyF.Pivotal.NondegeneracyHaar.0.MTC.PropertyF.Pivotal.leftTrace_eq_rightTrace_dual._simp_1_1	theorem	1	122	4	5	0	2	0	1613753305	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	_private.MTC.PropertyF.Pivotal.NondegeneracyHaar.0.MTC.PropertyF.Pivotal.monodromyHaarVacuum_of_sTest._simp_1_2	theorem	0	140	0	6	0	3	0	1975001710	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaar	_private.MTC.PropertyF.Pivotal.NondegeneracyHaar.0.MTC.PropertyF.Pivotal.monodromyHaar_summand_factor._simp_1_1	theorem	1	80	3	5	0	1	0	98966876	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarBasis	MTC.PropertyF.Pivotal.leftPartialTraceHom.eq_1	theorem	0	250	6	0	0	0	0	3946929619	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarMate	MTC.PropertyF.Pivotal.haarInclusionMate._proof_1	theorem	1	24	0	0	0	0	0	1194443179	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarMate	MTC.PropertyF.Pivotal.haarInclusionMate._proof_2	theorem	1	24	0	0	0	0	0	3129590095	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarMate	MTC.PropertyF.Pivotal.haarInclusionMate._proof_3	theorem	1	18	0	0	0	0	0	3881998583	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.categoricalHaarRestricted.eq_1	theorem	0	261	6	0	0	0	0	2085483196	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarDualLabelBasis.eq_1	theorem	0	160	3	0	0	0	0	1631118530	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarDualLabelProjection.eq_1	theorem	0	137	4	0	0	0	0	4161586081	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBilinear._proof_1	theorem	1	105	3	0	0	0	0	4026743524	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBilinear._proof_2	theorem	1	286	10	0	0	0	0	3894074474	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBilinear._proof_3	theorem	1	331	10	0	0	0	0	332751907	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBilinear._proof_4	theorem	1	429	9	0	0	0	0	3180139068	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBilinear._proof_5	theorem	1	512	9	0	0	0	0	282335416	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedBlock.eq_1	theorem	0	426	9	0	0	0	0	467707167	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedCore.eq_1	theorem	0	370	7	0	0	0	0	496935525	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedCoreLinear._proof_2	theorem	1	233	8	0	0	0	0	3448016001	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.haarRotatedCoreLinear._proof_3	theorem	1	281	8	0	0	0	0	3454009326	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	MTC.PropertyF.Pivotal.restrictedGlobalDimension.eq_1	theorem	0	98	3	0	0	0	0	508301006	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haarDualLabelProjection_dual._simp_1_3	theorem	1	80	3	5	0	1	0	98966876	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haarRotatedBlock_dualLabel_contraction._simp_1_1	theorem	1	459	4	0	0	0	0	220370910	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haarRotatedBlock_dualLabel_sum._simp_1_1	theorem	0	96	3	4	0	4	1	3153793544	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haarRotatedBlock_dualLabel_sum_restricted._simp_1_1	theorem	1	96	3	4	0	4	1	3153793544	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_1	theorem	0	49	0	1	0	3	1	3288593392	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_2	theorem	0	49	0	1	0	3	1	4033513777	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_3	theorem	0	49	0	1	0	3	1	1623334871	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_4	theorem	0	70	2	3	0	3	3	1092673916	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_5	theorem	0	94	2	2	0	2	2	2195956633	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_6	theorem	0	81	2	2	0	1	1	1459115028	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSlide	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSlide.0.MTC.PropertyF.Pivotal.haar_weighted_fusion_block._simp_1_7	theorem	0	77	1	1	0	2	1	3730275133	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSnake	MTC.Fusion.tensorRightHomLinearEquiv.congr_simp	theorem	0	165	4	2	0	8	2	1702633504	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSnake	MTC.PropertyF.Pivotal.haarInclusionMate.eq_1	theorem	0	248	4	0	0	0	0	2211935978	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSnake	MTC.PropertyF.Pivotal.haarMatedInclusionBasis.eq_1	theorem	1	182	5	1	0	0	0	3699724631	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSnake	MTC.PropertyF.Pivotal.haarProjectionMate.eq_1	theorem	0	263	5	0	0	0	0	1888062499	-
+generated-name pattern	MTC.PropertyF.Pivotal.NondegeneracyHaarSnake	_private.MTC.PropertyF.Pivotal.NondegeneracyHaarSnake.0.MTC.PropertyF.Pivotal.haar_right_trace_boxed._simp_1_1	theorem	1	122	4	5	0	2	0	1613753305	-
+generated-name pattern	MTC.PropertyF.Pivotal.PositivePowers	_private.MTC.PropertyF.Pivotal.PositivePowers.0.MTC.PropertyF.Pivotal.powerSum_retract_positive_of_nonzero._proof_1_1	theorem	1	44	5	0	0	0	1	652680415	-
+generated-name pattern	MTC.PropertyF.Pivotal.PositivePowers	_private.MTC.PropertyF.Pivotal.PositivePowers.0.MTC.PropertyF.Pivotal.unit_retract_positive_power_of_nonzero._simp_1_1	theorem	1	56	1	1	0	2	0	600376345	-
+generated-name pattern	MTC.PropertyF.Pivotal.SOrthogonality	_private.MTC.PropertyF.Pivotal.SOrthogonality.0.MTC.PropertyF.Pivotal.categoricalS_columns_orthogonal._simp_1_1	theorem	1	72	3	2	0	1	0	1762064320	-
+generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalFourthComparison.eq_1	theorem	0	98	3	0	0	0	0	1400857380	-
+generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalFourthScalar._proof_1	theorem	1	21	1	0	0	0	0	187650759	-
+generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalFourthScalar._proof_2	theorem	1	61	2	0	0	0	0	386270682	-
+generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalFourthScalar.congr_simp	theorem	0	123	7	0	0	1	3	3240926297	-
+generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalFourthScalar.eq_1	theorem	0	155	3	0	0	1	1	147793585	-
+generated-name pattern	MTC.PropertyF.Pivotal.SlopeSquare	MTC.PropertyF.Pivotal.pivotalSquare.eq_1	theorem	0	97	3	0	0	0	0	183227207	-
+generated-name pattern	MTC.PropertyF.Pivotal.SlopeTrace	MTC.PropertyF.Pivotal.braidedLoop.eq_1	theorem	0	122	1	1	0	4	0	1832015055	-

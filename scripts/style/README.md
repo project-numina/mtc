@@ -24,3 +24,12 @@ Constant-reference reachability is not a deletion criterion.
 environment only. Generated analysis modules and environment TSVs are ignored.
 The committed project scorecards and summary support review without checking
 in a copy of the Mathlib declaration dataset.
+
+For the second-pass census, run `python3 scripts/style/target_dashboard.py`
+after the fresh survey. It compares the two committed expanded cohorts, lists
+all current new-layer source proofs and unpaired identities, records type-hash
+changes, and inventories environment-only theorem names. The optional
+`LEAN_NUM_THREADS=4 python3 scripts/style/survey_proposition_definitions.py`
+checks proof-valued definitions and opaque declarations through Lean. Generated
+name classification is heuristic; the full declaration audit remains the
+independent safeguard for private and generated proofs.

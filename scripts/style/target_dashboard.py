@@ -16,7 +16,7 @@ from source_metrics import ROOT, STYLE, parse, mod, quant
 OUT = ROOT / 'docs/style'
 FIELDS = ['population', 'file', 'line', 'kind', 'name', 'qualified_name', 'match',
           'proof_lines', 'tactic', 'steps', 'explicit', 'implicit', 'strict',
-          'instance', 'hypotheses']
+          'instance', 'hypotheses', 'type_hash']
 
 def read(path):
     with path.open(newline='') as f:
@@ -62,7 +62,7 @@ def snapshot():
             rows.append(dict(population=population, file=d['file'], line=d['line'], kind=d['kind'], name=d['name'],
                              qualified_name=e.get('name', ''), match=('unique' if e else 'missing' if not hits else 'ambiguous'),
                              proof_lines=d['proof_lines'], tactic=int(d['tactic']), steps=d['steps'],
-                             **{k: e.get(k, '') for k in ('explicit', 'implicit', 'strict', 'instance', 'hypotheses')}))
+                             **{k: e.get(k, '') for k in ('explicit', 'implicit', 'strict', 'instance', 'hypotheses', 'type_hash')}))
     return rows
 
 def metrics(rows):
@@ -99,7 +99,10 @@ def main():
     write(OUT / 'target-outliers.tsv', outliers, FIELDS)
     # Environment-only theorems are retained for review: most are generated
     # equation lemmas, tactic auxiliaries, or recursors, not source commands.
-    modules = {r['file'][:-5].replace('/', '.') for r in all_new}
+    classified = {r['file']: r['population'] for r in read(OUT / 'cohort-files-fb6ec518.tsv')}
+    modules = {mod(p, ROOT / 'MTC', 'MTC') for p in (ROOT / 'MTC').rglob('*.lean')
+               if classified.get(str(p.relative_to(ROOT)), 'New pivotal modules') == 'New pivotal modules'}
+    modules.update(r['file'][:-5].replace('/', '.') for r in all_new)
     matched = {r['qualified_name'] for r in all_new if r['qualified_name']}
     generated = re.compile(r'(?:\.(?:_proof_\d|_simp_\d|match_\d|eq_\d|eq_def|congr_simp|_eq_\d)|\._sunfold|\.injEq|\.ext_iff|\.ext$|\.noConfusion|\.casesOn|\.recOn|\.brecOn)')
     environment_only = []
@@ -120,6 +123,7 @@ def main():
         if row['qualified_name']:
             index[row['qualified_name']].append(row)
     unmatched = []
+    changed_types = []
     for label, base in (('fb6ec518_legacy', legacy), ('fb6ec518', original), ('3826bb02', round_two)):
         base = [r for r in base if r['population'].startswith('New pivotal modules')]
         pairs = []
@@ -134,10 +138,16 @@ def main():
         for c in all_new:
             if id(c) not in used:
                 unmatched.append({'cohort': label, 'status': 'current unpaired', **c})
-        # Original pinned scorecard lacks by-proof flags and strict binders.
+        for b, c in pairs:
+            if b.get('type_hash') and c.get('type_hash') and b['type_hash'] != c['type_hash']:
+                changed_types.append({'cohort': label, 'qualified_name': b['qualified_name'],
+                                      'before_hash': b['type_hash'], 'after_hash': c['type_hash'],
+                                      'before_file': b['file'], 'after_file': c['file']})
         results[label] = {'paired': len(pairs), 'before': metrics([b for b, _ in pairs]),
                           'after': metrics([c for _, c in pairs])}
     write(OUT / 'target-unmatched.tsv', unmatched, ['cohort', 'status'] + FIELDS)
+    write(OUT / 'target-type-hash-changes.tsv', changed_types,
+          ['cohort', 'qualified_name', 'before_hash', 'after_hash', 'before_file', 'after_file'])
     def area(row):
         file = row['file']
         if file.startswith('MTC/Braided/Cabling/'):

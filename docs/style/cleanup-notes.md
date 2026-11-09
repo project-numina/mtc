@@ -101,3 +101,7 @@ The checked mathematical head is `de467610`. The report and final documentation
 are committed afterwards; `git log -1 --format=%H -- docs/style/cleanup-notes.md`
 identifies the commit containing this record. The final integrated commit and
 complete command logs are also recorded in the run directory's `lead-status.md`.
+
+## Second target pass
+
+The second pass reuses shared actual-pure-block, Hermitian-dimension, Haar-expansion, symmetric-integrality, and infinitude arguments. It preserves existing public signatures and retains explicit premises. The expanded cohort, exact targets, exceptions, per-area totals, source-matching audit, type-hash comparison, and verification are recorded in [the target dashboard](target-report.md). The numerical proof-line and explicit-binder targets remain missed.
