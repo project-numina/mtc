@@ -50,6 +50,37 @@ theorem globalDimension_eq_sum_pivotal_norm_sq
   rw [squaredNorm_eq_pivotalDimension_mul_dual p, pivotalDimension_simple_dual_conj p]
   simpa only [Complex.ofReal_pow, Complex.star_def] using Complex.mul_conj' (pivotalDimension C p (simples C i))
 
+/-- The intrinsic global dimension is the Hermitian squared length of the
+simple pivotal dimension vector. -/
+theorem globalDimension_eq_sum_pivotal_conj_mul
+    (p : PivotalStructure (C := C.Obj)) :
+    globalDimension C = ∑ i, star (pivotalDimension C p (simples C i)) *
+      pivotalDimension C p (simples C i) := by
+  rw [globalDimension_eq_sum_pivotal_norm_sq p]
+  simp only [Complex.ofReal_sum, Complex.ofReal_pow]
+  apply Finset.sum_congr rfl
+  intro i _
+  simpa only [Complex.star_def, mul_comm] using
+    (Complex.mul_conj' (pivotalDimension C p (simples C i))).symm
+
+/-- In a pseudo-unitary category, every simple pivotal dimension attains its
+Frobenius–Perron bound, for any pivotal structure. -/
+theorem pivotalDimension_norm_eq_fp_of_pseudoUnitary
+    (p : PivotalStructure (C := C.Obj)) (hpu : PseudoUnitary C)
+    (i : Fin (rank C)) :
+    ‖pivotalDimension C p (simples C i)‖ = fpSimple C i := by
+  apply norm_saturation_of_pseudoUnitary (d := fun j ↦ pivotalDimension C p (simples C j))
+    ?_ ?_ hpu i
+  · intro j
+    exact character_norm_le_fpSimple (C := C) (i₀ := unitIndex C)
+      ((pivotalDimension_unitIndex C p).symm ▸ one_ne_zero)
+      (pivotalDimension_character C p) j
+  · intro j
+    let : Simple (simples C j) := simples_simple C j
+    rw [squaredNorm_eq_pivotalDimension_mul_dual p, pivotalDimension_simple_dual_conj p]
+    simpa only [Complex.star_def, Complex.ofReal_pow] using
+      Complex.mul_conj' (pivotalDimension C p (simples C j))
+
 /-- The intrinsic global dimension of a pivotal braided fusion category is nonzero. -/
 theorem globalDimension_ne_zero_of_pivotal (p : PivotalStructure (C := C.Obj)) :
     globalDimension C ≠ 0 := by

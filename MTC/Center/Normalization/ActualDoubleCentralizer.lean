@@ -77,12 +77,8 @@ theorem productRetract_iff_centralizes_transparentPositive_of_relative
         Nonempty (E ≅ (Center.ofBraided C.Obj).obj X)) → MTC.Center.Centralizes W E := by
   have hdet := center_categoricalS_det_ne_zero_of_relative C pZ hrelative
   have hglobal : globalDimension Z = ∑ i, star (simpleDimension Z pZ i) * simpleDimension Z pZ i := by
-    rw [MTC.Center.Induction.globalDimension_eq_sum_pivotal_norm_sq pZ]
-    simp only [Complex.ofReal_sum, Complex.ofReal_pow]
-    apply Finset.sum_congr rfl
-    intro i _
-    simpa only [simpleDimension, Complex.star_def, mul_comm] using
-      (Complex.mul_conj' (simpleDimension Z pZ i)).symm
+    simpa only [simpleDimension] using
+      MTC.Center.Induction.globalDimension_eq_sum_pivotal_conj_mul (C := Z) pZ
   have horth (x k : Fin (rank Z)) :
       (∑ y, star (categoricalS Z pZ y x) * categoricalS Z pZ y k) =
         if x = k then globalDimension Z else 0 := by

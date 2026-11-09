@@ -7,6 +7,8 @@ open MTC.Fusion MTC.Braided MTC.Center.Braid MTC.CategoryTheory.Dimensions
 
 These lemmas analyze fusion-character scalar ratios and the normalization
 of a fusion subring whose simple dimensions attain their FP bounds.
+`transparent_norm_saturation_of_adjoint_positivity` later proves the needed
+saturation for the transparent labels.
 -/
 
 @[expose] public noncomputable section
@@ -27,13 +29,8 @@ theorem eq_one_of_weighted_unit_disc {ι : Type*} [Fintype ι]
       ((Complex.re_le_norm _).trans (hz j)) (hw j)
   have heq := (Finset.sum_eq_sum_iff_of_le (fun j _ ↦ hle j)).mp hre i (Finset.mem_univ i)
   have hr : (z i).re = 1 := by nlinarith
-  have hnorm : Complex.normSq (z i) ≤ 1 := by
-    rw [Complex.normSq_eq_norm_sq]
-    have hn := hz i
-    nlinarith [norm_nonneg (z i)]
-  have him : (z i).im = 0 := by
-    simp only [Complex.normSq_apply, hr, one_mul] at hnorm
-    nlinarith [sq_nonneg (z i).im]
+  have hnorm : ‖z i‖ = 1 := le_antisymm (hz i) (hr ▸ Complex.re_le_norm _)
+  have him : (z i).im = 0 := Complex.abs_re_eq_norm.mp (by rw [hr, hnorm, abs_one])
   apply Complex.ext <;> simp [hr, him]
 
 

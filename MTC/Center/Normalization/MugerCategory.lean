@@ -280,18 +280,7 @@ theorem transparent_norm_saturation_of_muger_pseudoUnitary
     ‖pivotalDimension C p (simples C i)‖ = fpSimple C i := by
   let M := bundledMuger C
   let pM := mugerPivotal C p
-  let d (j : Fin (rank M)) := pivotalDimension M pM (simples M j)
-  have hbound (j : Fin (rank M)) : ‖d j‖ ≤ fpSimple M j :=
-    character_norm_le_fpSimple (C := M) (i₀ := unitIndex M)
-      ((pivotalDimension_unitIndex M pM).symm ▸ one_ne_zero)
-      (pivotalDimension_character M pM) j
-  have hnorm (j : Fin (rank M)) : squaredNorm M (simples M j) = ((‖d j‖ ^ 2 : ℝ) : ℂ) := by
-    let : Simple (simples M j) := simples_simple M j
-    rw [MTC.Center.Induction.squaredNorm_eq_pivotalDimension_mul_dual pM,
-      MTC.Center.Induction.pivotalDimension_simple_dual_conj (C := M) pM]
-    simpa only [d, Complex.star_def, Complex.ofReal_pow] using
-      Complex.mul_conj' (pivotalDimension M pM (simples M j))
-  have hsat := norm_saturation_of_pseudoUnitary hbound hnorm hpu
+  have hsat := MTC.Center.Induction.pivotalDimension_norm_eq_fp_of_pseudoUnitary pM hpu
   let X : MugerCategory C := mugerSimple C ⟨i, (mem_mugerLabels C i).mpr hi⟩
   let : Simple X := mugerSimple_simple C _
   obtain ⟨j, ⟨e⟩⟩ := exists_simple_iso M X

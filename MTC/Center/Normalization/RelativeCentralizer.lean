@@ -9,6 +9,8 @@ open MTC.PropertyF.Reduction MTC.Modular
 
 The relative numerical-to-actual criterion is an explicit hypothesis here.
 This file shows how its product-label instance enters the centre reduction.
+`MTC.PropertyF.Pivotal.relative_fusionSubring_numerical_centrality` later
+proves the criterion for arbitrary fusion subrings.
 -/
 
 @[expose] public noncomputable section
