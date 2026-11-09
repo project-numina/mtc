@@ -56,12 +56,8 @@ theorem globalDimension_eq_sum_pivotal_conj_mul
     (p : PivotalStructure (C := C.Obj)) :
     globalDimension C = ∑ i, star (pivotalDimension C p (simples C i)) *
       pivotalDimension C p (simples C i) := by
-  rw [globalDimension_eq_sum_pivotal_norm_sq p]
-  simp only [Complex.ofReal_sum, Complex.ofReal_pow]
-  apply Finset.sum_congr rfl
-  intro i _
-  simpa only [Complex.star_def, mul_comm] using
-    (Complex.mul_conj' (pivotalDimension C p (simples C i))).symm
+  simpa only [Complex.ofReal_sum, Complex.ofReal_pow, ← Complex.mul_conj',
+    Complex.star_def, mul_comm] using globalDimension_eq_sum_pivotal_norm_sq p
 
 /-- In a pseudo-unitary category, every simple pivotal dimension attains its
 Frobenius–Perron bound, for any pivotal structure. -/
@@ -86,11 +82,9 @@ theorem globalDimension_ne_zero_of_pivotal (p : PivotalStructure (C := C.Obj)) :
     globalDimension C ≠ 0 := by
   rw [globalDimension_eq_sum_pivotal_norm_sq p]
   apply Complex.ofReal_ne_zero.mpr
-  have h : 1 ≤ ∑ i : Fin (rank C), ‖pivotalDimension C p (simples C i)‖ ^ 2 := by
-    simpa only [pivotalDimension_unitIndex, norm_one, one_pow] using
-      (Finset.single_le_sum (fun (i : Fin (rank C)) _ ↦ sq_nonneg
-        ‖pivotalDimension C p (simples C i)‖) (Finset.mem_univ (unitIndex C)))
-  linarith
+  apply ne_of_gt
+  apply Finset.sum_pos' (fun i _ ↦ sq_nonneg ‖pivotalDimension C p (simples C i)‖)
+  exact ⟨unitIndex C, Finset.mem_univ _, by simp [pivotalDimension_unitIndex]⟩
 
 /-- The dimension of an induced underlying object is the global dimension of
 the base times the dimension of the object. -/

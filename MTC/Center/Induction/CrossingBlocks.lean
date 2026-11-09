@@ -150,11 +150,22 @@ abbrev nestedCrossingBlock (X T U : C.Obj) (i k j : Fin (rank C))
     ((α_ T U (Sᶜ j)).hom ≫ (T ◁ crossingProjection U k j b) ≫
       crossingProjection T i k a)
 
+/-- Inclusions and projections of a fixed simple label pair by the Kronecker delta. -/
+theorem simpleInclusion_projection_delta {C : BraidedFusionCategory.{v,u}} {V : C.Obj}
+    {i : Fin (rank C)} (a b : Fin (finrank ℂ (simples C i ⟶ V))) :
+    simpleInclusion C V i a ≫ simpleProjection V i b =
+      if a = b then 𝟙 (simples C i) else 0 := by
+  classical
+  by_cases h : a = b
+  · subst b
+    simp [simpleProjection, simpleInclusion]
+  · simp [simpleProjection, simpleInclusion, Category.assoc, h]
+
 /-- Inclusion and projection of the same simple summand compose to the identity. -/
 theorem simpleInclusion_projection {C : BraidedFusionCategory.{v,u}} {V : C.Obj}
     {i : Fin (rank C)} (a : Fin (finrank ℂ (simples C i ⟶ V))) :
     simpleInclusion C V i a ≫ simpleProjection V i a = 𝟙 (simples C i) := by
-  simp [simpleProjection, simpleInclusion]
+  simpa using simpleInclusion_projection_delta a a
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The simple-decomposition projection/inclusion pairs resolve the identity. -/
