@@ -55,10 +55,7 @@ theorem pivotalDimension_eq_fp_of_positive_fusionSubring
       exact mul_le_mul_of_nonneg_left hkmin (Nat.cast_nonneg _)
   have hleft : (∑ k, (fusionCoeff C a (dualIndex C a) k : ℝ) * (t a * fpSimple C k)) =
       t a * fpSimple C a ^ 2 := by
-    rw [hfp, Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro k hk
-    ring
+    simp_rw [mul_left_comm (fusionCoeff C a (dualIndex C a) _ : ℝ), ← Finset.mul_sum, ← hfp]
   have hratio : r = t a * fpSimple C a := by
     dsimp [t]
     rw [hd, div_mul_cancel₀ _ (ne_of_gt (fpSimple_pos C a))]

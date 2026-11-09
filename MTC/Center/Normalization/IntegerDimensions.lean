@@ -87,11 +87,9 @@ theorem pseudoUnitary_of_integer_dimensions_and_center_fp_orthogonality
     rw [← hgram]
     simp only [hcol, star_mul, Complex.star_def, Complex.conj_ofReal,
       globalFPDimension, Complex.ofReal_sum, Complex.ofReal_pow, Finset.mul_sum]
+    simp only [← Complex.conj_mul' d]
     apply Finset.sum_congr rfl
     intro k hk
-    have hc := Complex.conj_mul' d
-    dsimp [d] at hc ⊢
-    rw [← hc]
     ring
   have hdim : globalDimension C = (r : ℂ) :=
     MTC.Center.Induction.globalDimension_eq_sum_pivotal_norm_sq p
@@ -101,11 +99,9 @@ theorem pseudoUnitary_of_integer_dimensions_and_center_fp_orthogonality
     exact_mod_cast hgram'
   have hnormsq : (1 : ℝ) ≤ ‖d‖ ^ 2 := by nlinarith [norm_nonneg d]
   have hsq : globalFPDimension C ^ 2 ≤ r ^ 2 := by
-    calc
-      _ = 1 * globalFPDimension C ^ 2 := by ring
-      _ ≤ ‖d‖ ^ 2 * globalFPDimension C ^ 2 :=
-        mul_le_mul_of_nonneg_right hnormsq (sq_nonneg _)
-      _ = _ := hsquare.symm
+    rw [hsquare]
+    simpa only [one_mul] using mul_le_mul_of_nonneg_right hnormsq
+      (sq_nonneg (globalFPDimension C))
   have heq : r = globalFPDimension C :=
     le_antisymm hupper ((sq_le_sq₀ hf.le hr).mp hsq)
   change globalDimension C = (globalFPDimension C : ℂ)

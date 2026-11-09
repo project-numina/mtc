@@ -21,17 +21,14 @@ theorem eq_one_of_weighted_unit_disc {ι : Type*} [Fintype ι]
     (w : ι → ℝ) (z : ι → ℂ) (hw : ∀ i, 0 ≤ w i) (hz : ∀ i, ‖z i‖ ≤ 1)
     (hsum : (∑ i, (w i : ℂ) * z i) = ((∑ i, w i : ℝ) : ℂ))
     (i : ι) (hi : 0 < w i) : z i = 1 := by
-  have hre : (∑ i, w i * (z i).re) = ∑ i, w i := by
-    have h := congrArg Complex.re hsum
-    simpa [Complex.mul_re] using h
-  have hle (j : ι) : w j * (z j).re ≤ w j := by
-    simpa only [mul_one] using mul_le_mul_of_nonneg_left
-      ((Complex.re_le_norm _).trans (hz j)) (hw j)
-  have heq := (Finset.sum_eq_sum_iff_of_le (fun j _ ↦ hle j)).mp hre i (Finset.mem_univ i)
-  have hr : (z i).re = 1 := by nlinarith
-  have hnorm : ‖z i‖ = 1 := le_antisymm (hz i) (hr ▸ Complex.re_le_norm _)
-  have him : (z i).im = 0 := Complex.abs_re_eq_norm.mp (by rw [hr, hnorm, abs_one])
-  apply Complex.ext <;> simp [hr, him]
+  have h := complex_weighted_saturation (f := fun _ ↦ 1) (N := w)
+    (x := fun j ↦ (w j : ℂ) * z j) (fun _ ↦ zero_lt_one)
+    (fun j ↦ by simpa [norm_mul, Real.norm_eq_abs, abs_of_nonneg (hw j)] using
+      mul_le_mul_of_nonneg_left (hz j) (hw j)) (by simpa using hsum) i
+  have hwi : (w i : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr (ne_of_gt hi)
+  apply mul_left_cancel₀ hwi
+  simpa using h
+
 
 
 universe v u

@@ -41,10 +41,7 @@ theorem symmetric_fpDimension_integer_of_pseudoUnitary
   classical
   choose d hd using symmetric_fpSimple_positive_integer_of_pseudoUnitary C hsym hpu
   refine ⟨∑ i, simpleMultiplicity C i X * d i, ?_⟩
-  simp only [fpDimension, Nat.cast_sum, Nat.cast_mul]
-  apply Finset.sum_congr rfl
-  intro i hi
-  exact congrArg (fun z : ℝ => (simpleMultiplicity C i X : ℝ) * z) (hd i).2
+  simp only [fpDimension, Nat.cast_sum, Nat.cast_mul, fun i ↦ (hd i).2]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- If the actual Müger category is pseudo-unitary, all its actual objects
