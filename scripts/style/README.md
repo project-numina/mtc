@@ -33,3 +33,10 @@ changes, and inventories environment-only theorem names. The optional
 checks proof-valued definitions and opaque declarations through Lean. Generated
 name classification is heuristic; the full declaration audit remains the
 independent safeguard for private and generated proofs.
+
+The dashboard also reports each target's two interpolation boundary positions,
+values and tie counts, plus a fixed-population lower bound on the number of
+declarations that would need numerical reductions. This bound allows arbitrary
+reductions and says nothing about whether a proposed change is mathematically
+valid or improves the API. Middle-length proofs are ranked by file to guide
+shared-mathematics review; changes to the population require fresh measurement.

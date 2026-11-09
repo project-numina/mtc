@@ -8,6 +8,7 @@ import argparse
 import collections
 import csv
 import json
+import math
 import re
 import subprocess
 from pathlib import Path
@@ -76,6 +77,31 @@ def metrics(rows):
     result['total_binders'] = {'n': len(total), 'sum': sum(total), 'p25_median_p75_p90_p99_max': quant(total)}
     return result
 
+def target_gap(values, percentile, target, minimum):
+    """Lower bound on changes at fixed population, allowing arbitrary reductions.
+
+    The estimate ignores mathematical and API constraints. It considers the
+    same interpolation as the survey, including ties at the two order stats.
+    """
+    values = sorted(values)
+    if not values:
+        return None
+    position = (len(values) - 1) * percentile
+    lo, hi = math.floor(position), math.ceil(position)
+    weight = position - lo
+    def best_after(changes):
+        def at(index):
+            return values[index - changes] if index >= changes else minimum
+        return at(lo) * (1 - weight) + at(hi) * weight
+    changes = next(k for k in range(len(values) + 1) if best_after(k) <= target)
+    return {'n': len(values), 'target': target,
+            'boundary_positions_one_based': [lo + 1, hi + 1],
+            'boundary_values': [values[lo], values[hi]],
+            'at_or_below_target': sum(v <= target for v in values),
+            'equal_to_target': sum(v == target for v in values),
+            'above_target': sum(v > target for v in values),
+            'minimum_distinct_reductions_relaxed': changes}
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--pin-round-two', action='store_true')
@@ -118,6 +144,17 @@ def main():
         'source_unmatched': sum(r['match'] != 'unique' for r in all_new),
         'environment_only': len(environment_only),
         'environment_only_review': sum(r['classification'] == 'review' for r in environment_only)}}
+    results['target_gaps'] = {}
+    for key, percentile, target, minimum in (
+            ('proof_lines', .5, 3, 1), ('proof_lines', .9, 12, 1),
+            ('explicit', .5, 2, 0), ('explicit', .9, 5, 0)):
+        values = [int(r[key]) for r in all_new if r.get(key, '') not in ('', '999999')]
+        results['target_gaps'][f'{key}_p{int(percentile * 100)}'] = {
+            'missing': len(all_new) - len(values),
+            **(target_gap(values, percentile, target, minimum) or {})}
+    middle = collections.Counter(r['file'] for r in all_new if 4 <= int(r['proof_lines']) <= 12)
+    results['middle_proofs_by_file'] = [
+        {'file': file, 'count': count} for file, count in middle.most_common()]
     index = collections.defaultdict(list)
     for row in current:
         if row['qualified_name']:

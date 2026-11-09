@@ -103,6 +103,610 @@
     "environment_only": 544,
     "environment_only_review": 0
   },
+  "target_gaps": {
+    "proof_lines_p50": {
+      "missing": 0,
+      "n": 720,
+      "target": 3,
+      "boundary_positions_one_based": [
+        360,
+        361
+      ],
+      "boundary_values": [
+        6,
+        6
+      ],
+      "at_or_below_target": 181,
+      "equal_to_target": 79,
+      "above_target": 539,
+      "minimum_distinct_reductions_relaxed": 180
+    },
+    "proof_lines_p90": {
+      "missing": 0,
+      "n": 720,
+      "target": 12,
+      "boundary_positions_one_based": [
+        648,
+        649
+      ],
+      "boundary_values": [
+        19,
+        19
+      ],
+      "at_or_below_target": 578,
+      "equal_to_target": 21,
+      "above_target": 142,
+      "minimum_distinct_reductions_relaxed": 71
+    },
+    "explicit_p50": {
+      "missing": 0,
+      "n": 720,
+      "target": 2,
+      "boundary_positions_one_based": [
+        360,
+        361
+      ],
+      "boundary_values": [
+        3,
+        3
+      ],
+      "at_or_below_target": 232,
+      "equal_to_target": 145,
+      "above_target": 488,
+      "minimum_distinct_reductions_relaxed": 129
+    },
+    "explicit_p90": {
+      "missing": 0,
+      "n": 720,
+      "target": 5,
+      "boundary_positions_one_based": [
+        648,
+        649
+      ],
+      "boundary_values": [
+        6,
+        6
+      ],
+      "at_or_below_target": 610,
+      "equal_to_target": 71,
+      "above_target": 110,
+      "minimum_distinct_reductions_relaxed": 39
+    }
+  },
+  "middle_proofs_by_file": [
+    {
+      "file": "MTC/Braided/Cabling/PureSumColored.lean",
+      "count": 15
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/NondegeneracyHaar.lean",
+      "count": 14
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/AdjointObjectsSupport.lean",
+      "count": 10
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/NondegeneracyHaarSlide.lean",
+      "count": 10
+    },
+    {
+      "file": "MTC/Algebra/ComplexBlockTrace.lean",
+      "count": 9
+    },
+    {
+      "file": "MTC/Center/Induction/PivotalFusion.lean",
+      "count": 8
+    },
+    {
+      "file": "MTC/Center/Normalization/AdjointRelation.lean",
+      "count": 8
+    },
+    {
+      "file": "MTC/Center/Normalization/MugerCategory.lean",
+      "count": 8
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/SlopeTrace.lean",
+      "count": 8
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureColoredContext.lean",
+      "count": 7
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/GeneratedCategory.lean",
+      "count": 7
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/NondegeneracyHaarSnake.lean",
+      "count": 7
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureColoredBridge.lean",
+      "count": 6
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureCommonInterface.lean",
+      "count": 6
+    },
+    {
+      "file": "MTC/Braided/Cabling/ColorBiproductConstant.lean",
+      "count": 6
+    },
+    {
+      "file": "MTC/Center/Normalization/AdjointQuotient.lean",
+      "count": 6
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/SlopeSquare.lean",
+      "count": 6
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureFirstBlock.lean",
+      "count": 5
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureFour.lean",
+      "count": 5
+    },
+    {
+      "file": "MTC/Braided/Cabling/ColorBiproduct.lean",
+      "count": 5
+    },
+    {
+      "file": "MTC/Braided/Cabling/PureSumPositiveState.lean",
+      "count": 5
+    },
+    {
+      "file": "MTC/Braided/Cabling/PureSumPreservation.lean",
+      "count": 5
+    },
+    {
+      "file": "MTC/Center/Normalization/BinomialAnalytic.lean",
+      "count": 5
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/NondegeneracyHaarBasis.lean",
+      "count": 5
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureSweep.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureTwoBlockPower.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/Braided/Trace/InverseMonodromy.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/Center/Braid/PivotalRegularSupport.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/Center/Normalization/SubringCharacter.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/Center/Normalization/SubringGrading.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/Center/Normalization/SymmetricSquares.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/Center/Normalization/UniversalGrading.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/AdjointObjects.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/Galois.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/GaloisDimensionTransport.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/GeneratedConsequences.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/InfiniteImages.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/MonoidalDual.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/SlopePower.lean",
+      "count": 4
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureBlockContext.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureInsertion.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureInsertionCompare.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureLeftInsertion.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureMergeCommon.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureTwoRow.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Braided/Cabling/PureSumPrefix.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Braided/Trace/SaturationSquare.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Center/Normalization/FusionSubringSupport.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Center/Normalization/MugerFPIntegral.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Center/Normalization/MugerLabels.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Center/Normalization/MugerObjectNormalization.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Center/Normalization/ScalarFusionCharacter.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Center/Normalization/SymmetricBinomial.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Center/Normalization/SymmetricPivotal.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/SlopeDefect.lean",
+      "count": 3
+    },
+    {
+      "file": "MTC/Braided/Cabling/BlockFiniteSum.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureBlockProof.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureCanonicalBlocks.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureColoredWords.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureCrossing.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureFlattenCompare.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureFlattenConcat.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureFlattenLocalCompare.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureIsoWord.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureLocalFlatten.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/ColorBiproductPositive.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Cabling/PureSumSigned.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Braided/Trace/MonodromyBound.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Center/Normalization/AdjointDegrees.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Center/Normalization/CenterLemma.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Center/Normalization/CharacterExtension.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Center/Normalization/CommonCentralizer.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Center/Normalization/DualContraction.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Center/Normalization/FPPlacement.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Center/Normalization/ProductCategory.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Center/Normalization/RelativeCentralizer.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Center/Normalization/SymmetricInteger.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/ClosureFinalReduction.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/FPGlobalDimension.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/FPSquareIntegral.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/GlobalCriterionConsequences.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/Nondegeneracy.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/NondegeneracyConverse.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/NondegeneracyRelative.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/Nondegenerate.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/ObjectwiseMain.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/PositivePowers.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/SOrthogonality.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/SScalarTwist.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/SymmetricPropertyF.lean",
+      "count": 2
+    },
+    {
+      "file": "MTC/Algebra/ComplexBraidSaturation.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/BlockFinite.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureAssembly.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureColoredCrossing.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureColoredFlatten.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureFlattenCoherence.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureGeneratorOrder.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureImage.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureInterchange.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureJoinCompare.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosurePure.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureRecursiveFlatten.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureReindex.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureSplitMerge.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ClosureUnit.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ColorBiproductFinite.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/ColorBiproductLetters.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/PureSumCabling.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Cabling/PureSumInverse.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Trace/ComplexSaturation.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Braided/Trace/SphericalSaturation.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Center/Normalization/ActualDoubleCentralizer.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Center/Normalization/AlgebraicDimension.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Center/Normalization/BinomialArithmetic.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Center/Normalization/IntegerDimensions.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Center/Normalization/MugerNormalization.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Center/Normalization/PivotalTwist.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Center/Normalization/ProductCategoryPivotal.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/Center/Normalization/ProductGenerator.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/CenterAdjointReduction.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/CenterGenerated.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/CenterLemma.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/CenterNondegenerate.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/CenterReduction.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/Centralizer.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/ConjugateCorollary.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/DegenerateConsequences.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/DegenerateRelative.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/NondegeneracyHaarMate.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/NormalizedConjugates.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/ObjectwiseConsequences.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/PositiveClosure.lean",
+      "count": 1
+    },
+    {
+      "file": "MTC/PropertyF/Pivotal/RelativeCriterionConsequences.lean",
+      "count": 1
+    }
+  ],
   "fb6ec518_legacy": {
     "paired": 690,
     "before": {
