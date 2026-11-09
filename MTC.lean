@@ -10,14 +10,9 @@ public import MTC.AnyonAtlas.Raw
 public import MTC.AnyonAtlas.Sample
 public import MTC.Braided.BraidAlgebra
 public import MTC.Braided.Cabling.BlockFinite
-public import MTC.Braided.Cabling.BlockFiniteBraid
-public import MTC.Braided.Cabling.BlockFiniteGroups
 public import MTC.Braided.Cabling.BlockFiniteSum
-public import MTC.Braided.Cabling.ClosureAdjacentCoherence
 public import MTC.Braided.Cabling.ClosureAssembly
 public import MTC.Braided.Cabling.ClosureBlockContext
-public import MTC.Braided.Cabling.ClosureBlockFinite
-public import MTC.Braided.Cabling.ClosureBlockInduction
 public import MTC.Braided.Cabling.ClosureBlockProof
 public import MTC.Braided.Cabling.ClosureBlockWord
 public import MTC.Braided.Cabling.ClosureCanonicalBlocks
@@ -35,9 +30,7 @@ public import MTC.Braided.Cabling.ClosureFlattenCoherence
 public import MTC.Braided.Cabling.ClosureFlattenCompare
 public import MTC.Braided.Cabling.ClosureFlattenConcat
 public import MTC.Braided.Cabling.ClosureFlattenLocalCompare
-public import MTC.Braided.Cabling.ClosureFlattenUnit
 public import MTC.Braided.Cabling.ClosureFour
-public import MTC.Braided.Cabling.ClosureFourTail
 public import MTC.Braided.Cabling.ClosureGeneratorOrder
 public import MTC.Braided.Cabling.ClosureImage
 public import MTC.Braided.Cabling.ClosureInsertion
@@ -55,7 +48,6 @@ public import MTC.Braided.Cabling.ClosureRecursiveFlatten
 public import MTC.Braided.Cabling.ClosureReindex
 public import MTC.Braided.Cabling.ClosureSplitMerge
 public import MTC.Braided.Cabling.ClosureSweep
-public import MTC.Braided.Cabling.ClosureSweepContext
 public import MTC.Braided.Cabling.ClosureTwoBlockPower
 public import MTC.Braided.Cabling.ClosureTwoRow
 public import MTC.Braided.Cabling.ClosureUnit
@@ -70,8 +62,6 @@ public import MTC.Braided.Cabling.PureSum
 public import MTC.Braided.Cabling.PureSumCabling
 public import MTC.Braided.Cabling.PureSumColored
 public import MTC.Braided.Cabling.PureSumInverse
-public import MTC.Braided.Cabling.PureSumPositive
-public import MTC.Braided.Cabling.PureSumPositiveCabling
 public import MTC.Braided.Cabling.PureSumPositiveState
 public import MTC.Braided.Cabling.PureSumPrefix
 public import MTC.Braided.Cabling.PureSumPreservation
