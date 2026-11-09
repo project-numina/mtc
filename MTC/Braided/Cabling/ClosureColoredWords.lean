@@ -63,8 +63,7 @@ theorem coloredPowerStateWord_mem_of_letters (X : C) (n N : ℕ) (G : Subgroup (
     have hm := G.mul_mem hw ha
     convert hm using 1
     apply Aut.ext
-    apply Iso.ext
-    simp [coloredPowerStateWordIso, coloredPowerWordState, Iso.trans_hom, Category.assoc]
+    simp [coloredPowerStateWordIso, coloredPowerWordState, Iso.trans_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The state-indexed word is the actual colored word, with the same letters

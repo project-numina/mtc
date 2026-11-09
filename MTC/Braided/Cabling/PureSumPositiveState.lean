@@ -62,15 +62,8 @@ theorem coloredPowerStateWord_mem_of_positive_letters (X : C) (n N : ℕ)
         coloredPowerStateWordIso X n N w s ≪≫
         coloredPowerStateFlatten X n N (coloredPowerWordState n N w s)) ∈ G
   | [], s, _ => by
-    have hid : Aut.of ((coloredPowerStateFlatten X n N s).symm ≪≫
-        Iso.refl _ ≪≫ coloredPowerStateFlatten X n N s) = 1 := by
-      apply Aut.ext
-      apply Iso.ext
-      simp
-    change Aut.of ((coloredPowerStateFlatten X n N s).symm ≪≫
-      Iso.refl _ ≪≫ coloredPowerStateFlatten X n N s) ∈ G
-    rw [hid]
-    exact G.one_mem
+    simpa only [coloredPowerStateWordIso, coloredPowerWordState, Iso.refl_trans,
+      Iso.symm_self_id] using (show Aut.of (Iso.refl (tensorPower X N)) ∈ G from G.one_mem)
   | a :: w, s, hs => by
     have ha := h s hs a
     have hw := coloredPowerStateWord_mem_of_positive_letters X n N G h w
@@ -78,8 +71,7 @@ theorem coloredPowerStateWord_mem_of_positive_letters (X : C) (n N : ℕ)
     have hm := G.mul_mem hw ha
     convert hm using 1
     apply Aut.ext
-    apply Iso.ext
-    simp [coloredPowerStateWordIso, coloredPowerWordState, Iso.trans_hom, Category.assoc]
+    simp [coloredPowerStateWordIso, coloredPowerWordState, Iso.trans_assoc]
 
 /-- Positive membership on positive-width states supplies both signs there. -/
 theorem coloredPower_positive_letters_mem (X : C) (n N : ℕ)

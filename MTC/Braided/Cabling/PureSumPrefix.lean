@@ -117,9 +117,9 @@ theorem coloredPower_succ_prefix_eq (X : C) (n m : ℕ)
   simp only [Iso.conjAut_apply]
   have hc := coloredGenerator_succ_flatten_heq X n i k
   have hs := coloredPowerStateFlatten_heq X (n + 1) _ ⟨k, hfull⟩
-  have ht := coloredPowerStateFlatten_heq X n (m + 2) ⟨fun j => k j.succ, htail⟩
   have hs' := coloredPowerStateFlatten_heq X (n + 1) _
     (coloredPowerSwap (n + 1) _ i.succ ⟨k, hfull⟩)
+  have ht := coloredPowerStateFlatten_heq X n (m + 2) ⟨fun j => k j.succ, htail⟩
   have ht' := coloredPowerStateFlatten_heq X n (m + 2)
     (coloredPowerSwap n (m + 2) i ⟨fun j => k j.succ, htail⟩)
   have hswap : (∑ j : Fin (n + 2), k (coloredSwap n i j).succ) = m + 2 := by
@@ -138,24 +138,17 @@ theorem coloredPower_succ_prefix_eq (X : C) (n m : ℕ)
   all_goals congr 2
   all_goals try exact hs
   all_goals try exact hs'
-  all_goals try exact ht
-  all_goals try exact ht'
-  all_goals try simp [coloredLetter, coloredPowerSwap, coloredSwap, Fin.cases_succ,
+  all_goals try simp [coloredPowerSwap, coloredSwap, Fin.cases_succ,
     Fin.cases_zero, powerIndexIso, strandSum_eq_add, Fin.sum_univ_succ, htail, hswap]
   all_goals try omega
   all_goals try (congr 1 <;> omega)
-  all_goals try (simpa only [htail, hswap] using (iso_trans_eqToIso_heq _ _).symm)
   all_goals congr 2
-  all_goals try exact ht.symm
-  all_goals try exact ht'.symm
-  all_goals try simp [coloredPowerSwap, htail, hswap]
+  all_goals try simp [htail, hswap]
   all_goals try omega
   all_goals try (congr 1 <;> omega)
-  all_goals try (simp only [htail, hswap]; exact (iso_trans_eqToIso_heq _ _).symm)
   all_goals congr 2
   all_goals try exact ht.symm
   all_goals try exact ht'.symm
-  all_goals try simp [htail, hswap]
   all_goals try omega
   all_goals try (congr 1 <;> omega)
   all_goals first
