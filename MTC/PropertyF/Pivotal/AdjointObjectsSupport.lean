@@ -32,10 +32,8 @@ theorem supportedOn_unit {A : Finset (Fin (rank C))} (hA : IsFusionSubring C A) 
     simpa [simpleMultiplicity] using
       ((CategoryTheory.Linear.homCongr ℂ (Iso.refl (simples C i)) (unitIndex_iso C).some.symm).finrank_eq.trans
         (finrank_simples_hom C i (unitIndex C)))
-  rw [hm] at hi
-  split_ifs at hi with he
-  · simpa [he] using hA.unit
-  · simp at hi
+  have he : i = unitIndex C := by simpa [hm, apply_ite] using hi
+  simpa [he] using hA.unit
 
 theorem supportedOn_tensor {A : Finset (Fin (rank C))} (hA : IsFusionSubring C A)
     {X Y : C.Obj} (hX : SupportedOn C A X) (hY : SupportedOn C A Y) :

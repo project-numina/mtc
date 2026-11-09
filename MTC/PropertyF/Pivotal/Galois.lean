@@ -71,14 +71,11 @@ of that automorphism with complex conjugation is assumed. -/
 theorem globalDimension_scalarTwist : globalDimension Cσ = σ (globalDimension C) := by
   obtain ⟨e, he⟩ := Modular.simpleLabels_equiv C Cσ (CategoryTheory.Equivalence.refl)
   rw [globalDimension, globalDimension, map_sum]
-  calc
-    (∑ i, squaredNorm Cσ (simples Cσ i)) = ∑ i, squaredNorm Cσ (simples Cσ (e i)) :=
-      (e.sum_comp _).symm
-    _ = ∑ i, σ (squaredNorm C (simples C i)) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [← squaredNorm_scalarTwist]
-      exact (MTC.CategoryTheory.Dimensions.target_squaredNorm_iso Cσ (he i).some).symm
+  symm
+  apply Fintype.sum_equiv e
+  intro i
+  rw [← squaredNorm_scalarTwist]
+  exact MTC.CategoryTheory.Dimensions.target_squaredNorm_iso Cσ (he i).some
 
 /-- If every represented Galois conjugate is pseudo-unitary, the global FP
 dimension is fixed by all complex field automorphisms. -/

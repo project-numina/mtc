@@ -231,11 +231,10 @@ theorem leftPartialTrace_monodromy_of_dual_sTest (k i : Fin (rank C))
   rw [simpleEndScalar_mul_leftTrace] at ht
   have hd : unitScalar C (p.leftTrace (𝟙 (simples C k))) =
       star (simpleDimension C p k) := by
-    have hh := congrArg (unitScalar C) (leftTrace_eq_rightTrace_dual C p (simples C k) 1)
-    simp only [End.one_asHom, rightAdjointMate_id] at hh
-    change unitScalar C (p.leftTrace (𝟙 (simples C k))) =
-      pivotalDimension C p ((simples C k)ᘁ) at hh
-    exact hh.trans (pivotalDimension_dual_conj C p (simples C k))
+    change unitScalar C (p.leftTrace (1 : End (simples C k)).asHom) = _
+    rw [leftTrace_eq_rightTrace_dual C p _ (1 : End (simples C k))]
+    simpa [pivotalDimension, simpleDimension] using
+      pivotalDimension_dual_conj C p (simples C k)
   rw [hd, leftTrace_monodromy_of_dual_sTest C p k i hs] at ht
   have hn : star (simpleDimension C p k) ≠ 0 := by
     simpa using ((map_ne_zero (starRingEnd ℂ)).2 (simpleDimension_ne_zero C p k))

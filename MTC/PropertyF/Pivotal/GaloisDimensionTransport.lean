@@ -60,15 +60,12 @@ theorem globalDimension_galois (h : GaloisConjugate C D σ) :
     globalDimension D = σ (globalDimension C) := by
   obtain ⟨e, he⟩ := MTC.Modular.simpleLabels_equiv C D h.equivalence
   rw [globalDimension, globalDimension, map_sum]
-  calc
-    (∑ i, squaredNorm D (simples D i)) = ∑ i, squaredNorm D (simples D (e i)) :=
-      (e.sum_comp _).symm
-    _ = ∑ i, σ (squaredNorm C (simples C i)) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      letI : Simple (simples C i) := simples_simple C i
-      rw [← squaredNorm_galois h (simples C i)]
-      exact (target_squaredNorm_iso D (he i).some).symm
+  symm
+  apply Fintype.sum_equiv e
+  intro i
+  letI : Simple (simples C i) := simples_simple C i
+  rw [← squaredNorm_galois h (simples C i)]
+  exact target_squaredNorm_iso D (he i).some
 
 /-- Pseudo-unitarity of the canonical scalar twist implies pseudo-unitarity
 of every semilinearly equivalent presentation of that conjugate. -/
