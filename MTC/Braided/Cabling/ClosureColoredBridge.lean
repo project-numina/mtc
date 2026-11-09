@@ -87,10 +87,11 @@ theorem coloredGenerator_two_flatten_heq (X : C) (k : Fin 2 → ℕ) :
     Iso.refl_hom, Iso.refl_inv, id_tensorHom, Category.assoc]
   monoidal
 
+omit [BraidedCategory C] [Abelian C] in
 set_option backward.isDefEq.respectTransparency false in
 /-- The crossing between two positive-width canonical joins is the explicit
 rectangular braid word, up to index transport. -/
-theorem joinCross_word_heq (X : C) (r s : ℕ) :
+theorem joinCross_word_heq (X : C) [BraidedCategory C] [Abelian C] (r s : ℕ) :
     ((joinPowerIso X (r+1) (s+1)).symm ≪≫
       β_ (tensorPower X (r+1)) (tensorPower X (s+1)) ≪≫
       joinPowerIso X (s+1) (r+1)) ≍

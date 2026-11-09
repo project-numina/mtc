@@ -83,7 +83,10 @@ def monoidalFunctorDualIso (F : C ⥤ D) [F.Monoidal] (X : C) :
 
 /-- The dual comparison carries the transported coevaluation to the chosen
 coevaluation. -/
-theorem monoidalFunctorDual_coevaluation (F : C ⥤ D) [F.Monoidal] (X : C) :
+theorem monoidalFunctorDual_coevaluation
+    {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+    {D : Type u'} [Category.{v'} D] [MonoidalCategory D] [RightRigidCategory D]
+    (F : C ⥤ D) [F.Monoidal] (X : C) :
     (ε F ≫ F.map (η_ X (Xᘁ)) ≫ δ F X (Xᘁ)) ≫
       F.obj X ◁ (monoidalFunctorDualIso F X).hom = η_ (F.obj X) ((F.obj X)ᘁ) := by
   have h := coevaluation_rightDualIso (exactPairingOfMonoidalFunctor F X (Xᘁ))
@@ -94,7 +97,10 @@ theorem monoidalFunctorDual_coevaluation (F : C ⥤ D) [F.Monoidal] (X : C) :
 
 /-- The chosen evaluation carries the dual comparison to the transported
 evaluation. -/
-theorem monoidalFunctorDual_evaluation (F : C ⥤ D) [F.Monoidal] (X : C) :
+theorem monoidalFunctorDual_evaluation
+    {C : Type u} [Category.{v} C] [MonoidalCategory C] [RightRigidCategory C]
+    {D : Type u'} [Category.{v'} D] [MonoidalCategory D] [RightRigidCategory D]
+    (F : C ⥤ D) [F.Monoidal] (X : C) :
     ((monoidalFunctorDualIso F X).hom ▷ F.obj X) ≫ ε_ (F.obj X) ((F.obj X)ᘁ) =
       μ F (Xᘁ) X ≫ F.map (ε_ X (Xᘁ)) ≫ η F := by
   have h := rightDualIso_evaluation (exactPairingOfMonoidalFunctor F X (Xᘁ))
