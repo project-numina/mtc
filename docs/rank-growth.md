@@ -4,10 +4,9 @@ Snapshot: Anyon Atlas export manifest generated 2026-10-15, source fingerprint
 `4e30d91d46ef0faac774a1e38c6640d6afb604214c44f8c22a81a960c237861a`.
 Source: [The Anyon Atlas, arXiv:2610.25439, Table 1 and Sections 3–4](https://arxiv.org/abs/2610.25439),
 [export manifest](https://anyonatlas.org/export-v1/manifest.json), and
-[Atlas conventions](https://anyonatlas.org/documentation). Run
-`python3 scripts/rank/atlas_growth.py` from the repository root to regenerate.
-It downloads identifier chunks into ignored `scratch/`, verifies their SHA-256
-against the manifest, and checks per-chunk and total counts.
+[Atlas conventions](https://anyonatlas.org/documentation). The numerical
+exploration tools used to produce this historical snapshot have been removed.
+
 
 The table covers all 18,332 bosonic records, including Galois conjugates. For
 maxima we select those with numerically real and strictly positive unit-row

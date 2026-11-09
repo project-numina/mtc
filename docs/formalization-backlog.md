@@ -7,7 +7,7 @@ name in that commit when starting its proof, and add the finished proof under `M
 
 | Topic | Result | Statement | Source |
 | --- | --- | --- | --- |
-| Exotic | `b11_not_weaklyIntegral` | # The rank-11 Atlas example is not weakly integral | The Anyon Atlas, arXiv:2610.25439, Section 5 and equations (5.2)–(5.3); exact corollary verified by scripts/propf/exotic_b11.py. |
+| Exotic | `b11_not_weaklyIntegral` | # The rank-11 Atlas example is not weakly integral | The Anyon Atlas, arXiv:2610.25439, Section 5 and equations (5.2)–(5.3); exact numerical check recorded during the original investigation. |
 | Fusion | `dual_dimensions` | FP dimensions of dual simple objects | Etingof–Nikshych–Ostrik, arXiv:math/0203060, Section 8. |
 | Fusion | `fusion_dimension_character` | FP dimension is a fusion-ring character | Etingof–Nikshych–Ostrik, arXiv:math/0203060, Theorem 8.6. |
 | Fusion | `globalDimension_algebraicInteger` | Global FP dimension is an algebraic integer | Drinfeld–Gelaki–Nikshych–Ostrik, arXiv:0906.0620, Section 2.4.1. |

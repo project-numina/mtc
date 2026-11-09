@@ -39,7 +39,7 @@ At proof commit `48e72d75`, with `LEAN_NUM_THREADS=4`:
 - An explicit `#print axioms` was run for all 908 public theorem declarations
   in the changed Lean modules. Each output contained only those three axioms
   or a subset. This includes the unconditional main, closure, and objectwise
-  theorems. Existing conjectures are excluded from the audited target imports.
+  theorems. The conjecture collection has since been removed; every library declaration is audited.
 
 The cleanup integration reran `scripts/check.sh` and `scripts/audit-target.sh`
 with `LEAN_NUM_THREADS=4`; both passed. An explicit per-source-theorem axiom

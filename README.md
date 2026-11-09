@@ -35,17 +35,3 @@ and `Quot.sound`.
 Existing modular-data, F/R-symbol and Anyon Atlas support remains available,
 but the project's primary deliverable is the manuscript formalization.
 See [CONTRIBUTING.md](CONTRIBUTING.md) for proof and review requirements.
-
-## Build and verify
-
-Lean and Mathlib are pinned to v4.35.0.
-
-```sh
-lake exe cache get
-scripts/check.sh
-scripts/audit-target.sh
-```
-
-These build the library, check generated imports and statement equivalence,
-run the script tests, and audit declarations and target dependencies.
-The scripts use CPU cores 0–3 by default; set `PROPERTYF_AUDIT_CORES` to change this.

@@ -27,8 +27,8 @@ unitarity after complex embedding.
 ## Local Atlas symbol blocks
 
 The Atlas catalog snapshot downloaded on 2026-10-28 provides F and R archives
-for B11-00119. The 940 MB F archive and the R archive are downloaded and
-checksum verified by `scripts/atlas/download_symbols.py`. They use power-basis
+for B11-00119. The 940 MB F archive and the R archive were downloaded and
+checksum verified during the original data investigation. They use power-basis
 coefficients in `ℚ(ζ₇₀)` and the same lexicographic fusion-tree order as the
 matrix interface. The F archive omits strict-unit blocks; restoring them is a
 separate step. The published rank-12 solution was not available as a symbol
