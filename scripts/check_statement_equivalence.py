@@ -61,7 +61,7 @@ def normalize(text):
 
 def main():
     for filename, expected in FROZEN.items():
-        actual = hashlib.sha256(normalize((ROOT / filename).read_text()).encode()).hexdigest()
+        actual = hashlib.sha256(normalize((ROOT / filename).read_text(encoding='utf-8')).encode()).hexdigest()
         if actual != expected:
             print(f'{filename}: statement-cone source differs from the recorded baseline', file=sys.stderr)
             return 1

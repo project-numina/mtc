@@ -48,7 +48,7 @@ def main():
     for path, expected in FILES.items():
         if digest((ROOT / path).read_bytes()) != expected:
             errors.append(f'{path} differs from fb6ec518')
-    text = (ROOT / 'MTC/PropertyF/Pivotal/GeneratedCategory.lean').read_text()
+    text = (ROOT / 'MTC/PropertyF/Pivotal/GeneratedCategory.lean').read_text(encoding='utf-8')
     for name, expected in GENERATED.items():
         if digest(declaration(text, name)) != expected:
             errors.append(f'generated-category declaration {name} differs from fb6ec518')

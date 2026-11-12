@@ -17,7 +17,7 @@ for name in ("ProjectAudit", "TargetAudit"):
     path = root / "MTC" / "PropertyF" / "Audit" / f"{name}.lean"
     imports = {
         line.removeprefix("import all ").strip()
-        for line in path.read_text().splitlines()
+        for line in path.read_text(encoding='utf-8').splitlines()
         if line.startswith("import all ")
     }
     missing = sorted(modules - imports)
