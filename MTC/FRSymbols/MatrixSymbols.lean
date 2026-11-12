@@ -80,17 +80,21 @@ def Hexagon₁ : Prop := ∀ a b c d e g
     s.R a b e μ β * s.F b a c d ⟨e, β, ν⟩ ⟨g, γ, κ⟩ * s.R a c g γ ell
 
 /-- Second hexagon: braid `a ⊗ b` past `c`, or braid both factors past `c`.
-The inverse F block occurs when the path re-associates in the reverse direction. -/
-def Hexagon₂ : Prop := ∀ a b c d e
+The input and output intermediate labels are independent; different labels have
+zero coefficient on the direct path. The inverse F block occurs when the path
+re-associates in the reverse direction. -/
+def Hexagon₂ : Prop := ∀ a b c d e f
     (μ : Fin (n.N a b e)) (ν : Fin (n.N e c d))
-    (α : Fin (n.N a b e)) (σ : Fin (n.N c e d)),
+    (α : Fin (n.N a b f)) (σ : Fin (n.N c f d)),
   (∑ x : L, ∑ β : Fin (n.N b c x), ∑ γ : Fin (n.N a x d),
     ∑ β' : Fin (n.N c b x), ∑ y : L, ∑ δ : Fin (n.N a c y),
     ∑ ε : Fin (n.N y b d), ∑ δ' : Fin (n.N c a y),
       s.F a b c d ⟨e, μ, ν⟩ ⟨x, β, γ⟩ * s.R b c x β β' *
       s.Finv a c b d ⟨x, β', γ⟩ ⟨y, δ, ε⟩ * s.R a c y δ δ' *
-      s.F c a b d ⟨y, δ', ε⟩ ⟨e, α, σ⟩) =
-  if μ = α then s.R e c d ν σ else 0
+      s.F c a b d ⟨y, δ', ε⟩ ⟨f, α, σ⟩) =
+  if h : e = f then
+    if h ▸ μ = α then s.R f c d (h ▸ ν) σ else 0
+  else 0
 
 /-- A choice of orthonormal trivalent bases makes every F and R block unitary
 when its supplied inverse is its conjugate transpose. Combine with

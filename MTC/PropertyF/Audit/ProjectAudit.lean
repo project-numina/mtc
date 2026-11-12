@@ -279,6 +279,7 @@ import all MTC.FRSymbols.B11Dimension
 import all MTC.FRSymbols.Cyclotomic
 import all MTC.FRSymbols.CyclotomicMatrix
 import all MTC.FRSymbols.FusionRules
+import all MTC.FRSymbols.HexagonRegression
 import all MTC.FRSymbols.MatrixGauge
 import all MTC.FRSymbols.MatrixSymbols
 import all MTC.FRSymbols.Metric

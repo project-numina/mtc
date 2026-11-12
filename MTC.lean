@@ -201,6 +201,7 @@ public import MTC.FRSymbols.B11Dimension
 public import MTC.FRSymbols.Cyclotomic
 public import MTC.FRSymbols.CyclotomicMatrix
 public import MTC.FRSymbols.FusionRules
+public import MTC.FRSymbols.HexagonRegression
 public import MTC.FRSymbols.MatrixGauge
 public import MTC.FRSymbols.MatrixSymbols
 public import MTC.FRSymbols.Metric
