@@ -34,7 +34,8 @@ def symbols : MatrixSymbols rules ℤ where
 /-- All matrix inverses, pentagon, and both hexagon equations hold. -/
 theorem coherent : symbols.Coherent := by
   simp [MatrixSymbols.Coherent, MatrixSymbols.Invertible, MatrixSymbols.Pentagon,
-    MatrixSymbols.Hexagon₁, MatrixSymbols.Hexagon₂, symbols, rules, LeftTree, RightTree]
+    MatrixSymbols.Hexagon₁, MatrixSymbols.Hexagon₂, MatrixSymbols.hexagon₂Path, symbols,
+    rules, LeftTree, RightTree]
   all_goals decide
 
 /-- The one-dimensional blocks are unitary for the standard involution on ℤ. -/

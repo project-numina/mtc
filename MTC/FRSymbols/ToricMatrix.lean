@@ -52,9 +52,8 @@ theorem matrix_hexagon₁ : matrixSymbols.Hexagon₁ := by
 
 /-- The second hexagon holds for every allowed set of fusion indices. -/
 theorem matrix_hexagon₂ : matrixSymbols.Hexagon₂ := by
-  unfold MatrixSymbols.Hexagon₂
-  intro a
-  fin_cases a <;> decide
+  unfold MatrixSymbols.Hexagon₂ MatrixSymbols.hexagon₂Path
+  constructor <;> intro a <;> fin_cases a <;> decide
 
 /-- The chosen integer blocks are unitary for the standard involution. -/
 theorem matrix_unitary : matrixSymbols.Unitary := by

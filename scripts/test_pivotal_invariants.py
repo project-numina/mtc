@@ -6,7 +6,7 @@ from check_pivotal_invariants import declaration, digest, GENERATED, ROOT
 
 class PivotalInvariantsTest(unittest.TestCase):
     def test_generated_definitions_match_baseline_and_detect_changes(self):
-        text = (ROOT / 'MTC/PropertyF/Pivotal/GeneratedCategory.lean').read_text()
+        text = (ROOT / 'MTC/PropertyF/Pivotal/GeneratedCategory.lean').read_text(encoding='utf-8')
         for name, expected in GENERATED.items():
             with self.subTest(name=name):
                 source = declaration(text, name)
