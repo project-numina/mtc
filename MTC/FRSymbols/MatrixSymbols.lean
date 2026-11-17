@@ -79,22 +79,32 @@ def Hexagon₁ : Prop := ∀ a b c d e g
   ∑ β : Fin (n.N b a e), ∑ γ : Fin (n.N a c g),
     s.R a b e μ β * s.F b a c d ⟨e, β, ν⟩ ⟨g, γ, κ⟩ * s.R a c g γ ell
 
-/-- Second hexagon: braid `a ⊗ b` past `c`, or braid both factors past `c`.
-The input and output intermediate labels are independent; different labels have
-zero coefficient on the direct path. The inverse F block occurs when the path
-re-associates in the reverse direction. -/
-def Hexagon₂ : Prop := ∀ a b c d e f
+/-- The path that braids `a` and `b` past `c` in turn: the coefficient from the
+basis vector `(e, μ, ν)` of `((a ⊗ b) ⊗ c) → d` to the basis vector `(f, α, σ)`
+of `(c ⊗ (a ⊗ b)) → d`. The inverse F block occurs when the path re-associates
+in the reverse direction. -/
+def hexagon₂Path (a b c d e f : L)
     (μ : Fin (n.N a b e)) (ν : Fin (n.N e c d))
-    (α : Fin (n.N a b f)) (σ : Fin (n.N c f d)),
-  (∑ x : L, ∑ β : Fin (n.N b c x), ∑ γ : Fin (n.N a x d),
+    (α : Fin (n.N a b f)) (σ : Fin (n.N c f d)) : K :=
+  ∑ x : L, ∑ β : Fin (n.N b c x), ∑ γ : Fin (n.N a x d),
     ∑ β' : Fin (n.N c b x), ∑ y : L, ∑ δ : Fin (n.N a c y),
     ∑ ε : Fin (n.N y b d), ∑ δ' : Fin (n.N c a y),
       s.F a b c d ⟨e, μ, ν⟩ ⟨x, β, γ⟩ * s.R b c x β β' *
       s.Finv a c b d ⟨x, β', γ⟩ ⟨y, δ, ε⟩ * s.R a c y δ δ' *
-      s.F c a b d ⟨y, δ', ε⟩ ⟨f, α, σ⟩) =
-  if h : e = f then
-    if h ▸ μ = α then s.R f c d (h ▸ ν) σ else 0
-  else 0
+      s.F c a b d ⟨y, δ', ε⟩ ⟨f, α, σ⟩
+
+/-- Second hexagon: braid `a ⊗ b` past `c`, or braid both factors past `c`.
+The direct path preserves the intermediate label and the vertex of `a ⊗ b`, so
+the input and output labels are independent: the first clause gives the
+coefficients with equal labels, and the second requires those with different
+labels to vanish. -/
+def Hexagon₂ : Prop :=
+  (∀ a b c d e (μ : Fin (n.N a b e)) (ν : Fin (n.N e c d))
+      (α : Fin (n.N a b e)) (σ : Fin (n.N c e d)),
+    s.hexagon₂Path a b c d e e μ ν α σ = if μ = α then s.R e c d ν σ else 0) ∧
+  (∀ a b c d e f (μ : Fin (n.N a b e)) (ν : Fin (n.N e c d))
+      (α : Fin (n.N a b f)) (σ : Fin (n.N c f d)),
+    e ≠ f → s.hexagon₂Path a b c d e f μ ν α σ = 0)
 
 /-- A choice of orthonormal trivalent bases makes every F and R block unitary
 when its supplied inverse is its conjugate transpose. Combine with

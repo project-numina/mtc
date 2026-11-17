@@ -2,7 +2,7 @@ module
 public import MTC.FRSymbols.MatrixSymbols
 
 /-!
-# Regression for off-diagonal second-hexagon coefficients
+# Off-diagonal second-hexagon coefficients are not implied by the diagonal ones
 
 These invertible blocks use the Fibonacci fusion rules. They satisfy the
 diagonal second-hexagon equations but have a nonzero off-diagonal coefficient.
@@ -11,7 +11,7 @@ No pentagon or first-hexagon assertion is made for these blocks.
 
 @[expose] public section
 open scoped BigOperators
-namespace MTC.FRSymbols.HexagonRegression
+namespace MTC.FRSymbols.HexagonCounterexample
 
 /-- Two labels with the fusion rule τ ⊗ τ = 𝟙 + τ. -/
 def rules : FusionRules Bool where
@@ -42,29 +42,23 @@ theorem invertible : symbols.Invertible := by
   unfold MatrixSymbols.Invertible
   decide
 
-/-- The equations checked before independent output labels were introduced. -/
-def diagonalHexagon : Prop := ∀ a b c d e
+/-- Every coefficient with equal input and output labels is as the hexagon
+requires, so these equations cannot detect the remaining coefficient. -/
+theorem diagonal_equations_hold : ∀ a b c d e
     (μ : Fin (rules.N a b e)) (ν : Fin (rules.N e c d))
     (α : Fin (rules.N a b e)) (σ : Fin (rules.N c e d)),
-  (∑ x : Bool, ∑ β : Fin (rules.N b c x), ∑ γ : Fin (rules.N a x d),
-    ∑ β' : Fin (rules.N c b x), ∑ y : Bool, ∑ δ : Fin (rules.N a c y),
-    ∑ ε : Fin (rules.N y b d), ∑ δ' : Fin (rules.N c a y),
-      symbols.F a b c d ⟨e, μ, ν⟩ ⟨x, β, γ⟩ * symbols.R b c x β β' *
-      symbols.Finv a c b d ⟨x, β', γ⟩ ⟨y, δ, ε⟩ * symbols.R a c y δ δ' *
-      symbols.F c a b d ⟨y, δ', ε⟩ ⟨e, α, σ⟩) =
-  if μ = α then symbols.R e c d ν σ else 0
-
-/-- All diagonal equations hold, so they cannot detect the missing coefficient. -/
-theorem diagonal_equations_hold : diagonalHexagon := by
-  unfold diagonalHexagon
+    symbols.hexagon₂Path a b c d e e μ ν α σ =
+      if μ = α then symbols.R e c d ν σ else 0 := by
+  unfold MatrixSymbols.hexagon₂Path
   decide
 
 /-- The coefficient from the unit channel to the τ channel is 1 instead of 0. -/
 theorem full_hexagon_fails : ¬ symbols.Hexagon₂ := by
   intro h
-  have hentry := h true true true true false true
-    ⟨0, by decide⟩ ⟨0, by decide⟩ ⟨0, by decide⟩ ⟨0, by decide⟩
+  have hentry := h.2 true true true true false true
+    ⟨0, by decide⟩ ⟨0, by decide⟩ ⟨0, by decide⟩ ⟨0, by decide⟩ (by decide)
   revert hentry
+  unfold MatrixSymbols.hexagon₂Path
   decide
 
-end MTC.FRSymbols.HexagonRegression
+end MTC.FRSymbols.HexagonCounterexample
