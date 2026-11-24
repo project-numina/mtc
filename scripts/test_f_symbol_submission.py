@@ -45,7 +45,7 @@ class SubmissionTest(unittest.TestCase):
                     request = json.loads(invoke.call_args.kwargs["input"])
                     if mode == "--repo":
                         self.assertEqual(command[:2], ["gh", "api"])
-                        self.assertIn("repos/owner/name/actions/workflows/verify-f-symbols.yml/dispatches", command)
+                        self.assertIn("repos/owner/name/actions/workflows/publish-atlas.yml/dispatches", command)
                         self.assertEqual(command[command.index("--jq") + 1], ".html_url")
                         self.assertEqual(request["ref"], "main")
                         request = request["inputs"]

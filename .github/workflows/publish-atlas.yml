@@ -1,0 +1,59 @@
+name: Verify and publish F-symbols
+
+on:
+  workflow_dispatch:
+    inputs:
+      atlas_target:
+        description: Optional proposed Anyon Atlas record ID (such as B03-00019)
+        type: string
+        required: false
+      input_b64:
+        description: Base64 of the exact F-table JSON bytes (up to 48,000 bytes)
+        type: string
+        required: true
+      input_sha256:
+        description: Lowercase SHA-256 of the original file
+        type: string
+        required: true
+
+permissions: {}
+
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/verify-f-symbols.yml
+    with:
+      input_b64: ${{ inputs.input_b64 }}
+      input_sha256: ${{ inputs.input_sha256 }}
+      atlas_target: ${{ inputs.atlas_target }}
+
+  publish:
+    needs: verify
+    if: github.ref == 'refs/heads/main' && needs.verify.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Fetch this run's verified artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ needs.verify.outputs.artifact_id }}
+        run: gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" > "$RUNNER_TEMP/verified.zip"
+      - name: Install the Hub client with Trusted Publisher support
+        run: python3 -m pip install 'huggingface_hub==1.28.0'
+      - name: Publish verified evidence to the private dataset
+        env:
+          HF_OIDC_RESOURCE: datasets/project-numina/anyon-atlas-symbols
+          ARTIFACT_ID: ${{ needs.verify.outputs.artifact_id }}
+          ARTIFACT_DIGEST: ${{ needs.verify.outputs.artifact_digest }}
+          INPUT_SHA256: ${{ inputs.input_sha256 }}
+          ATLAS_TARGET: ${{ inputs.atlas_target }}
+        run: python3 scripts/publish_f_symbols.py "$RUNNER_TEMP/verified.zip"

@@ -1,8 +1,6 @@
 name: Verify F-symbol pentagons
 
 on:
-  push:
-    branches: [codex/verify-ising-b03-00019]
   workflow_dispatch:
     inputs:
       atlas_target:
@@ -18,12 +16,35 @@ on:
         type: string
         required: true
 
+  workflow_call:
+    inputs:
+      atlas_target:
+        description: Optional proposed Anyon Atlas record ID (such as B03-00019)
+        type: string
+        required: false
+      input_b64:
+        description: Base64 of the exact F-table JSON bytes (up to 48,000 bytes)
+        type: string
+        required: true
+      input_sha256:
+        description: Lowercase SHA-256 of the original file
+        type: string
+        required: true
+    outputs:
+      artifact_id:
+        value: ${{ jobs.verify.outputs.artifact_id }}
+      artifact_digest:
+        value: ${{ jobs.verify.outputs.artifact_digest }}
+
 permissions:
   contents: read
 
 jobs:
   verify:
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref == 'refs/heads/codex/verify-ising-b03-00019')
+    if: github.ref == 'refs/heads/main'
+    outputs:
+      artifact_id: ${{ steps.bundle.outputs.artifact-id }}
+      artifact_digest: ${{ steps.bundle.outputs.artifact-digest }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -44,22 +65,17 @@ jobs:
           lake query --json +MTC.FRSymbols.PentagonTable:transImports |
             jq -r '.[] | select(startswith("Mathlib."))' |
             xargs -r lake exe cache get
-      - name: Verify the pinned Ising example
-        if: github.event_name == 'push'
-        shell: bash
-        run: |
-          echo "65bdc7cc721f74471538ab9871faa9648328083fcfc3967a9c5b6be32b6270c6  MTC/FRSymbols/Ising.json" | sha256sum --check
-          python3 scripts/submit_f_symbols.py MTC/FRSymbols/Ising.json \
-            --atlas-target B03-00019 --local "$RUNNER_TEMP/pentagon-verified"
       - name: Verify the submitted bytes
-        if: github.event_name == 'workflow_dispatch'
         shell: bash
+        env:
+          SUBMISSION_INPUTS: ${{ toJSON(inputs) }}
         run: |
-          jq -c '.inputs' "$GITHUB_EVENT_PATH" |
+          printf '%s' "$SUBMISSION_INPUTS" |
             python3 scripts/verify_f_symbol_submission.py "$RUNNER_TEMP/pentagon-verified"
       - name: Save the checked table and proof
+        id: bundle
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
-          name: pentagon-verified-${{ inputs.input_sha256 || '65bdc7cc721f74471538ab9871faa9648328083fcfc3967a9c5b6be32b6270c6' }}-${{ github.run_attempt }}
+          name: pentagon-verified-${{ inputs.input_sha256 }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pentagon-verified/
           if-no-files-found: error

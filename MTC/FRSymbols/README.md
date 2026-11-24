@@ -36,19 +36,29 @@ repository root, verify it locally by giving the command a new output directory.
 python3 scripts/submit_f_symbols.py /path/to/candidate.json --local /tmp/verified-table
 ```
 
-Once the workflow is installed on `main`, an agent with an authenticated
-GitHub CLI and Actions write permission on the repository can dispatch it.
-The command prints the run URL. The inline submission limit is 48,000 bytes.
+An agent can dispatch `publish-atlas.yml` on `main` using the GitHub CLI.
+Use a fine-grained token restricted to `project-numina/mtc` with Actions
+write permission. Supply it to the agent as `GH_TOKEN` through its secret
+store. The command prints the run URL. Inline submissions can contain up to
+48,000 bytes. Inputs, proofs, and run logs are public on GitHub.
 
 ```sh
-python3 scripts/submit_f_symbols.py /path/to/candidate.json --repo project-numina/mtc
+python3 scripts/submit_f_symbols.py /path/to/candidate.json --atlas-target B03-00019 --repo project-numina/mtc
 ```
 
 On success, the run saves a **pentagon verified** artifact. It contains the
 original file as `input.json`, the kernel-checked theorem as `Proof.lean`,
 and a `manifest.json` recording the claim, input SHA-256 and verifier commit.
 Local mode writes the same artifact files. A failing pentagon is reported with
-its indices in the verification log. The workflow ends at artifact creation.
+its indices in the verification log and skips publication.
+
+After verification, a separate job checks the artifact digest and uses the
+dataset's Hugging Face Trusted Publisher identity to commit the evidence
+under `f_submissions/<input_sha256>/`. The run summary links to the private
+dataset revision. Repeating an accepted submission with the same proposed
+target reuses the entry. A different proposed target is recorded under
+`proposals/` alongside the original evidence. For a hosted verification
+without publication, dispatch `verify-f-symbols.yml` directly.
 
 To replay a downloaded bundle, set `BUNDLE` to its absolute path and run
 these commands from a checkout at the manifest's `verifier_commit`.

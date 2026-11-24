@@ -26,7 +26,7 @@ def main():
     target.add_argument("--local", type=Path, metavar="OUTPUT_DIR",
                         help="verify locally and save the accepted bundle here")
     target.add_argument("--repo", metavar="OWNER/REPO",
-                        help="dispatch verify-f-symbols.yml on the repository's main branch")
+                        help="dispatch publish-atlas.yml on the repository's main branch")
     args = parser.parse_args()
     if args.atlas_target is not None and not ATLAS_ID.fullmatch(args.atlas_target):
         parser.error("expected an Anyon Atlas record ID such as B03-00019")
@@ -52,7 +52,7 @@ def main():
             command = [sys.executable, receiver, args.local]
             request = inputs
         else:
-            endpoint = f"repos/{args.repo}/actions/workflows/verify-f-symbols.yml/dispatches"
+            endpoint = f"repos/{args.repo}/actions/workflows/publish-atlas.yml/dispatches"
             command = ["gh", "api", "--method", "POST",
                        "--header", "X-GitHub-Api-Version: 2026-03-10",
                        "--input", "-", "--jq", ".html_url", endpoint]
