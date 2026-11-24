@@ -201,10 +201,13 @@ public import MTC.FRSymbols.B11Dimension
 public import MTC.FRSymbols.Cyclotomic
 public import MTC.FRSymbols.CyclotomicMatrix
 public import MTC.FRSymbols.FusionRules
+public import MTC.FRSymbols.FusionTable
 public import MTC.FRSymbols.HexagonCounterexample
 public import MTC.FRSymbols.MatrixGauge
 public import MTC.FRSymbols.MatrixSymbols
 public import MTC.FRSymbols.Metric
+public import MTC.FRSymbols.PentagonCoefficient
+public import MTC.FRSymbols.PentagonTable
 public import MTC.FRSymbols.Pointed
 public import MTC.FRSymbols.RootsOfUnity
 public import MTC.FRSymbols.ToricCode

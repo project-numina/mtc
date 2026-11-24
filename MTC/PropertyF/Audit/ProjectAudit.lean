@@ -26,6 +26,9 @@ public import MTC.Braided.Cabling.Strands
 
 
 import all MTC.CategoryTheory.Monoidal.TensorIso
+import all MTC.FRSymbols.FusionTable
+import all MTC.FRSymbols.PentagonCoefficient
+import all MTC.FRSymbols.PentagonTable
 import all MTC.PropertyF.Pivotal.ClosureTheorems
 import all MTC.Braided.Cabling.ClosureColoredFirst
 import all MTC.Braided.Cabling.PureSumPositiveState

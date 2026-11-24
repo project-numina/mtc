@@ -33,6 +33,28 @@ abbrev LeftTree (n : FusionRules L) (a b c d : L) :=
 abbrev RightTree (n : FusionRules L) (a b c d : L) :=
   Σ x : L, Fin (n.N b c x) × Fin (n.N a x d)
 
+/-- Associator blocks with explicit multiplicity indices, independent of any braiding. -/
+abbrev FBlocks (n : FusionRules L) (K : Type*) :=
+  ∀ a b c d, LeftTree n a b c d → RightTree n a b c d → K
+
+/-- Pentagon for four simple objects and each pair of fusion-tree bases. -/
+abbrev FBlocks.PentagonAt {n : FusionRules L} (F : FBlocks n K) (a b c d u : L) : Prop :=
+  ∀ e f g h
+    (α : Fin (n.N a b e)) (β : Fin (n.N e c f)) (γ : Fin (n.N f d u))
+    (δ : Fin (n.N c d g)) (ζ : Fin (n.N b g h)) (η : Fin (n.N a h u)),
+  (∑ ε : Fin (n.N e g u),
+    F e c d u ⟨f, β, γ⟩ ⟨g, δ, ε⟩ *
+    F a b g u ⟨e, α, ε⟩ ⟨h, ζ, η⟩) =
+  ∑ j : L, ∑ μ : Fin (n.N b c j), ∑ ν : Fin (n.N a j f),
+    ∑ ρ : Fin (n.N j d h),
+      F a b c f ⟨e, α, β⟩ ⟨j, μ, ν⟩ *
+      F a j d u ⟨f, ν, γ⟩ ⟨h, ρ, η⟩ *
+      F b c d h ⟨j, μ, ρ⟩ ⟨g, δ, ζ⟩
+
+/-- All external labels and outputs of the associator pentagon. -/
+abbrev FBlocks.Pentagon {n : FusionRules L} (F : FBlocks n K) : Prop :=
+  ∀ a b c d u, FBlocks.PentagonAt (n := n) F a b c d u
+
 /-- Matrix-valued associator and braiding blocks, including their inverses.
 The last index is the output basis index. No coherence is assumed here. -/
 structure MatrixSymbols (n : FusionRules L) (K : Type*) [CommSemiring K] where
@@ -55,18 +77,8 @@ def Invertible : Prop :=
   (∀ a b c (i j : Fin (n.N b a c)),
     (∑ k, s.Rinv a b c i k * s.R a b c k j) = if i = j then 1 else 0)
 
-/-- Pentagon for four simple objects and each pair of fusion-tree bases. -/
-def Pentagon : Prop := ∀ a b c d u e f g h
-    (α : Fin (n.N a b e)) (β : Fin (n.N e c f)) (γ : Fin (n.N f d u))
-    (δ : Fin (n.N c d g)) (ζ : Fin (n.N b g h)) (η : Fin (n.N a h u)),
-  (∑ ε : Fin (n.N e g u),
-    s.F e c d u ⟨f, β, γ⟩ ⟨g, δ, ε⟩ *
-    s.F a b g u ⟨e, α, ε⟩ ⟨h, ζ, η⟩) =
-  ∑ j : L, ∑ μ : Fin (n.N b c j), ∑ ν : Fin (n.N a j f),
-    ∑ ρ : Fin (n.N j d h),
-      s.F a b c f ⟨e, α, β⟩ ⟨j, μ, ν⟩ *
-      s.F a j d u ⟨f, ν, γ⟩ ⟨h, ρ, η⟩ *
-      s.F b c d h ⟨j, μ, ρ⟩ ⟨g, δ, ζ⟩
+/-- Pentagon for the associator of a full F/R table. -/
+def Pentagon : Prop := FBlocks.Pentagon (n := n) s.F
 
 /-- First hexagon: braid `a` past `b ⊗ c`, or past `b` and `c` in turn. -/
 def Hexagon₁ : Prop := ∀ a b c d e g
